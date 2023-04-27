@@ -7,7 +7,7 @@
 typedef struct DbCommand
 {
 	sqlite3* db;
-	std::string command;
+	std::string query;
 	int(*collback)(void*, int, char**, char**) = nullptr;
 	void* data = nullptr;
 }DbCommand;
