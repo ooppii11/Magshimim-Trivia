@@ -1,11 +1,11 @@
 #include "DbUtilities.h"
 
-void DbUtilities::executeCommand(sqlite3* db, std::string command, int(*collback)(void*, int, char**, char**), void* data)
+void DbUtilities::executeCommand(DbCommand command)
 {
 	int res = 0;
 	char** errMessage = nullptr;
 
-	res = sqlite3_exec(db, command.c_str(), collback, data, errMessage);
+	res = sqlite3_exec(command.db, command.command.c_str(), command.collback, command.data, errMessage);
 	if (res != SQLITE_OK)
 	{
 		throw std::exception("DB ERORR");
