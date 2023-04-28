@@ -1,4 +1,4 @@
-import project_tests.hello_test
+import project_tests
 import socket
 
 ADRESS = "127.0.0.1"
