@@ -23,4 +23,6 @@ class SqliteUtilities
 {
 public:
 	static void executeCommand(SqliteCommand command);
+	static void executeFile(SqliteFileCommands);
+	static void executeCommands(std::vector<SqliteCommand> commands);
 };

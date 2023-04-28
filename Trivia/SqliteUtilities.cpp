@@ -11,3 +11,12 @@ void SqliteUtilities::executeCommand(SqliteCommand command)
 		throw std::exception("DB ERORR");
 	}
 }
+
+void SqliteUtilities::executeCommands(std::vector<SqliteCommand> commands)
+{
+	for (auto& command : commands) 
+	{
+		SqliteUtilities::executeCommand(command);
+	}
+}
+
