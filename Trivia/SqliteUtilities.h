@@ -4,23 +4,39 @@
 #include <vector>
 
 
-typedef struct SqliteCommand
+#define DELIMITER ";" 
+
+
+typedef struct CommandSettings
 {
 	sqlite3* db;
-	std::string query;
 	int(*collback)(void*, int, char**, char**) = nullptr;
 	void* data = nullptr;
-}SqliteCommand;
+} CommandSettings;
+
+
+typedef struct SqliteCommand
+{
+	std::string query;
+	CommandSettings settings;
+} SqliteCommand;
+
 
 
 typedef struct SqliteFileCommands
 {
-	sqlite3* db;
 	std::string filePath;
-}SqliteFileCommands;
+	CommandSettings settings;
+} SqliteFileCommands;
+
 
 class SqliteUtilities
 {
 public:
 	static void executeCommand(SqliteCommand command);
+	static void executeFile(SqliteFileCommands fileCommands);
+	static void executeCommands(std::vector<SqliteCommand> commands);
+private:
+	static std::vector<SqliteCommand> readFileCommands(SqliteFileCommands fileCommands);
+	static std::vector<SqliteCommand> createCommandsVector(std::vector<std::string> queries, CommandSettings settings);
 };
