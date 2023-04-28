@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -32,10 +33,10 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="FileUtilities.h" />
-    <ClInclude Include="SqliteUtilities.h" />
-    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
+    <ClInclude Include="SqliteUtilities.h" />
+    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />

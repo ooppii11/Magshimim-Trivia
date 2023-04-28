@@ -1,6 +1,7 @@
 #pragma once
 
-class IRequestHandler 
+
+class IRequestHandler
 {
 
 };
