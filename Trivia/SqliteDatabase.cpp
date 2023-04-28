@@ -77,9 +77,9 @@ SqliteCommand SqliteDatabase::createDbCommand(std::string query, int(*collback)(
 	SqliteCommand command = { 0 };
 
 	command.query = query;
-	command.data = data;
-	command.db = this->_db;
-	command.collback = collback;
+	command.settings.data = data;
+	command.settings.db = this->_db;
+	command.settings.collback = collback;
 
 	return command;
 }
