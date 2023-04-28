@@ -9,7 +9,7 @@ SqliteDatabase::SqliteDatabase()
 		this->_db = nullptr;
 		throw std::exception("Error while oprn 'Trivia.sqlite' db");
 	}
-	SqliteUtilities::executeFile(TABLES_PATH);
+	SqliteUtilities::executeFile(SqliteFileCommands{ this->_db, TABLES_PATH });
 }
 
 SqliteDatabase::~SqliteDatabase()
