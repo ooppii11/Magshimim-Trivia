@@ -57,6 +57,9 @@
     <ClCompile Include="BufferDeserializer.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="JsonRequestPacketSerializer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">
@@ -102,6 +105,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BufferDeserializer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonRequestPacketSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
