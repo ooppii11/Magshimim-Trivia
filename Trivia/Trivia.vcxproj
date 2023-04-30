@@ -24,6 +24,8 @@
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonRequestPacketSerializer.cpp" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
@@ -41,6 +43,8 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
