@@ -34,11 +34,7 @@ std::vector<SqliteCommand> SqliteUtilities::readFileCommands(SqliteFileCommands 
 	std::vector<std::string> queries;
 
 	fileContent = FileUtilities::readFile(fileCommands.filePath);
-<<<<<<< HEAD
 	queries = StringUtilities::splitStringToVector(fileContent, DELIMITER);
-=======
-	queries = splitStringToVector(fileContent, DELIMITER);
->>>>>>> b5186508f34566a8cad3b6dce007c5e92fa8bcf3
 
 	return 	SqliteUtilities::createCommandsVector(queries, fileCommands.settings);
 }
