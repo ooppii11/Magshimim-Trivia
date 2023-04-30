@@ -15,6 +15,7 @@ public:
 
 private:
 	Communicator _communicator;
+	IDatabase* _database;
 	RequestHandlerFactory _handlerFactory;
 };
 

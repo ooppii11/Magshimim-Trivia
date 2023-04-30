@@ -3,9 +3,10 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include "SqliteDatabase.h"
 
 Server::Server():
-	_communicator(this->_handlerFactory) {}
+	_database(new SqliteDatabase()), _handlerFactory(this->_database), _communicator(this->_handlerFactory) {}
 
 Server::~Server() {}
 

@@ -108,8 +108,8 @@ std::string Communicator::recvMessage(SOCKET sock, int size)
 	char* buffer = nullptr;
 	std::string message = "";
 
-	buffer = new char[size];
-	buffer[--size] = 0;
+	buffer = new char[size + 1];
+	buffer[size] = 0;
 
 	recv(sock, buffer, size, 0);
 
