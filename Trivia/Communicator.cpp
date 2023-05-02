@@ -71,6 +71,7 @@ void Communicator::acceptNewClient()
 	}
 
 	std::cout << "Client accepted. Server and client can speak" << std::endl;
+	this->_clients[client_socket] = this->_handlerFactory.createLoginRequestHandler();
 	std::thread tr(&Communicator::handleNewClient, this, client_socket);
 	tr.detach();
 }

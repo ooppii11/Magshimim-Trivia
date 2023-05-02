@@ -19,6 +19,21 @@
     <Filter Include="Resource Files\DB">
       <UniqueIdentifier>{8be8e910-5e4b-4507-a655-2817cb5d17ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Handlers">
+      <UniqueIdentifier>{9ffde00c-045a-4ca9-917f-a65fbe6f6996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Deserialize and serialize">
+      <UniqueIdentifier>{5ac3d1ff-243c-43c0-b8bc-6e2f2788c8f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{800d25a2-5864-4e73-a15b-e4bed0275063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{6a55c346-3834-4935-aa46-5b4c5fcb745e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MT Server">
+      <UniqueIdentifier>{d751d491-970e-4431-a0bc-ac372d3372a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +63,7 @@
     <ClCompile Include="StringUtilities.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,6 +78,34 @@
     <ClInclude Include="WSAInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+=======
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferDeserializer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonRequestPacketSerializer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggedUser.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginManager.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestHandlerFactory.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginRequestHandler.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRequestHandler.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+>>>>>>> 04817e37b87cb63292ba68643c5fb6aa681d2807
     <ClInclude Include="IDatabase.h">
       <Filter>Header Files\DB</Filter>
     </ClInclude>
@@ -74,11 +118,56 @@
     <ClInclude Include="sqlite3.h">
       <Filter>Header Files\DB</Filter>
     </ClInclude>
-    <ClInclude Include="FileUtilities.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="json.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestHandlerFactory.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferDeserializer.hpp">
+      <Filter>Header Files\Deserialize and serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonRequestPacketDeserializer.h">
+      <Filter>Header Files\Deserialize and serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonRequestPacketSerializer.h">
+      <Filter>Header Files\Deserialize and serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Request.h">
+      <Filter>Header Files\Deserialize and serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>Header Files\Deserialize and serialize</Filter>
     </ClInclude>
     <ClInclude Include="StringUtilities.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="FileUtilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Communicator.h">
+      <Filter>Header Files\MT Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Header Files\MT Server</Filter>
+    </ClInclude>
+    <ClInclude Include="WSAInitializer.h">
+      <Filter>Header Files\MT Server</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="RequestHandlerFactory.h">
       <Filter>Header Files</Filter>
