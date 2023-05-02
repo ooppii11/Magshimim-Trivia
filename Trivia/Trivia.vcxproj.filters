@@ -34,19 +34,25 @@
     <Filter Include="Header Files\MT Server">
       <UniqueIdentifier>{d751d491-970e-4431-a0bc-ac372d3372a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\MT Server">
+      <UniqueIdentifier>{7fc5e500-8e91-49bc-8bd3-3a68b2c829e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Utilities">
+      <UniqueIdentifier>{16b34966-d848-4a65-ac9a-4414a6012179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Handlers">
+      <UniqueIdentifier>{819f6f9f-eca9-40b8-b37d-7b8524e5045e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Managers">
+      <UniqueIdentifier>{932ec920-9d53-42e1-8dfc-a59e1bb379f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Deserialize and serialize">
+      <UniqueIdentifier>{2667b389-46b4-4f39-90f0-ec2675c02719}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Communicator.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WSAInitializer.cpp">
-      <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="SqliteDatabase.cpp">
       <Filter>Resource Files\DB</Filter>
@@ -57,35 +63,44 @@
     <ClCompile Include="sqlite3.c">
       <Filter>Resource Files\DB</Filter>
     </ClCompile>
+    <ClCompile Include="Communicator.cpp">
+      <Filter>Resource Files\MT Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Resource Files\MT Server</Filter>
+    </ClCompile>
+    <ClCompile Include="WSAInitializer.cpp">
+      <Filter>Resource Files\MT Server</Filter>
+    </ClCompile>
     <ClCompile Include="FileUtilities.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="StringUtilities.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonRequestPacketDeserializer.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BufferDeserializer.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonRequestPacketSerializer.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoggedUser.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginManager.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RequestHandlerFactory.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="LoginRequestHandler.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="MenuRequestHandler.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestHandlerFactory.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggedUser.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferDeserializer.cpp">
+      <Filter>Resource Files\Deserialize and serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp">
+      <Filter>Resource Files\Deserialize and serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonRequestPacketSerializer.cpp">
+      <Filter>Resource Files\Deserialize and serialize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="sqlite3.h">
       <Filter>Header Files\DB</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="IRequestHandler.h">
       <Filter>Header Files\Handlers</Filter>
@@ -151,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="LoggedUser.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

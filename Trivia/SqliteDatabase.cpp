@@ -20,13 +20,13 @@ SqliteDatabase::~SqliteDatabase()
 
 bool SqliteDatabase::doesUserExist(std::string username) const
 {
-	SqliteCommand command = { 0 };
+	SqliteCommand command;
 	bool userExist = false;
 	std::string query = "";
 
-	query = "SELECT ID"
-			"WHERE USERNAME = \"" + username + "\""
-			"FROM USERS;";
+	query = "SELECT ID " 
+			"FROM USERS "
+			"WHERE USERNAME = \"" + username + "\";";
 
 	command = createDbCommand(query, SqliteDatabase::userExistCollback, &userExist);
 	SqliteUtilities::executeCommand(command);
@@ -36,7 +36,7 @@ bool SqliteDatabase::doesUserExist(std::string username) const
 
 bool SqliteDatabase::doesPasswordMatch(std::string username, std::string password) const
 {
-	SqliteCommand command = { 0 };
+	SqliteCommand command;
 	std::string userPassword = "";
 	std::string query = "";
 
@@ -56,7 +56,7 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 void SqliteDatabase::addNewUser(std::string username, std::string password, std::string email)
 {
-	SqliteCommand command = { 0 };
+	SqliteCommand command;
 	std::string query = "";
 	
 	if (this->doesUserExist(username))
@@ -74,7 +74,7 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 
 SqliteCommand SqliteDatabase::createDbCommand(std::string query, int(*collback)(void*, int, char**, char**), void* data) const
 {
-	SqliteCommand command = { 0 };
+	SqliteCommand command;
 
 	command.query = query;
 	command.settings.data = data;
