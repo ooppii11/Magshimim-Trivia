@@ -6,8 +6,7 @@
 #include "SqliteDatabase.h"
 
 Server::Server():
-	_database(new SqliteDatabase()), _handlerFactory(this->_database), _communicator(this->_handlerFactory) {}
-
+	_database(std::shared_ptr<IDatabase>(new SqliteDatabase())), _handlerFactory(_database), _communicator(this->_handlerFactory) {}
 Server::~Server() {}
 
 void Server::run(int port)

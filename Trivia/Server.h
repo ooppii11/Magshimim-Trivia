@@ -1,4 +1,5 @@
 #pragma once
+#include "IDatabase.h"
 #include "RequestHandlerFactory.h"
 #include "Communicator.h"
 
@@ -15,7 +16,7 @@ public:
 
 private:
 	Communicator _communicator;
-	IDatabase* _database;
+	std::shared_ptr<IDatabase> _database;
 	RequestHandlerFactory _handlerFactory;
 };
 

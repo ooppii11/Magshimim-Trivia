@@ -1,22 +1,31 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include <ctime>
+#include "BufferDeserializer.hpp"
+
+
+class IRequestHandler;
+
 
 typedef struct RequestInfo
 {
 	int id;
 	time_t receivalTime;
-	std::vector<char> buffer;
+	Buffer buffer;
 } RequestInfo;
+
 
 typedef struct RequestResult
 {
-	std::vector<char> response;
-	struct IRequestHandler* newHandler;
+	Buffer response;
+	std::shared_ptr<IRequestHandler> newHandler;
 } RequestResult;
+
 
 class IRequestHandler
 {
-	virtual bool isRequestRelevant(RequestInfo) = 0;
-	virtual RequestResult handleRequest(RequestInfo) = 0;
+public:
+	virtual bool isRequestRelevant(RequestInfo requestInfo) = 0;
+	virtual RequestResult handleRequest(RequestInfo requestInfo) = 0;
 };
