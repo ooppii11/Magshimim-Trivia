@@ -50,7 +50,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo requestInfo)
         this->_loginManager.signup(request.username, request.password, request.email);
         LoggedUser user(request.username);
         result.newHandler = this->_handlerFactory.createMenuRequestHandler(user);
-        result.response = Serializer::serializeResponse(LoginResponse());
+        result.response = Serializer::serializeResponse(SignupResponse());
     }
     catch (...)
     {
