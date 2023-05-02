@@ -21,7 +21,7 @@ public:
 		
 
 private:
-	std::map<SOCKET, IRequestHandler* > _clients;
+	std::map<SOCKET, std::shared_ptr<IRequestHandler>> _clients;
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
 

@@ -2,8 +2,9 @@
 #include "Request.h"
 #include "BufferDeserializer.hpp"
 
-namespace Deserializer
+class Deserializer
 {
+public:
 	static LoginRequest deserializeLoginRequest(Buffer buffer);
 	static SignupRequest deserializeSignupRequest(Buffer buffer);
-}
+};
