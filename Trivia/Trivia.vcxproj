@@ -28,6 +28,7 @@
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="FileUtilities.h" />
+    <ClInclude Include="messageException.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />

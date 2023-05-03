@@ -4,7 +4,10 @@ import socket
 ADRESS = "127.0.0.1"
 PORT = 5555
 TESTS = [
-    project_tests.hello_test
+    project_tests.hello_test,
+    project_tests.login_test,
+    project_tests.signup_test,
+    project_tests.error_test
 ]
 
 
@@ -24,3 +27,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+	
+	
+	
+	
+	

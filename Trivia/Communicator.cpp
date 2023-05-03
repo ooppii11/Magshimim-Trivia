@@ -86,6 +86,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		while (!errorFlag && this->_clients[clientSocket].get() != nullptr)
 		{
+			std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
 			clientRequest = this->recvMessage(clientSocket);
 			if (this->_clients[clientSocket].get()->isRequestRelevant(clientRequest))
 			{

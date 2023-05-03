@@ -52,6 +52,9 @@
     <Filter Include="Header Files\messages">
       <UniqueIdentifier>{1e16ace1-4d44-45fc-b389-2ecdfdce43e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\exceptions">
+      <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="JsonRequestPacketSerializer.cpp">
       <Filter>Resource Files\Deserialize and serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="messageException.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Response.h">
       <Filter>Header Files\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="messageException.h">
+      <Filter>Header Files\exceptions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
