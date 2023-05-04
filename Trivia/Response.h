@@ -2,7 +2,7 @@
 #include <string>
 
 #define SIGNUP_RESPONSE_CODE 3
-#define LOGIN_RESPONSE_CODE 3
+#define LOGIN_RESPONSE_CODE 4
 #define ERROR_RESPONSE_CODE 99
 
 typedef struct LoginResponse

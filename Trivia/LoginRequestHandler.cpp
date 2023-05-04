@@ -28,8 +28,8 @@ RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
     RequestResult result;
     try
     {
-       LoginRequest request = Deserializer::deserializeLoginRequest(requestInfo.buffer);
-       this->_loginManager.login(request.username, request.password);
+        LoginRequest request = Deserializer::deserializeLoginRequest(requestInfo.buffer);
+        this->_loginManager.login(request.username, request.password);
         LoggedUser user(request.username);
         result.newHandler = this->_handlerFactory.createMenuRequestHandler(user);
         result.response = Serializer::serializeResponse(LoginResponse());
