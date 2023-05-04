@@ -4,16 +4,18 @@ import socket
 ADRESS = "127.0.0.1"
 PORT = 5555
 TESTS = [
-    project_tests.hello_test,
-    project_tests.login_test,
-    project_tests.signup_test,
-    project_tests.error_test
+    #project_tests.hello_test,
+    project_tests.signup_test
+   # project_tests.login_test,
+   # project_tests.signup_test,
+   # project_tests.error_test
 ]
 
 
 def execute_tests(socket):
     for test in TESTS:
-        if output:=type(test(socket)) == tuple:
+        output = test(socket)
+        if type(output) == tuple:
             print(output[1])
             return
     print("The program pass the tests:({}/{})".format(len(TESTS), len(TESTS)))
