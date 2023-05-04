@@ -1,7 +1,6 @@
 #pragma once
 #include <exception>
 #include <string>
-#include <memory>
 
 class messageException : public std::exception
 {

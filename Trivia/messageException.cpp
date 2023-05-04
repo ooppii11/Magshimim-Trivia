@@ -1,5 +1,5 @@
 #include "messageException.h"
-
+#include <string.h>
 messageException::messageException(std::string error)
 {
 	this->_returnedException = new char[error.length() + 1];
