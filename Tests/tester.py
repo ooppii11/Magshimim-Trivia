@@ -6,8 +6,8 @@ PORT = 5555
 TESTS = [
     #project_tests.hello_test,
     project_tests.signup_test,
-    project_tests.login_test
-   # project_tests.error_test
+    project_tests.login_test,
+    project_tests.error_test
 ]
 
 
