@@ -45,9 +45,9 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 		throw std::exception("User doesn't exist!");
 	}
 
-	query = "SELECT PASSWORD"
-			"WHERE USERNAME = \"" + username + "\""
-			"FROM USERS;";
+	query = "SELECT PASSWORD "
+			"FROM USERS "
+			"WHERE USERNAME = \"" + username + "\";";
 
 	command = createDbCommand(query, SqliteDatabase::getUserPasswordCollback, &userPassword);
 	SqliteUtilities::executeCommand(command);

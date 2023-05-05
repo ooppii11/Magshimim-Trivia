@@ -86,6 +86,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		while (!errorFlag && this->_clients[clientSocket].get() != nullptr)
 		{
+			std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
 			clientRequest = this->recvMessage(clientSocket);
 			if (this->_clients[clientSocket].get()->isRequestRelevant(clientRequest))
 			{
@@ -135,7 +136,7 @@ void Communicator::sendMessage(SOCKET sock, Buffer response)
 	buffer = new char[dataSize + MESSAGE_HEADR_SIZE];
 	buffer[0] = response.header;
 	memcpy(buffer + 1, &dataSize, sizeof(int));
-	memcpy(buffer + MESSAGE_HEADR_SIZE - 1, &response.message, dataSize);
+	memcpy(buffer + MESSAGE_HEADR_SIZE - 1, response.message.c_str(), dataSize);
 	send(sock, buffer, dataSize + MESSAGE_HEADR_SIZE, 0);
 	delete[] buffer;
 

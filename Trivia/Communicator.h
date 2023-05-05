@@ -3,6 +3,7 @@
 #include "RequestHandlerFactory.h"
 #include "IRequestHandler.h"
 #include <map>
+#include <mutex>
 #include <WinSock2.h>
 #include <Windows.h>
 #include "BufferDeserializer.hpp"
@@ -29,6 +30,7 @@ private:
 	std::map<SOCKET, std::shared_ptr<IRequestHandler>> _clients;
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
+	std::mutex _handlerFactoryMutex;
 
 	void bindAndListen(int port);
 	void acceptNewClient();

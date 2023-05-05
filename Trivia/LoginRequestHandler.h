@@ -3,8 +3,8 @@
 #include "LoginManager.h"
 #include "RequestHandlerFactory.h"
 
-#define LOGIN 20
-#define SIGNUP 10
+
+
 
 
 class RequestHandlerFactory;
