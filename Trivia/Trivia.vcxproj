@@ -24,6 +24,11 @@
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonRequestPacketSerializer.cpp" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
@@ -37,10 +42,15 @@
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="FileUtilities.h" />
+    <ClInclude Include="messageException.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
+    <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
@@ -136,7 +146,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
