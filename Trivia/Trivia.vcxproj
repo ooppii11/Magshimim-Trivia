@@ -30,11 +30,14 @@
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
@@ -54,11 +57,14 @@
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SqliteUtilities.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>

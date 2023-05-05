@@ -55,6 +55,9 @@
     <Filter Include="Header Files\exceptions">
       <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\exceptions">
+      <UniqueIdentifier>{344e9ac0-e191-48b9-9a40-73a5f8915e90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -109,7 +112,16 @@
       <Filter>Resource Files\Deserialize and serialize</Filter>
     </ClCompile>
     <ClCompile Include="messageException.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Resource Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +190,15 @@
     </ClInclude>
     <ClInclude Include="messageException.h">
       <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
