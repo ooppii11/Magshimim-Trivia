@@ -20,8 +20,8 @@ public:
 	void addNewUser(std::string username, std::string password, std::string email) override;
 
 	// Categories:
-	virtual void addNewCategory(std::string CategoryName, bool permission, int creatorId);
-	virtual bool doesCategoryExist(std::string CategoryName) const;
+	virtual void addNewCategory(Category category);
+	virtual bool doesCategoryExist(std::string categoryName) const;
 
 	// Questions:
 	virtual void addNewQuestion(std::string CategoryName, int userId, Question question);
@@ -50,6 +50,6 @@ private:
 	SqliteCommand createDbCommand(std::string query, int(*collback)(void*, int, char**, char**) = nullptr, void* data = nullptr) const;
 
 	// Usesrs collback:
-	static int userExistCollback(void* data, int argc, char** argv, char** azColName);
+	static int boolCollback(void* data, int argc, char** argv, char** azColName);
 	static int getUserPasswordCollback(void* data, int argc, char** argv, char** azColName);
 };

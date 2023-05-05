@@ -28,7 +28,7 @@ bool SqliteDatabase::doesUserExist(std::string username) const
 			"FROM USERS "
 			"WHERE USERNAME = \"" + username + "\";";
 
-	command = createDbCommand(query, SqliteDatabase::userExistCollback, &userExist);
+	command = createDbCommand(query, SqliteDatabase::boolCollback, &userExist);
 	SqliteUtilities::executeCommand(command);
 	return userExist;
 }
@@ -61,7 +61,7 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 	
 	if (this->doesUserExist(username))
 	{
-		throw std::exception("User alrady exist!");
+		throw std::exception("User already exist!");
 	}
 
 	query = "INSERT INTO USERS(USERNAME, PASSWORD, GMAIL) VALUES(\"" + username + "\", \"" + \
@@ -69,6 +69,38 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 
 	command = createDbCommand(query);
 	SqliteUtilities::executeCommand(command);
+}
+
+void SqliteDatabase::addNewCategory(Category category)
+{
+	SqliteCommand command;
+	std::string query = "";
+
+	if (this->doesCategoryExist(category.categoryName))
+	{
+		throw std::exception("Category already exist!");
+	}
+
+	query = "INSERT INTO CATEGORIES(NAME, PERMISSION, CREATOR_ID) VALUES(\"" + category.categoryName + "\", " + \
+		(category.permission ? "true" : "false") + ", " + std::to_string(category.creatorId) + ");";
+
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
+}
+
+bool SqliteDatabase::doesCategoryExist(std::string categoryName) const
+{
+	SqliteCommand command;
+	bool categoryExist = false;
+	std::string query = "";
+
+	query = "SELECT ID "
+		"FROM CATEGORIES "
+		"WHERE NAME = \"" + categoryName + "\";";
+
+	command = createDbCommand(query, SqliteDatabase::boolCollback, &categoryExist);
+	SqliteUtilities::executeCommand(command);
+	return categoryExist;
 }
 
 
@@ -85,7 +117,7 @@ SqliteCommand SqliteDatabase::createDbCommand(std::string query, int(*collback)(
 }
 
 
-int SqliteDatabase::userExistCollback(void* data, int argc, char** argv, char** azColName)
+int SqliteDatabase::boolCollback(void* data, int argc, char** argv, char** azColName)
 {
 	*((bool*)data) = true;
 	return 0;

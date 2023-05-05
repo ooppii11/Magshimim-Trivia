@@ -26,6 +26,15 @@ typedef struct History
 } History;
 
 
+typedef struct Category
+{
+	std::string categoryName;
+	bool permission;
+	int creatorId;
+}Category;
+
+
+
 class IDatabase 
 {
 public:
@@ -35,11 +44,11 @@ public:
 	virtual void addNewUser(std::string username, std::string password, std::string email) = 0;
 
 	// Categories:
-	virtual void addNewCategory(std::string CategoryName, bool permission, int creatorId) = 0;
-	virtual bool doesCategoryExist(std::string CategoryName) const = 0;
+	virtual void addNewCategory(Category category) = 0;
+	virtual bool doesCategoryExist(std::string categoryName) const = 0;
 
 	// Questions:
-	virtual void addNewQuestion(std::string CategoryName, int userId, Question question) = 0;
+	virtual void addNewQuestion(std::string categoryName, int userId, Question question) = 0;
 	virtual void removeQuestion(int questionId, int userId) = 0;
 	virtual std::vector<Question> getCategoryQuestions(std::string CategoryName, int numberOfQuestions) const = 0;
 
