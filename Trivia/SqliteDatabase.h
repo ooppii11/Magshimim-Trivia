@@ -4,9 +4,22 @@
 #include "SqliteUtilities.h"
 
 
-#define PASSWORD "PASSWORD"
 #define DB_FILE_PATH "Trivia.sqlite"
 #define TABLES_PATH "tables.sql"
+#define QUESTION "QUESTION"
+#define FIRST_ANSWER "FIRST_ANSWER"
+#define SECOND_ANSWER "SECOND_ANSWER"
+#define THIRD_ANSWER "THIRD_ANSWER"
+#define FOURTH_ANSWER "FOURTH_ANSWER"
+#define CATEGORY_ID "CATEGORY_ID"
+#define RANK "RANK"
+#define AVERAGE_TIME "AVERAGE_TIME"
+#define NUMBER_OF_ANSWERS "NUMBER_OF_ANSWERS"
+#define NUMBER_OF_CORRECT_ANSWERS "NUMBER_OF_CORRECT_ANSWERS"
+#define CREATION_DATE "CREATION_DATE"
+#define PASSWORD "PASSWORD"
+#define ID "ID" 
+
 
 class SqliteDatabase : public IDatabase
 {
@@ -20,36 +33,44 @@ public:
 	void addNewUser(std::string username, std::string password, std::string email) override;
 
 	// Categories:
-	virtual void addNewCategory(Category category);
-	virtual bool doesCategoryExist(std::string categoryName) const;
+	void addNewCategory(Category category);
+	bool doesCategoryExist(std::string categoryName) const;
 
 	// Questions:
-	virtual void addNewQuestion(std::string CategoryName, int userId, Question question);
-	virtual void removeQuestion(int questionId, int userId) = 0;
-	virtual std::vector<Question> getCategoryQuestions(std::string CategoryName, int numberOfQuestions) const;
+	void addNewQuestion(std::string categoryName, std::string username, Question question);
+	std::vector<Question> getCategoryQuestions(const std::string& categoryName) const;
 
 	// History:
-	virtual void addNewHistory(History history);
-	virtual std::vector<History> getUserLastFiveHistory(int usrId) const;
-	virtual std::vector<History> getCategoryHistory(int categoryId) const;
+	void addNewHistory(int userId, History history);
+	std::vector<History> getUserLastFiveHistory(int usrId) const;
+	std::vector<History> getCategoryHistory(const std::string& categoryname) const;
 
 	// Statistics:
-	virtual void updatUserNumberofAnswer(int userId, bool correctAnswer, double time);
-	virtual void updatUserNumberofgames(int userId);
+	void updatUserNumberofAnswer(int userId, bool correctAnswer, double time);
+	void updatUserNumberofgames(int userId);
 
-	virtual float getPlayerAverageAnswerTime(std::string username) const;
-	virtual int getNumOfCorrectAnswers(std::string username) const;
-	virtual int getNumOfTotalAnswers(std::string username) const;
-	virtual int getNumOfPlayerGames(std::string username) const;
-	virtual int getPlayerScore(std::string username) const;
-	virtual std::vector<float> getHighScores(int numberOfUsers) const;
+	float getPlayerAverageAnswerTime(std::string username) const;
+	int getNumOfCorrectAnswers(std::string username) const;
+	int getNumOfTotalAnswers(std::string username) const;
+	int getNumOfPlayerGames(std::string username) const;
+	int getPlayerScore(std::string username) const;
+	std::vector<float> getHighScores(int numberOfUsers) const;
 
 private:
 	sqlite3* _db;
 
 	SqliteCommand createDbCommand(std::string query, int(*collback)(void*, int, char**, char**) = nullptr, void* data = nullptr) const;
+	int getUserId(std::string username) const;
+	int getCategoryId(const std::string& categoryName) const;
+	int getCategoryCreatorId(const std::string& categoryName) const;
 
-	// Usesrs collback:
+
+	// Collback:
 	static int boolCollback(void* data, int argc, char** argv, char** azColName);
+	static int intCollback(void* data, int argc, char** argv, char** azColName);
+	static int floatCollback(void* data, int argc, char** argv, char** azColName);
 	static int getUserPasswordCollback(void* data, int argc, char** argv, char** azColName);
+	static int idCollback(void* data, int argc, char** argv, char** azColName);
+	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
+	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
 };

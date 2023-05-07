@@ -116,6 +116,7 @@ RequestInfo Communicator::recvMessage(SOCKET sock)
 	RequestInfo message = { 0 };
 	int dataLength = 0;
 	char* buffer = nullptr;
+
 	recv(sock, (char*)&message.id, 1, 0);
 	recv(sock, (char *)&dataLength, sizeof(int), 0);
 
@@ -132,6 +133,7 @@ void Communicator::sendMessage(SOCKET sock, Buffer response)
 {
 	char* buffer = nullptr;
 	int dataSize = 0;
+
 	dataSize  = response.message.size();
 	buffer = new char[dataSize + MESSAGE_HEADR_SIZE];
 	buffer[0] = response.header;
@@ -139,5 +141,4 @@ void Communicator::sendMessage(SOCKET sock, Buffer response)
 	memcpy(buffer + MESSAGE_HEADR_SIZE - 1, response.message.c_str(), dataSize);
 	send(sock, buffer, dataSize + MESSAGE_HEADR_SIZE, 0);
 	delete[] buffer;
-
 }

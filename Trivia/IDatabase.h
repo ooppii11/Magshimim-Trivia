@@ -6,6 +6,7 @@
 
 typedef struct Question
 {
+	std::string question;
 	int correctAnswerIndex;
 	std::string firstAnswer;
 	std::string secondAnswer;
@@ -16,7 +17,6 @@ typedef struct Question
 
 typedef struct History
 {
-	int userId;
 	int categoryId;
 	int rank;
 	double avergeTime;
@@ -49,13 +49,12 @@ public:
 
 	// Questions:
 	virtual void addNewQuestion(std::string categoryName, int userId, Question question) = 0;
-	virtual void removeQuestion(int questionId, int userId) = 0;
-	virtual std::vector<Question> getCategoryQuestions(std::string CategoryName, int numberOfQuestions) const = 0;
+	virtual std::vector<Question> getCategoryQuestions(const std::string& CategoryName) const = 0;
 
 	// History:
-	virtual void addNewHistory(History history) = 0;
+	virtual void addNewHistory(int userId, History history) = 0;
 	virtual std::vector<History> getUserLastFiveHistory(int usrId) const = 0;
-	virtual std::vector<History> getCategoryHistory(int categoryId) const = 0;
+	virtual std::vector<History> getCategoryHistory(const std::string& categoryname) const = 0;
 
 	// Statistics:
 	virtual void updatUserNumberofAnswer(int userId, bool correctAnswer, double time) = 0;

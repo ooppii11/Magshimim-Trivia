@@ -33,8 +33,5 @@ SignupRequest Deserializer::deserializeSignupRequest(Buffer buffer)
 		temp.email = data["email"];
 		return temp;
 	}
-	catch (json::exception& e)
-	{
-		throw messageException("Error: Invalid massege");
-	}
+	catch (json::exception& e) { throw messageException("Error: Invalid massege"); }
 }
