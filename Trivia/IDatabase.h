@@ -57,14 +57,12 @@ public:
 	virtual std::vector<History> getCategoryHistory(const std::string& categoryname) const = 0;
 
 	// Statistics:
-	virtual void updatUserNumberofAnswer(int userId, bool correctAnswer, double time) = 0;
-	virtual void updatUserNumberofgames(int userId) = 0;
-
 	virtual float getPlayerAverageAnswerTime(std::string username) const = 0;
 	virtual int getNumOfCorrectAnswers(std::string username) const = 0;
 	virtual int getNumOfTotalAnswers(std::string username) const = 0;
 	virtual int getNumOfPlayerGames(std::string username) const = 0;
 	virtual int getPlayerScore(std::string username) const = 0;
-	virtual std::vector<float> getHighScores(int numberOfUsers) const = 0;
-
+	virtual std::vector<int> getHighScores(int numberOfUsers) const = 0;
+private:
+	virtual void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime) = 0;
 };

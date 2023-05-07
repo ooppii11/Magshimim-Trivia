@@ -17,6 +17,7 @@
 #define NUMBER_OF_ANSWERS "NUMBER_OF_ANSWERS"
 #define NUMBER_OF_CORRECT_ANSWERS "NUMBER_OF_CORRECT_ANSWERS"
 #define CREATION_DATE "CREATION_DATE"
+#define SCORE "SCORE"
 #define PASSWORD "PASSWORD"
 #define ID "ID" 
 
@@ -46,18 +47,19 @@ public:
 	std::vector<History> getCategoryHistory(const std::string& categoryname) const;
 
 	// Statistics:
-	void updatUserNumberofAnswer(int userId, bool correctAnswer, double time);
-	void updatUserNumberofgames(int userId);
-
 	float getPlayerAverageAnswerTime(std::string username) const;
 	int getNumOfCorrectAnswers(std::string username) const;
 	int getNumOfTotalAnswers(std::string username) const;
 	int getNumOfPlayerGames(std::string username) const;
 	int getPlayerScore(std::string username) const;
-	std::vector<float> getHighScores(int numberOfUsers) const;
+	std::vector<int> getHighScores(int numberOfUsers) const;
 
 private:
 	sqlite3* _db;
+
+	// Statistics:
+	 void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime);
+
 
 	SqliteCommand createDbCommand(std::string query, int(*collback)(void*, int, char**, char**) = nullptr, void* data = nullptr) const;
 	int getUserId(std::string username) const;
@@ -65,7 +67,7 @@ private:
 	int getCategoryCreatorId(const std::string& categoryName) const;
 
 
-	// Collback:
+	// Collbacks:
 	static int boolCollback(void* data, int argc, char** argv, char** azColName);
 	static int intCollback(void* data, int argc, char** argv, char** azColName);
 	static int floatCollback(void* data, int argc, char** argv, char** azColName);
@@ -73,4 +75,5 @@ private:
 	static int idCollback(void* data, int argc, char** argv, char** azColName);
 	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
 	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
+	static int scoreVectorCollback(void* data, int argc, char** argv, char** azColName);
 };

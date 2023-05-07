@@ -220,6 +220,29 @@ std::vector<History> SqliteDatabase::getCategoryHistory(const std::string& categ
 }
 
 
+
+void SqliteDatabase::updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime)
+{
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+
+	userId = this->getUserId(username);
+	float time = (this->getPlayerAverageAnswerTime(username) + averageTime) / 2;
+	correctAnswers += this->getNumOfCorrectAnswers(username);
+	totalAnswers += this->getNumOfTotalAnswers(username);
+
+	query = "UPDATE STATISTICS "
+			"SET "
+				"AVERAGE_TIME = " + std::to_string(time) +
+				", NUMBER_OF_ANSWERS = " + std::to_string(totalAnswers) +
+				", NUMBER_OF_CORRECT_ANSWERS = " + std::to_string(correctAnswers) +
+				", NUMBER_OF_GAMES = " + std::to_string(this->getNumOfPlayerGames(username) + 1) +
+			"WHERE USER_ID = " + std::to_string(userId) + "; ";
+		command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
+}
+
 SqliteCommand SqliteDatabase::createDbCommand(std::string query, int(*collback)(void*, int, char**, char**), void* data) const
 {
 	SqliteCommand command;
@@ -356,6 +379,15 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 	return 0;
 }
 
+int SqliteDatabase::scoreVectorCollback(void* data, int argc, char** argv, char** azColName)
+{
+	if (argc == 1 && std::string(azColName[0]) == SCORE)
+	{
+		(*(std::vector<int> *)data).push_back(atoi(argv[0]));
+	}
+	return 0;
+}
+
 float SqliteDatabase::getPlayerAverageAnswerTime(std::string username) const
 {
 	float averageTime = 0.0;
@@ -366,9 +398,92 @@ float SqliteDatabase::getPlayerAverageAnswerTime(std::string username) const
 	userId = this->getUserId(username);
 	query = "SELECT AVERAGE_TIME "
 		"FROM STATISTICS "
-		"WHERE USER_ID = \"" + std::to_string(userId) + "\";";
+		"WHERE USER_ID = " + std::to_string(userId) + ";";
 
 	command = createDbCommand(query, SqliteDatabase::floatCollback, &averageTime);
 	SqliteUtilities::executeCommand(command);
 	return averageTime;
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(std::string username) const
+{
+	int correctAnswers = 0;
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+
+	userId = this->getUserId(username);
+	query = "SELECT NUMBER_OF_CORRECT_ANSWERS "
+			"FROM STATISTICS "
+			"WHERE USER_ID = " + std::to_string(userId) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::intCollback, &correctAnswers);
+	SqliteUtilities::executeCommand(command);
+	return correctAnswers;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(std::string username) const
+{
+	int answers = 0;
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+
+	userId = this->getUserId(username);
+	query = "SELECT NUMBER_OF_ANSWERS "
+			"FROM STATISTICS "
+			"WHERE USER_ID = " + std::to_string(userId) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::intCollback, &answers);
+	SqliteUtilities::executeCommand(command);
+	return answers;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(std::string username) const
+{
+	int games = 0;
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+
+	userId = this->getUserId(username);
+	query = "SELECT NUMBER_OF_GAMES "
+			"FROM STATISTICS "
+			"WHERE USER_ID = " + std::to_string(userId) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::intCollback, &games);
+	SqliteUtilities::executeCommand(command);
+	return games;
+}
+
+int SqliteDatabase::getPlayerScore(std::string username) const
+{
+	int score = 0;
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+
+	userId = this->getUserId(username);
+	query = "SELECT SCORE "
+			"FROM STATISTICS "
+			"WHERE ID = " + std::to_string(userId) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::intCollback, &score);
+	SqliteUtilities::executeCommand(command);
+	return score;
+}
+
+std::vector<int> SqliteDatabase::getHighScores(int numberOfUsers) const
+{
+	std::vector<int> scores;
+	SqliteCommand command;
+	std::string query = "";
+
+	query = "SELECT SCORE "
+			"FROM STATISTICS "
+			"ORDER BY SCORE DESC LIMIT " + std::to_string(numberOfUsers)  + ";";
+
+	command = createDbCommand(query, SqliteDatabase::scoreVectorCollback, &scores);
+	SqliteUtilities::executeCommand(command);
+	return scores;
 }
