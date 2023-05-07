@@ -48,14 +48,14 @@ typedef struct removeCategorie
 
 typedef struct addQuestion
 {
-	addQuestion() : correctAnswerIndex(0)
-	{
-		answers.resize(NUM_OF_ANSWERS);
-	}
 	std::string categorieName;
 	std::string questionName;
 	unsigned int correctAnswerIndex;
 	std::vector<std::string> answers;
+	addQuestion() : correctAnswerIndex(0)
+	{
+		answers.resize(NUM_OF_ANSWERS);
+	}
 }addQuestion;
 
 typedef struct removeQuestion

@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "Room.h"
 
 #define SIGNUP_RESPONSE_CODE 3
 #define LOGIN_RESPONSE_CODE 4
@@ -34,3 +36,41 @@ typedef struct ErrorResponse
 	{
 	}
 }ErrorResponse;
+
+typedef struct LogoutResponse
+{
+	unsigned int status;
+}LogoutResponse;
+
+typedef struct GetRoomsResponse
+{
+	unsigned int status;
+	std::vector<RoomData> rooms;
+}GetRoomsResponse;
+
+typedef struct GetPlayersInRoomResponse
+{
+	std::vector<std::string> rooms;
+}GetPlayersInRoomResponse;
+
+typedef struct getHighScoreResponse
+{
+	unsigned int status;
+	std::vector<std::string> statistics;
+}getHighScoreResponse;
+
+typedef struct getPersonalStatsResponse
+{
+	unsigned int status;
+	std::vector<std::string> statistics;
+}getPersonalStatsResponse;
+
+typedef struct JoinRoomResponse
+{
+	unsigned int status;
+}JoinRoomResponse;
+
+typedef struct CreateRoomResponse
+{
+	unsigned int status;
+}CreateRoomResponse;

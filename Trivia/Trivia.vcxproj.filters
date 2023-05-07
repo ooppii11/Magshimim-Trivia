@@ -111,6 +111,9 @@
     <ClCompile Include="messageException.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="messageException.h">
       <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
