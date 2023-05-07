@@ -5,6 +5,7 @@
 class Deserializer
 {
 public:
-	static LoginRequest deserializeLoginRequest(Buffer buffer);
-	static SignupRequest deserializeSignupRequest(Buffer buffer);
+	static LoginRequest deserializeLoginRequest(const Buffer& buffer);
+	static SignupRequest deserializeSignupRequest(const Buffer& buffer);
+	
 };

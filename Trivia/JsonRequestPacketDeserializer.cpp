@@ -6,7 +6,7 @@
 using json = nlohmann::json;
 
 
-LoginRequest Deserializer::deserializeLoginRequest(Buffer buffer)
+LoginRequest Deserializer::deserializeLoginRequest(const Buffer& buffer)
 {
 	try
 	{
@@ -22,7 +22,7 @@ LoginRequest Deserializer::deserializeLoginRequest(Buffer buffer)
 	}
 }
 
-SignupRequest Deserializer::deserializeSignupRequest(Buffer buffer)
+SignupRequest Deserializer::deserializeSignupRequest(const Buffer& buffer)
 {
 	try 
 	{
@@ -38,3 +38,4 @@ SignupRequest Deserializer::deserializeSignupRequest(Buffer buffer)
 		throw messageException("Error: Invalid massege");
 	}
 }
+
