@@ -1,5 +1,6 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "json.hpp"
+#include "messageException.h"
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
@@ -17,8 +18,7 @@ LoginRequest Deserializer::deserializeLoginRequest(Buffer buffer)
 	}
 	catch (json::exception& e)
 	{
-		//TODO: need to return error type tat says the message is invalid
-		std::cerr << e.what() << std::endl;
+		throw messageException("Error: Invalid massege");
 	}
 }
 
@@ -35,7 +35,6 @@ SignupRequest Deserializer::deserializeSignupRequest(Buffer buffer)
 	}
 	catch (json::exception& e)
 	{
-		//TODO: need to return error type tat says the message is invalid
-		std::cerr << e.what() << std::endl;
+		throw messageException("Error: Invalid massege");
 	}
 }

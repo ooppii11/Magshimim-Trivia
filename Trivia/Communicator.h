@@ -3,13 +3,19 @@
 #include "RequestHandlerFactory.h"
 #include "IRequestHandler.h"
 #include <map>
+#include <mutex>
 #include <WinSock2.h>
 #include <Windows.h>
+#include "BufferDeserializer.hpp"
+#include "IRequestHandler.h"
 
 
 #define MIN_PORT 1024
 #define MAX_PORT 65525
 #define START_MESSAGE "Hello"
+
+
+#define MESSAGE_HEADR_SIZE 5
 
 
 class Communicator
@@ -21,14 +27,16 @@ public:
 		
 
 private:
-	std::map<SOCKET, IRequestHandler* > _clients;
+	std::map<SOCKET, std::shared_ptr<IRequestHandler>> _clients;
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
+	std::mutex _handlerFactoryMutex;
 
 	void bindAndListen(int port);
 	void acceptNewClient();
 	void handleNewClient(SOCKET client);
 
 	bool validPort(int port);
-	std::string recvMessage(SOCKET sock, int size);
+	RequestInfo recvMessage(SOCKET sock);
+	void sendMessage(SOCKET sock, Buffer response);
 };

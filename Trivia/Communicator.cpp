@@ -71,29 +71,37 @@ void Communicator::acceptNewClient()
 	}
 
 	std::cout << "Client accepted. Server and client can speak" << std::endl;
+	this->_clients[client_socket] = this->_handlerFactory.createLoginRequestHandler();
 	std::thread tr(&Communicator::handleNewClient, this, client_socket);
 	tr.detach();
 }
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	std::string startMessage = START_MESSAGE;
-	std::string clientRequest = "";
+	RequestInfo clientRequest = { 0 };
+	RequestResult response = { 0 };
+	bool errorFlag = false;
 
 	try
 	{
-		send(clientSocket, startMessage.c_str(), startMessage.size(), 0); 
-		clientRequest = recvMessage(clientSocket, sizeof(START_MESSAGE));
-
-		if (clientRequest != START_MESSAGE)
+		while (!errorFlag && this->_clients[clientSocket].get() != nullptr)
 		{
-			throw std::exception("Client doesn't send 'Hello'");
+			std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
+			clientRequest = this->recvMessage(clientSocket);
+			if (this->_clients[clientSocket].get()->isRequestRelevant(clientRequest))
+			{
+				response = this->_clients[clientSocket].get()->handleRequest(clientRequest);
+				this->_clients[clientSocket] = response.newHandler;
+				this->sendMessage(clientSocket, response.response);
+			}
+			else { errorFlag = true; }
 		}
-		std::cout << clientRequest << std::endl;
+		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
 	catch (const std::exception& e)
 	{
+		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
 }
@@ -103,17 +111,33 @@ bool Communicator::validPort(int port)
 	return port <= MAX_PORT && port >= MIN_PORT;
 }
 
-std::string Communicator::recvMessage(SOCKET sock, int size)
+RequestInfo Communicator::recvMessage(SOCKET sock)
+{
+	RequestInfo message = { 0 };
+	int dataLength = 0;
+	char* buffer = nullptr;
+	recv(sock, (char*)&message.id, 1, 0);
+	recv(sock, (char *)&dataLength, sizeof(int), 0);
+
+	buffer = new char[dataLength + 1];
+	buffer[dataLength] = 0;
+	recv(sock, buffer, dataLength, 0);
+	message.buffer.message = std::string(buffer);
+	delete[] buffer;
+
+	return message;
+}
+
+void Communicator::sendMessage(SOCKET sock, Buffer response)
 {
 	char* buffer = nullptr;
-	std::string message = "";
-
-	buffer = new char[size + 1];
-	buffer[size] = 0;
-
-	recv(sock, buffer, size, 0);
-
-	message = std::string(buffer);
+	int dataSize = 0;
+	dataSize  = response.message.size();
+	buffer = new char[dataSize + MESSAGE_HEADR_SIZE];
+	buffer[0] = response.header;
+	memcpy(buffer + 1, &dataSize, sizeof(int));
+	memcpy(buffer + MESSAGE_HEADR_SIZE - 1, response.message.c_str(), dataSize);
+	send(sock, buffer, dataSize + MESSAGE_HEADR_SIZE, 0);
 	delete[] buffer;
-	return message;
+
 }
