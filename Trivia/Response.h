@@ -3,14 +3,23 @@
 #include <vector>
 #include "Room.h"
 
-#define SIGNUP_RESPONSE_CODE 3
-#define LOGIN_RESPONSE_CODE 4
-#define ERROR_RESPONSE_CODE 99
+enum ResponseCodes {
+	SIGNUP_AND_LOGIN_RESPONSE_CODE = 1,
+	LOGIN_RESPONSE_CODE = 3,
+	LOGOUT_RESPONSE_CODE,
+	GET_ROOMS_RESPONSE_CODE,
+	GET_PLAYERS_IN_ROOM_RESPONSE_CODE,
+	HIGH_SCORE_RESPONSE_CODE,
+	PERSONAL_STATS_RESPONSE_CODE,
+	JOIN_ROOM_RESPONSE_CODE,
+	CREATE_ROOM_RESPONSE_CODE,
+	ERROR_RESPONSE_CODE = 99
+};
 
 typedef struct LoginResponse
 {
 	unsigned int status;
-	LoginResponse() : status(LOGIN_RESPONSE_CODE)
+	LoginResponse() : status(SIGNUP_AND_LOGIN_RESPONSE_CODE)
 	{
 	}
 }LoginResponse;
@@ -18,7 +27,7 @@ typedef struct LoginResponse
 typedef struct SignupResponse
 {
 	unsigned int status;
-	SignupResponse() : status(SIGNUP_RESPONSE_CODE)
+	SignupResponse() : status(SIGNUP_AND_LOGIN_RESPONSE_CODE)
 	{
 	}
 }SignupResponse;

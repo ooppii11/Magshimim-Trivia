@@ -5,6 +5,17 @@
 #include <iostream>
 using json = nlohmann::json;
 
+/*
+Json::Reader reader;
+Json::Value root;
+string json = "{\"call\": \"KF6GPE\",\"type\":\"l\",\"time\":
+  \"1399371514\",\"lasttime\":\"1418597513\",\"lat\": 37.17667,
+  \"lng\": -122.14650,\"result\":\"ok\"}";
+
+bool parseSuccess = reader.parse(json, root, false);
+
+if (parseSuccess) {}
+*/
 
 LoginRequest Deserializer::deserializeLoginRequest(const Buffer& buffer)
 {

@@ -1,4 +1,6 @@
 #include "JsonRequestPacketSerializer.h"
+#include "json.hpp"
+#include <fstream>
 
 Buffer Serializer::serializeResponse(ErrorResponse response)
 {
@@ -23,3 +25,15 @@ Buffer Serializer::serializeResponse(SignupResponse response)
 	temp.message = "";
 	return temp;
 }
+
+//json.dump()
+//json.to_string()
+/*
+Json::StyledWriter styledWriter;
+Json::FastWriter fastWriter;
+Json::Value newValue;
+newValue["key"] = value;
+
+styledWriter.write(newValue);
+fastWriter.write(newValue);
+*/

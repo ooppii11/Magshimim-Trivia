@@ -176,14 +176,14 @@
     <ClInclude Include="Request.h">
       <Filter>Header Files\messages</Filter>
     </ClInclude>
-    <ClInclude Include="Response.h">
-      <Filter>Header Files\messages</Filter>
-    </ClInclude>
     <ClInclude Include="messageException.h">
       <Filter>Header Files\exceptions</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>Header Files\messages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,9 +1,22 @@
 #pragma once
 #include <string>
 #include <vector>
-#define SIGNUP_REQUEST_CODE 1
-#define LOGIN_REQUEST_CODE 2
+
+enum RequestCodes 
+{
+	SIGNUP_REQUEST_CODE = 1,
+	LOGIN_REQUEST_CODE,
+	LOGOUT_REQUEST_CODE,
+	GET_ROOMS_REQUEST_CODE,
+	GET_PLAYERS_IN_ROOM_REQUEST_CODE,
+	HIGH_SCORE_REQUEST_CODE,
+	PERSONAL_STATS_REQUEST_CODE,
+	JOIN_ROOM_REQUEST_CODE,
+	CREATE_ROOM_REQUEST_CODE
+};
+
 #define NUM_OF_ANSWERS 4
+
 typedef struct LoginRequest
 {
 	std::string username;
@@ -17,16 +30,6 @@ typedef struct SignupRequest
 	std::string email;
 }SignupRequest;
 
-typedef struct GetPlayersInRoomRequest
-{
-	unsigned int roomId;
-}GetPlayersInRoomRequest;
-
-typedef struct JoinRoomRequest
-{
-	unsigned int roomId;
-}JoinRoomRequest;
-
 typedef struct CreateRoomRequest
 {
 	std::string roomName;
@@ -34,6 +37,16 @@ typedef struct CreateRoomRequest
 	unsigned int questionCount;
 	unsigned int answerTimeout;
 }CreateRoomRequest;
+
+typedef struct JoinRoomRequest
+{
+	unsigned int roomId;
+}JoinRoomRequest;
+
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+}GetPlayersInRoomRequest;
 
 typedef struct addCategorie
 {
