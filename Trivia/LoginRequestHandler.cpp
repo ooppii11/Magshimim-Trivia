@@ -1,6 +1,6 @@
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonRequestPacketSerializer.hpp"
 #include "messageException.h"
 #include "Request.h"
 #include "Response.h"
