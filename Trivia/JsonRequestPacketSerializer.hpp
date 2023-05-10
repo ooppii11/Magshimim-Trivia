@@ -19,6 +19,10 @@ public:
 	static Buffer serializeResponse(const JoinRoomResponse& response);
 	static Buffer serializeResponse(const CreateRoomResponse& response);
 	static Buffer serializeResponse(const getPersonalStatsResponse& response);
+	static Buffer serializeResponse(const AddCategorieResponse& response);
+	static Buffer serializeResponse(const RemoveCategorieResponse& response);
+	static Buffer serializeResponse(const AddQuestionResponse& response);
+	static Buffer serializeResponse(const RemoveQuestionResponse& response);
 
 private:
 	template <typename T>
@@ -34,4 +38,6 @@ private:
 		oss << "]";
 		return oss.str();
 	}
+
+	static Buffer setStatus(const OnlyStatus& response);
 };

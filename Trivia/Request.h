@@ -12,7 +12,11 @@ enum RequestCodes
 	HIGH_SCORE_REQUEST_CODE,
 	PERSONAL_STATS_REQUEST_CODE,
 	JOIN_ROOM_REQUEST_CODE,
-	CREATE_ROOM_REQUEST_CODE
+	CREATE_ROOM_REQUEST_CODE,
+	ADD_CATEGORIE_REQUEST_CODE,
+	REMOVE_CATEGORIE_REQUEST_CODE,
+	ADD_QUESTION_REQUEST_CODE,
+	REMOVE_QUESTION_REQUEST_CODE
 };
 
 #define NUM_OF_ANSWERS 4
@@ -48,31 +52,31 @@ typedef struct GetPlayersInRoomRequest
 	unsigned int roomId;
 }GetPlayersInRoomRequest;
 
-typedef struct addCategorie
+typedef struct AddCategorieRequest
 {
 	std::string categorieName;
 	bool permission;
-}addCategorie;
+}addCategorieRequest;
 
-typedef struct removeCategorie
+typedef struct RemoveCategorieRequest
 {
 	std::string categorieName;
-}removeCategorie;
+}removeCategorieRequest;
 
-typedef struct addQuestion
+typedef struct AddQuestionRequest
 {
 	std::string categorieName;
 	std::string questionName;
 	unsigned int correctAnswerIndex;
 	std::vector<std::string> answers;
-	addQuestion() : correctAnswerIndex(0)
+	AddQuestionRequest() : correctAnswerIndex(0)
 	{
 		answers.resize(NUM_OF_ANSWERS);
 	}
-}addQuestion;
+}addQuestionRequest;
 
-typedef struct removeQuestion
+typedef struct RemoveQuestionRequest
 {
 	std::string categorieName;
 	std::string questionName;
-}removeQuestion;
+}removeQuestionRequest;

@@ -26,26 +26,17 @@ Buffer Serializer::serializeResponse(const ErrorResponse& response)
 
 Buffer Serializer::serializeResponse(const LoginResponse& response)
 {
-	Buffer temp;
-	temp.header = response.status;
-	temp.message = "";
-	return temp;
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::serializeResponse(const SignupResponse& response)
 {
-	Buffer temp;
-	temp.header = response.status;
-	temp.message = "";
-	return temp;
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::serializeResponse(const LogoutResponse& response)
 {
-	Buffer temp;
-	temp.header = response.status;
-	temp.message = "";
-	return temp;
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::serializeResponse(const GetRoomsResponse& response)
@@ -80,18 +71,12 @@ Buffer Serializer::serializeResponse(const getHighScoreResponse& response)
 
 Buffer Serializer::serializeResponse(const JoinRoomResponse& response)
 {
-	Buffer temp;
-	temp.header = response.status;
-	temp.message = "";
-	return temp;
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::serializeResponse(const CreateRoomResponse& response)
 {
-	Buffer temp;
-	temp.header = response.status;
-	temp.message = "";
-	return temp;
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
@@ -104,3 +89,30 @@ Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 	return temp;
 }
 
+Buffer Serializer::serializeResponse(const AddCategorieResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const RemoveCategorieResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const AddQuestionResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const RemoveQuestionResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::setStatus(const OnlyStatus& response)
+{
+	Buffer temp;
+	temp.header = response.status;
+	temp.message = "";
+	return temp;
+}
