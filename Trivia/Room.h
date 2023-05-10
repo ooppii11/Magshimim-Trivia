@@ -11,15 +11,17 @@ typedef struct RoomData
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
 	unsigned int isActive;
+	friend std::ostream& operator<<(std::ostream& os, const RoomData& data);
 } RoomData;
 
 class Room
 {
 public:
-	void addUser(LoggedUser user);
-	void removeUser(LoggedUser user);
-	std::vector<std::string> getAllUsers();
-
+	void addUser(const LoggedUser user);
+	void removeUser(const LoggedUser user);
+	std::vector<std::string> getAllUsers() const;
+	RoomData getRoomData();
+	void setRoomData(const RoomData& data);
 private:
 	RoomData _metadata;
 	std::vector<LoggedUser> _users;
