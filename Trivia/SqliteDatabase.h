@@ -29,9 +29,9 @@ public:
 	~SqliteDatabase();
 
 	// Users:
-	bool doesUserExist(std::string username) const override;
-	bool doesPasswordMatch(std::string username, std::string password) const override;
-	void addNewUser(std::string username, std::string password, std::string email) override;
+	bool doesUserExist(std::string username) const;
+	bool doesPasswordMatch(std::string username, std::string password) const;
+	void addNewUser(std::string username, std::string password, std::string email);
 
 	// Categories:
 	void addNewCategory(Category category);

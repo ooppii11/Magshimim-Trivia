@@ -42,20 +42,20 @@ public:
 	virtual bool doesUserExist(std::string username) const = 0;
 	virtual bool doesPasswordMatch(std::string username, std::string password) const = 0;
 	virtual void addNewUser(std::string username, std::string password, std::string email) = 0;
-
+	
 	// Categories:
 	virtual void addNewCategory(Category category) = 0;
 	virtual bool doesCategoryExist(std::string categoryName) const = 0;
-
+	
 	// Questions:
-	virtual void addNewQuestion(std::string categoryName, int userId, Question question) = 0;
+	virtual void addNewQuestion(std::string categoryName, std::string  username, Question question) = 0;
 	virtual std::vector<Question> getCategoryQuestions(const std::string& CategoryName) const = 0;
-
+	
 	// History:
 	virtual void addNewHistory(int userId, History history) = 0;
 	virtual std::vector<History> getUserLastFiveHistory(int usrId) const = 0;
 	virtual std::vector<History> getCategoryHistory(const std::string& categoryname) const = 0;
-
+	
 	// Statistics:
 	virtual float getPlayerAverageAnswerTime(std::string username) const = 0;
 	virtual int getNumOfCorrectAnswers(std::string username) const = 0;
