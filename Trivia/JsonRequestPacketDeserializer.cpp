@@ -5,6 +5,14 @@
 #include <iostream>
 using json = nlohmann::json;
 
+//json::parse("");
+/*
+Json::Reader reader;
+Json::Value root;
+string json = "";
+bool parseSuccess = reader.parse(json, root, false);
+if (parseSuccess) {}
+*/
 
 LoginRequest Deserializer::deserializeLoginRequest(const Buffer& buffer)
 {
@@ -87,12 +95,12 @@ CreateRoomRequest Deserializer::deserializeCreateRoomRequest(const Buffer& buffe
 	}
 }
 
-addCategorie Deserializer::addCategorieToUser(const Buffer& buffer)
+addCategorieRequest Deserializer::addCategorieToUser(const Buffer& buffer)
 {
 	try
 	{
 		json data = json::parse(buffer.message);
-		addCategorie temp;
+		addCategorieRequest temp;
 		temp.categorieName = data["categorieName"];
 		temp.permission = data["permission"];
 		return temp;
@@ -103,12 +111,12 @@ addCategorie Deserializer::addCategorieToUser(const Buffer& buffer)
 	}
 }
 
-removeCategorie Deserializer::removeCategorieFromUser(const Buffer& buffer)
+removeCategorieRequest Deserializer::removeCategorieFromUser(const Buffer& buffer)
 {
 	try
 	{
 		json data = json::parse(buffer.message);
-		removeCategorie temp;
+		removeCategorieRequest temp;
 		temp.categorieName = data["categorieName"];
 		return temp;
 	}
@@ -118,12 +126,12 @@ removeCategorie Deserializer::removeCategorieFromUser(const Buffer& buffer)
 	}
 }
 
-addQuestion Deserializer::addQuestionToUserCategorie(const Buffer& buffer)
+addQuestionRequest Deserializer::addQuestionToUserCategorie(const Buffer& buffer)
 {
 	try
 	{
 		json data = json::parse(buffer.message);
-		addQuestion temp;
+		addQuestionRequest temp;
 		temp.categorieName = data["categorieName"];
 		temp.questionName = data["questionName"];
 		temp.correctAnswerIndex = data["correctAnswerIndex"];
@@ -139,12 +147,12 @@ addQuestion Deserializer::addQuestionToUserCategorie(const Buffer& buffer)
 	}
 }
 
-removeQuestion Deserializer::removeQuestionFromUserCategorie(const Buffer& buffer)
+removeQuestionRequest Deserializer::removeQuestionFromUserCategorie(const Buffer& buffer)
 {
 	try
 	{
 		json data = json::parse(buffer.message);
-		removeQuestion temp;
+		removeQuestionRequest temp;
 		temp.categorieName = data["categorieName"];
 		temp.questionName = data["questionName"];
 		return temp;

@@ -1,9 +1,26 @@
 #pragma once
 #include <string>
 #include <vector>
-#define SIGNUP_REQUEST_CODE 1
-#define LOGIN_REQUEST_CODE 2
+
+enum RequestCodes 
+{
+	SIGNUP_REQUEST_CODE = 1,
+	LOGIN_REQUEST_CODE,
+	LOGOUT_REQUEST_CODE,
+	GET_ROOMS_REQUEST_CODE,
+	GET_PLAYERS_IN_ROOM_REQUEST_CODE,
+	HIGH_SCORE_REQUEST_CODE,
+	PERSONAL_STATS_REQUEST_CODE,
+	JOIN_ROOM_REQUEST_CODE,
+	CREATE_ROOM_REQUEST_CODE,
+	ADD_CATEGORIE_REQUEST_CODE,
+	REMOVE_CATEGORIE_REQUEST_CODE,
+	ADD_QUESTION_REQUEST_CODE,
+	REMOVE_QUESTION_REQUEST_CODE
+};
+
 #define NUM_OF_ANSWERS 4
+
 typedef struct LoginRequest
 {
 	std::string username;
@@ -17,16 +34,6 @@ typedef struct SignupRequest
 	std::string email;
 }SignupRequest;
 
-typedef struct GetPlayersInRoomRequest
-{
-	unsigned int roomId;
-}GetPlayersInRoomRequest;
-
-typedef struct JoinRoomRequest
-{
-	unsigned int roomId;
-}JoinRoomRequest;
-
 typedef struct CreateRoomRequest
 {
 	std::string roomName;
@@ -35,31 +42,41 @@ typedef struct CreateRoomRequest
 	unsigned int answerTimeout;
 }CreateRoomRequest;
 
-typedef struct addCategorie
+typedef struct JoinRoomRequest
+{
+	unsigned int roomId;
+}JoinRoomRequest;
+
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+}GetPlayersInRoomRequest;
+
+typedef struct AddCategorieRequest
 {
 	std::string categorieName;
 	bool permission;
-}addCategorie;
+}addCategorieRequest;
 
-typedef struct removeCategorie
+typedef struct RemoveCategorieRequest
 {
 	std::string categorieName;
-}removeCategorie;
+}removeCategorieRequest;
 
-typedef struct addQuestion
+typedef struct AddQuestionRequest
 {
-	addQuestion() : correctAnswerIndex(0)
-	{
-		answers.resize(NUM_OF_ANSWERS);
-	}
 	std::string categorieName;
 	std::string questionName;
 	unsigned int correctAnswerIndex;
 	std::vector<std::string> answers;
-}addQuestion;
+	AddQuestionRequest() : correctAnswerIndex(0)
+	{
+		answers.resize(NUM_OF_ANSWERS);
+	}
+}addQuestionRequest;
 
-typedef struct removeQuestion
+typedef struct RemoveQuestionRequest
 {
 	std::string categorieName;
 	std::string questionName;
-}removeQuestion;
+}removeQuestionRequest;

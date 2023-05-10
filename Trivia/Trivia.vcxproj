@@ -30,6 +30,7 @@
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -46,7 +47,7 @@
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
-    <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="JsonRequestPacketSerializer.hpp" />
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="SqliteUtilities.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="Server.h" />

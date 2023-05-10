@@ -11,8 +11,8 @@ public:
 	static JoinRoomRequest deserializeJoinRoomRequest(const Buffer& buffer);
 	static CreateRoomRequest deserializeCreateRoomRequest(const Buffer& buffer);
 
-	static addCategorie addCategorieToUser(const Buffer& buffer);
-	static removeCategorie removeCategorieFromUser(const Buffer& buffer);
-	static addQuestion addQuestionToUserCategorie(const Buffer& buffer);
-	static removeQuestion removeQuestionFromUserCategorie(const Buffer& buffer);
+	static AddCategorieRequest addCategorieToUser(const Buffer& buffer);
+	static RemoveCategorieRequest removeCategorieFromUser(const Buffer& buffer);
+	static AddQuestionRequest addQuestionToUserCategorie(const Buffer& buffer);
+	static RemoveQuestionRequest removeQuestionFromUserCategorie(const Buffer& buffer);
 };

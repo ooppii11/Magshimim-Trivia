@@ -1,6 +1,6 @@
 #include "Room.h"
 #include <algorithm>
-
+#include <iostream>
 
 void Room::addUser(LoggedUser user)
 {
@@ -26,4 +26,9 @@ std::vector<std::string> Room::getAllUsers()
 		usersNames.push_back(user.getUsername());
 	}
 	return usersNames;
+}
+
+std::ostream& operator<<(std::ostream& os, const RoomData& data)
+{
+	return os << data.name;
 }
