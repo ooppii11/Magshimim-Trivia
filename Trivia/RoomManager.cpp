@@ -1,6 +1,6 @@
 #include "RoomManager.h"
 
-void RoomManager::createRoom(LoggedUser user, RoomData data)
+void RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
 {
 	Room r;
 	r.setRoomData(data);
@@ -8,12 +8,12 @@ void RoomManager::createRoom(LoggedUser user, RoomData data)
 	this->_rooms[data.id] = r;
 }
 
-void RoomManager::deleteRoom(roomID id)
+void RoomManager::deleteRoom(const roomID id)
 {
 	this->_rooms.erase(id);
 }
 
-unsigned int RoomManager::getRoomState(roomID id)
+unsigned int RoomManager::getRoomState(const roomID id)
 {
 	return this->_rooms[id].getRoomData().isActive;
 }
@@ -28,7 +28,7 @@ std::vector<RoomData> RoomManager::getRooms()
 	return rooms;
 }
 
-Room& RoomManager::getRoom(roomID id)
+Room& RoomManager::getRoom(const roomID id)
 {
 	return this->_rooms[id];
 }

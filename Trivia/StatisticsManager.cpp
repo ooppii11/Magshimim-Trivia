@@ -2,12 +2,12 @@
 
 StatisticsManager::StatisticsManager(std::shared_ptr<IDatabase> db) : _database(db) {}
 
-std::vector<std::string> StatisticsManager::getHighScore()
+std::vector<std::string> StatisticsManager::getHighScore() const
 {
-	return;
+	return std::vector<std::string>();
 }
 
-std::vector<std::string> StatisticsManager::getUserStatistics(std::string username)
+std::vector<std::string> StatisticsManager::getUserStatistics(const std::string username) const
 {
 	return std::vector<std::string>();
 }

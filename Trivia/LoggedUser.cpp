@@ -1,6 +1,6 @@
 #include "LoggedUser.h"
 
-LoggedUser::LoggedUser(std::string username) : _username(username)
+LoggedUser::LoggedUser(const std::string& username) : _username(username)
 {
 }
 

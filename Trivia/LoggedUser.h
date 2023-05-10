@@ -3,7 +3,7 @@
 class LoggedUser
 {
 public:
-	LoggedUser(std::string username);
+	LoggedUser(const std::string& username);
 	std::string getUsername();
 	bool operator==(const LoggedUser& user);
 private:

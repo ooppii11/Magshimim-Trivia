@@ -2,12 +2,12 @@
 #include <algorithm>
 #include <iostream>
 
-void Room::addUser(const LoggedUser user)
+void Room::addUser(const LoggedUser& user)
 {
 	this->_users.push_back(user);
 }
 
-void Room::removeUser(const LoggedUser user)
+void Room::removeUser(const LoggedUser& user)
 {
 	auto userIt = std::find(this->_users.begin(), this->_users.end(), user);
 	if (userIt == this->_users.end())

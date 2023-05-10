@@ -6,9 +6,9 @@
 class StatisticsManager 
 {
 public:
-	StatisticsManager(std::shared_ptr<IDatabase> db);
-	std::vector<std::string> getHighScore();
-	std::vector<std::string> getUserStatistics(std::string username);
+	StatisticsManager(const std::shared_ptr<IDatabase> db);
+	std::vector<std::string> getHighScore() const;
+	std::vector<std::string> getUserStatistics(const std::string username) const;
 
 private:
 	std::shared_ptr<IDatabase> _database;

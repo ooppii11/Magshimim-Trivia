@@ -17,8 +17,8 @@ typedef struct RoomData
 class Room
 {
 public:
-	void addUser(const LoggedUser user);
-	void removeUser(const LoggedUser user);
+	void addUser(const LoggedUser& user);
+	void removeUser(const LoggedUser& user);
 	std::vector<std::string> getAllUsers() const;
 	RoomData getRoomData();
 	void setRoomData(const RoomData& data);

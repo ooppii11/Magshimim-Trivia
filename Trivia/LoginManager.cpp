@@ -1,16 +1,16 @@
 #include "LoginManager.h"
 
-LoginManager::LoginManager(std::shared_ptr<IDatabase> db) : _database(db)
+LoginManager::LoginManager(const std::shared_ptr<IDatabase>& db) : _database(db)
 {
 }
 
-void LoginManager::signup(std::string username, std::string password, std::string email)
+void LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	this->_database->addNewUser(username, password, email);
 	this->_loggedUsers.push_back(LoggedUser(username));
 }
 
-void LoginManager::login(std::string username, std::string password)
+void LoginManager::login(const std::string& username, const std::string& password)
 {
 	if (this->_database->doesUserExist(username) && this->_database->doesPasswordMatch(username, password))
 	{
@@ -19,7 +19,7 @@ void LoginManager::login(std::string username, std::string password)
 	else { throw std::exception("Passwrord not match"); }
 }
 
-void LoginManager::logout(std::string username)
+void LoginManager::logout(const std::string& username)
 {
 	auto obj = std::find(this->_loggedUsers.begin(), this->_loggedUsers.end(), LoggedUser(username));
 	if (obj != this->_loggedUsers.end())

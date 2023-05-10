@@ -8,11 +8,11 @@
 class LoginManager 
 {
 public:
-	LoginManager(std::shared_ptr<IDatabase> db);
+	LoginManager(const std::shared_ptr<IDatabase>& db);
 
-	void signup(std::string username, std::string password, std::string email);
-	void login(std::string username, std::string password);
-	void logout(std::string username);
+	void signup(const std::string& username, const std::string& password, const std::string& email);
+	void login(const std::string& username, const std::string& password);
+	void logout(const std::string& username);
 private:
 	std::shared_ptr<IDatabase> _database;
 	std::vector<LoggedUser> _loggedUsers;
