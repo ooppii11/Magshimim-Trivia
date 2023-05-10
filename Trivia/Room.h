@@ -11,6 +11,7 @@ typedef struct RoomData
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
 	unsigned int isActive;
+	friend std::ostream& operator<<(std::ostream& os, const RoomData& data);
 } RoomData;
 
 class Room

@@ -4,9 +4,10 @@
 #include <iostream>
 #include <exception>
 
-#include "JsonRequestPacketDeserializer.h"
-#define PORT 5555
+#include "JsonRequestPacketSerializer.hpp"
 
+#define PORT 5555
+/*
 int main()
 {
 	try
@@ -22,3 +23,4 @@ int main()
 	}
 	return 0;
 }
+*/

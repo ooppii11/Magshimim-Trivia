@@ -49,11 +49,14 @@
     <Filter Include="Resource Files\Deserialize and serialize">
       <UniqueIdentifier>{2667b389-46b4-4f39-90f0-ec2675c02719}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\messages">
+    <Filter Include="Header Files\Exceptions">
+      <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Messages">
       <UniqueIdentifier>{1e16ace1-4d44-45fc-b389-2ecdfdce43e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\exceptions">
-      <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
+    <Filter Include="Resource Files\Exceptions">
+      <UniqueIdentifier>{36b36fe3-5a29-4d37-86e2-1fb0cc12fa7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,11 +111,11 @@
     <ClCompile Include="JsonRequestPacketSerializer.cpp">
       <Filter>Resource Files\Deserialize and serialize</Filter>
     </ClCompile>
-    <ClCompile Include="messageException.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="messageException.cpp">
+      <Filter>Resource Files\Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +149,7 @@
     <ClInclude Include="JsonRequestPacketDeserializer.h">
       <Filter>Header Files\Deserialize and serialize</Filter>
     </ClInclude>
-    <ClInclude Include="JsonRequestPacketSerializer.h">
+    <ClInclude Include="JsonRequestPacketSerializer.hpp">
       <Filter>Header Files\Deserialize and serialize</Filter>
     </ClInclude>
     <ClInclude Include="LoginManager.h">
@@ -174,16 +177,16 @@
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Request.h">
-      <Filter>Header Files\messages</Filter>
+      <Filter>Header Files\Messages</Filter>
     </ClInclude>
     <ClInclude Include="messageException.h">
-      <Filter>Header Files\exceptions</Filter>
+      <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Response.h">
-      <Filter>Header Files\messages</Filter>
+      <Filter>Header Files\Messages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

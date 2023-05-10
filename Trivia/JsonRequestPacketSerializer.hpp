@@ -1,0 +1,37 @@
+#pragma once
+#pragma once
+#include "Response.h"
+#include "BufferDeserializer.hpp"
+#include <sstream>
+#include <ostream>
+#include <algorithm>
+
+class Serializer
+{
+public:
+	static Buffer serializeResponse(const ErrorResponse& response);
+	static Buffer serializeResponse(const LoginResponse& response);
+	static Buffer serializeResponse(const SignupResponse& response);
+	static Buffer serializeResponse(const LogoutResponse& response);
+	static Buffer serializeResponse(const GetRoomsResponse& response);
+	static Buffer serializeResponse(const GetPlayersInRoomResponse& response);
+	static Buffer serializeResponse(const getHighScoreResponse& response);
+	static Buffer serializeResponse(const JoinRoomResponse& response);
+	static Buffer serializeResponse(const CreateRoomResponse& response);
+	static Buffer serializeResponse(const getPersonalStatsResponse& response);
+
+private:
+	template <typename T>
+	static std::string vectorToString(const std::vector<T>& vec)
+	{
+		std::ostringstream oss;
+		oss << "[";
+		if (!vec.empty())
+		{
+			std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(oss, ", "));
+			oss << vec.back();
+		}
+		oss << "]";
+		return oss.str();
+	}
+};

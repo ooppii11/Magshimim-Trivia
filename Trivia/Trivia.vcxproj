@@ -47,7 +47,7 @@
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
-    <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="JsonRequestPacketSerializer.hpp" />
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
