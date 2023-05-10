@@ -17,10 +17,11 @@ typedef struct RoomData
 class Room
 {
 public:
-	void addUser(LoggedUser user);
-	void removeUser(LoggedUser user);
-	std::vector<std::string> getAllUsers();
-
+	void addUser(const LoggedUser user);
+	void removeUser(const LoggedUser user);
+	std::vector<std::string> getAllUsers() const;
+	RoomData getRoomData();
+	void setRoomData(const RoomData& data);
 private:
 	RoomData _metadata;
 	std::vector<LoggedUser> _users;
