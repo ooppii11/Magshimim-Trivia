@@ -46,8 +46,8 @@ public:
 	std::vector<Question> getCategoryQuestions(const std::string& categoryName) const;
 
 	// History:
-	void addNewHistory(int userId, History history);
-	std::vector<History> getUserLastFiveHistory(int usrId) const;
+	void addNewHistory(const std::string& username, History history);
+	std::vector<History> getUserLastFiveHistory(const std::string& username) const;
 	std::vector<History> getCategoryHistory(const std::string& categoryname) const;
 
 	// Statistics:

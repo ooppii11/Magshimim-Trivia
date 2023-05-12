@@ -55,8 +55,8 @@ public:
 	virtual std::vector<Question> getCategoryQuestions(const std::string& CategoryName) const = 0;
 	
 	// History:
-	virtual void addNewHistory(int userId, History history) = 0;
-	virtual std::vector<History> getUserLastFiveHistory(int usrId) const = 0;
+	virtual void addNewHistory(const std::string& username, History history) = 0;
+	virtual std::vector<History> getUserLastFiveHistory(const std::string& username) const = 0;
 	virtual std::vector<History> getCategoryHistory(const std::string& categoryname) const = 0;
 	
 	// Statistics:

@@ -204,12 +204,13 @@ std::vector<Question> SqliteDatabase::getCategoryQuestions(const std::string& ca
 	return questions;
 }
 
-void SqliteDatabase::addNewHistory(int userId, History history)
+void SqliteDatabase::addNewHistory(const std::string& username, History history)
 {
 	SqliteCommand command;
 	std::string query = "";
+	int userId = 0;
 
-
+	userId = this->getUserId(username);
 	query = "INSERT INTO HISTORY("
 				"USER_ID, "
 				"CATEGORY_ID, "
@@ -228,18 +229,20 @@ void SqliteDatabase::addNewHistory(int userId, History history)
 
 	command = createDbCommand(query);
 	SqliteUtilities::executeCommand(command);
+	this->updatUserStatistics(username, history.correctAnswers, history.answers, history.avergeTime);
 }
 
-std::vector<History> SqliteDatabase::getUserLastFiveHistory(int usrId) const
+std::vector<History> SqliteDatabase::getUserLastFiveHistory(const std::string& username) const
 {
 	std::vector<History> lastHistories;
 	SqliteCommand command;
+	int userId = 0;
 	std::string query = "";
 
-
+	userId = this->getUserId(username);
 	query = "SELECT * "
 			"FROM HISTORY "
-			"WHERE USER_ID = " + std::to_string(usrId) + " LIMIT 5;";
+			"WHERE USER_ID = " + std::to_string(userId) + " LIMIT 5;";
 
 	command = createDbCommand(query, SqliteDatabase::historiesCollback, &lastHistories);
 	SqliteUtilities::executeCommand(command);
