@@ -3,6 +3,7 @@
 #include "Server.h"
 #include <iostream>
 #include <exception>
+#include "JsonRequestPacketDeserializer.h"
 
 #define PORT 5555
 
