@@ -71,12 +71,12 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 	SqliteUtilities::executeCommand(command);
 }
 
-void SqliteDatabase::addNewCategory(Category category)
+void SqliteDatabase::addNewCategory(Category category, const std::string& username)
 {
 	SqliteCommand command;
 	std::string query = "";
 
-	if (this->doesCategoryExist(category.categoryName))
+	if (this->doesPublicCategoryExist(category.categoryName) || this->doesPrivateCategoryExist(category.categoryName, username))
 	{
 		throw std::exception("Category already exist!");
 	}
@@ -88,7 +88,7 @@ void SqliteDatabase::addNewCategory(Category category)
 	SqliteUtilities::executeCommand(command);
 }
 
-bool SqliteDatabase::doesCategoryExist(std::string categoryName) const
+bool SqliteDatabase::doesPublicCategoryExist(std::string categoryName) const
 {
 	SqliteCommand command;
 	bool categoryExist = false;
@@ -96,11 +96,56 @@ bool SqliteDatabase::doesCategoryExist(std::string categoryName) const
 
 	query = "SELECT ID "
 		"FROM CATEGORIES "
-		"WHERE NAME = \"" + categoryName + "\";";
+		"WHERE PERMISSION = True AND NAME = \"" + categoryName + "\";";
 
 	command = createDbCommand(query, SqliteDatabase::boolCollback, &categoryExist);
 	SqliteUtilities::executeCommand(command);
 	return categoryExist;
+}
+
+bool SqliteDatabase::doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const
+{
+	SqliteCommand command;
+	bool categoryExist = false;
+	std::string query = "";
+
+	query = "SELECT ID "
+		"FROM CATEGORIES "
+		"WHERE PERMISSION = False AND CREATOR_ID = " + std::to_string(this->getUserId(username)) + "NAME = \"" + categoryName + "\";";
+
+	command = createDbCommand(query, SqliteDatabase::boolCollback, &categoryExist);
+	SqliteUtilities::executeCommand(command);
+	return categoryExist;
+}
+
+std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() const
+{
+	SqliteCommand command;
+	std::vector<std::pair<std::string, int>> categories;
+	std::string query = "";
+
+	query = "SELECT ID, NAME "
+		"FROM CATEGORIES "
+		"WHERE PERMISSION = True;";
+
+	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
+	SqliteUtilities::executeCommand(command);
+	return categories;
+}
+
+std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(const std::string& username) const
+{
+	SqliteCommand command;
+	std::vector<std::pair<std::string, int>> categories;
+	std::string query = "";
+
+	query = "SELECT ID, NAME "
+		"FROM CATEGORIES "
+		"WHERE PERMISSION = False AND CREATOR_ID = " + std::to_string(this->getUserId(username)) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
+	SqliteUtilities::executeCommand(command);
+	return categories;
 }
 
 void SqliteDatabase::addNewQuestion(std::string categoryName, std::string username, Question question)
@@ -385,6 +430,19 @@ int SqliteDatabase::scoreVectorCollback(void* data, int argc, char** argv, char*
 	{
 		(*(std::vector<int> *)data).push_back(atoi(argv[0]));
 	}
+	return 0;
+}
+
+int SqliteDatabase::categoiesCollback(void* data, int argc, char** argv, char** azColName)
+{
+	int i = 0;
+	std::pair<std::string, int> category;
+	for (i = 0; i < argc; i++)
+	{
+		if (std::string(azColName[i]) == NAME) { category.first = std::string(argv[i]); }
+		else if (std::string(azColName[i]) == ID) { category.second = atoi(argv[i]); }
+	}
+	(*(std::vector<std::pair<std::string, int>> *)data).push_back(category);
 	return 0;
 }
 

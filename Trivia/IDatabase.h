@@ -44,8 +44,11 @@ public:
 	virtual void addNewUser(std::string username, std::string password, std::string email) = 0;
 	
 	// Categories:
-	virtual void addNewCategory(Category category) = 0;
-	virtual bool doesCategoryExist(std::string categoryName) const = 0;
+	virtual void addNewCategory(Category category, const std::string& username) = 0;
+	virtual bool doesPublicCategoryExist(std::string categoryName) const = 0;
+	virtual bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const = 0;
+	virtual std::vector<std::pair<std::string, int>> getPublicCategories() const = 0;
+	virtual std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const = 0;
 	
 	// Questions:
 	virtual void addNewQuestion(std::string categoryName, std::string  username, Question question) = 0;

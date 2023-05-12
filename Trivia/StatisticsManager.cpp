@@ -4,7 +4,7 @@ StatisticsManager::StatisticsManager(std::shared_ptr<IDatabase> db) : _database(
 
 std::vector<std::string> StatisticsManager::getHighScore()
 {
-	return;
+	return std::vector<std::string>();
 }
 
 std::vector<std::string> StatisticsManager::getUserStatistics(std::string username)

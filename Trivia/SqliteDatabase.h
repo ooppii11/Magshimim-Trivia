@@ -20,6 +20,7 @@
 #define SCORE "SCORE"
 #define PASSWORD "PASSWORD"
 #define ID "ID" 
+#define NAME "NAME"
 
 
 class SqliteDatabase : public IDatabase
@@ -34,8 +35,11 @@ public:
 	void addNewUser(std::string username, std::string password, std::string email);
 
 	// Categories:
-	void addNewCategory(Category category);
-	bool doesCategoryExist(std::string categoryName) const;
+	void addNewCategory(Category category, const std::string& username);
+	bool doesPublicCategoryExist(std::string categoryName) const;
+	bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const;
+	std::vector<std::pair<std::string, int>> getPublicCategories() const;
+	std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const;
 
 	// Questions:
 	void addNewQuestion(std::string categoryName, std::string username, Question question);
@@ -76,4 +80,5 @@ private:
 	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
 	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
 	static int scoreVectorCollback(void* data, int argc, char** argv, char** azColName);
+	static int categoiesCollback(void* data, int argc, char** argv, char** azColName);
 };
