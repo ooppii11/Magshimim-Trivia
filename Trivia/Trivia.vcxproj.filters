@@ -129,8 +129,11 @@
     <ClCompile Include="MenuRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="CategorieManager.cpp">
-      <Filter>Header Files\Managers</Filter>
+    <ClCompile Include="QuizManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,7 +218,10 @@
     <ClInclude Include="Room.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CategorieManager.h">
+    <ClInclude Include="QuizManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
