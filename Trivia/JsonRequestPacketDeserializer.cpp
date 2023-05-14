@@ -117,7 +117,7 @@ removeCategorieRequest Deserializer::removeCategorieFromUser(const Buffer& buffe
 	{
 		json data = json::parse(buffer.message);
 		removeCategorieRequest temp;
-		temp.categorieName = data["categorieName"];
+		temp.categorieId = data["categorieId"];
 		return temp;
 	}
 	catch (json::exception& e)
@@ -132,7 +132,7 @@ addQuestionRequest Deserializer::addQuestionToUserCategorie(const Buffer& buffer
 	{
 		json data = json::parse(buffer.message);
 		addQuestionRequest temp;
-		temp.categorieName = data["categorieName"];
+		temp.categorieId = data["categorieId"];
 		temp.questionName = data["questionName"];
 		temp.correctAnswerIndex = data["correctAnswerIndex"];
 		for (int i = 0; i < NUM_OF_ANSWERS; i++)
@@ -153,7 +153,7 @@ removeQuestionRequest Deserializer::removeQuestionFromUserCategorie(const Buffer
 	{
 		json data = json::parse(buffer.message);
 		removeQuestionRequest temp;
-		temp.categorieName = data["categorieName"];
+		temp.categorieId = data["categorieId"];
 		temp.questionName = data["questionName"];
 		return temp;
 	}
