@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferDeserializer.cpp" />
-    <ClCompile Include="CategorieManager.cpp" />
+    <ClCompile Include="QuizManager.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferDeserializer.hpp" />
-    <ClInclude Include="CategorieManager.h" />
+    <ClInclude Include="QuizManager.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="FileUtilities.h" />
     <ClInclude Include="messageException.h" />
