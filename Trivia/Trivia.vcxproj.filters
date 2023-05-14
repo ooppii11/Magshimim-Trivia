@@ -93,9 +93,6 @@
     <ClCompile Include="LoginRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="MenuRequestHandler.cpp">
-      <Filter>Resource Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
@@ -128,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
