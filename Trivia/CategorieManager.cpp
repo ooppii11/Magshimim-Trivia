@@ -1,6 +1,6 @@
 #include "CategorieManager.h"
 
-CategorieManager::CategorieManager(std::shared_ptr<IDatabase> db, std::string username) : _database(db), _username(username)
+CategorieManager::CategorieManager(std::shared_ptr<IDatabase> db) : _database(db)
 {
 }
 
@@ -11,5 +11,5 @@ std::vector<std::pair<std::string, int>> CategorieManager::getPublicCategories()
 
 std::vector<std::pair<std::string, int>> CategorieManager::getPrivagteCategories(const std::string& username)
 {
-    return this->_database->getPrivagteCategories(this->_username);
+    return this->_database->getPrivagteCategories(username);
 }
