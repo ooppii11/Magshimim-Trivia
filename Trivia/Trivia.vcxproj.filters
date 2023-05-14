@@ -129,6 +129,9 @@
     <ClCompile Include="MenuRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="CategorieManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="CategorieManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
