@@ -67,7 +67,7 @@ typedef struct GetPlayersInRoomResponse
 typedef struct getHighScoreResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	std::vector<int> statistics;
 	getHighScoreResponse() : status(HIGH_SCORE_RESPONSE_CODE) {}
 }getHighScoreResponse;
 

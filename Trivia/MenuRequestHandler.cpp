@@ -53,3 +53,156 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo requestInfo)
 	}
 	return result;
 }
+
+RequestResult MenuRequestHandler::signout(RequestInfo requestInfo)
+{
+	RequestResult result;
+
+	result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	result.response = Serializer::serializeResponse(LogoutResponse());
+	
+	return result;
+}
+
+RequestResult MenuRequestHandler::getRooms(RequestInfo requestInfo)
+{
+	RequestResult result;
+	GetRoomsResponse response;
+	
+	response.rooms = this->_roomManager.getRooms();
+	response.status = GET_ROOMS_RESPONSE_CODE;
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(response);
+	
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
+{
+	GetPlayersInRoomRequest request;
+	RequestResult result;
+	GetPlayersInRoomResponse response;
+	Room room;
+	try
+	{
+		request = Deserializer::deserializeGetPlayersRequest(requestInfo.buffer);
+		room = this->_roomManager.getRoom(request.roomId);
+		response.rooms = room.getAllUsers();
+		response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
+
+		result.newHandler = std::shared_ptr<IRequestHandler>(this);
+		result.response = Serializer::serializeResponse(response);
+	}
+	catch (messageException& e)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	catch (...)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPersonalStats(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getPersonalStatsResponse response;
+	try
+	{
+		response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
+		response.status = PERSONAL_STATS_RESPONSE_CODE;
+
+		result.newHandler = std::shared_ptr<IRequestHandler>(this);
+		result.response = Serializer::serializeResponse(response);
+	}
+	catch (messageException& e)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	catch (...)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	return result;
+}
+
+RequestResult MenuRequestHandler::getHighScore(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getHighScoreResponse response;
+	try
+	{
+		response.statistics = this->_statisticsManager.getHighScore(TOP_FIVE);
+		response.status = HIGH_SCORE_RESPONSE_CODE;
+
+		result.newHandler = std::shared_ptr<IRequestHandler>(this);
+		result.response = Serializer::serializeResponse(response);
+	}
+	catch (messageException& e)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	catch (...)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	return result;
+}
+
+RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
+{
+	JoinRoomRequest request;
+	RequestResult result;	
+	
+	try
+	{
+		request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
+		this->_roomManager.getRoom(request.roomId).addUser(this->_user);
+		result.newHandler = std::shared_ptr<IRequestHandler>(this);
+		result.response = Serializer::serializeResponse(JoinRoomResponse());
+	}
+	catch (messageException& e)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	catch (...)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	return result;
+	return RequestResult();
+}
+
+RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
+{
+	return RequestResult();
+}
+
+RequestResult MenuRequestHandler::createCategory(RequestInfo requestInfo) 
+{
+	return RequestResult();
+}
+
+RequestResult MenuRequestHandler::deleteCategory(RequestInfo requestInfo)
+{
+	return RequestResult();
+}
+
+RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
+{
+	return RequestResult();
+}
+
+RequestResult MenuRequestHandler::removeQuestion(RequestInfo requestInfo)
+{
+	return RequestResult();
+}
