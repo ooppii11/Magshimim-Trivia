@@ -132,6 +132,9 @@
     <ClCompile Include="QuizManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="HistoryManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -216,6 +219,9 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="QuizManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
