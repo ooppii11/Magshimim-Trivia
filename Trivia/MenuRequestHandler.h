@@ -28,6 +28,8 @@ private:
 	RequestHandlerFactory&  _handlerFactory;
 	std::map<int, function> _handleRequestFunctions;
 
+	RequestResult wrapperHandleRequest(function function, RequestInfo requestInfo);
+
 	RequestResult signout(RequestInfo requestInfo);
 	RequestResult getRooms(RequestInfo requestInfo);
 	RequestResult getPlayersInRoom(RequestInfo requestInfo);

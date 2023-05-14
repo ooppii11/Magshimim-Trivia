@@ -49,9 +49,29 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo requestInfo)
 	it = this->_handleRequestFunctions.find(requestInfo.id);
 	if (it != this->_handleRequestFunctions.end())
 	{
-		result = (this->*(it->second))(requestInfo);
+		result = wrapperHandleRequest(it->second, requestInfo);
 	}
 	return result;
+}
+
+RequestResult MenuRequestHandler::wrapperHandleRequest(function function, RequestInfo requestInfo)
+{
+	RequestResult result;
+	try
+	{
+		(this->*(function))(requestInfo);
+	}
+	catch (messageException& e)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	catch (...)
+	{
+		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	}
+	return RequestResult();
 }
 
 RequestResult MenuRequestHandler::signout(RequestInfo requestInfo)
@@ -83,26 +103,14 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 	RequestResult result;
 	GetPlayersInRoomResponse response;
 	Room room;
-	try
-	{
-		request = Deserializer::deserializeGetPlayersRequest(requestInfo.buffer);
-		room = this->_roomManager.getRoom(request.roomId);
-		response.rooms = room.getAllUsers();
-		response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
 
-		result.newHandler = std::shared_ptr<IRequestHandler>(this);
-		result.response = Serializer::serializeResponse(response);
-	}
-	catch (messageException& e)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
-	catch (...)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
+	request = Deserializer::deserializeGetPlayersRequest(requestInfo.buffer);
+	room = this->_roomManager.getRoom(request.roomId);
+	response.rooms = room.getAllUsers();
+	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(response);
+	
 	return result;
 }
 
@@ -110,24 +118,12 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo requestInfo)
 {
 	RequestResult result;
 	getPersonalStatsResponse response;
-	try
-	{
-		response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
-		response.status = PERSONAL_STATS_RESPONSE_CODE;
 
-		result.newHandler = std::shared_ptr<IRequestHandler>(this);
-		result.response = Serializer::serializeResponse(response);
-	}
-	catch (messageException& e)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
-	catch (...)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
+	response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
+	response.status = PERSONAL_STATS_RESPONSE_CODE;
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(response);
+	
 	return result;
 }
 
@@ -135,24 +131,12 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo requestInfo)
 {
 	RequestResult result;
 	getHighScoreResponse response;
-	try
-	{
-		response.statistics = this->_statisticsManager.getHighScore(TOP_FIVE);
-		response.status = HIGH_SCORE_RESPONSE_CODE;
-
-		result.newHandler = std::shared_ptr<IRequestHandler>(this);
-		result.response = Serializer::serializeResponse(response);
-	}
-	catch (messageException& e)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
-	catch (...)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
+	
+	response.statistics = this->_statisticsManager.getHighScore(TOP_FIVE);
+	response.status = HIGH_SCORE_RESPONSE_CODE;
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(response);
+	
 	return result;
 }
 
@@ -160,26 +144,13 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 {
 	JoinRoomRequest request;
 	RequestResult result;	
+
+	request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
+	this->_roomManager.getRoom(request.roomId).addUser(this->_user);
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(JoinRoomResponse());
 	
-	try
-	{
-		request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
-		this->_roomManager.getRoom(request.roomId).addUser(this->_user);
-		result.newHandler = std::shared_ptr<IRequestHandler>(this);
-		result.response = Serializer::serializeResponse(JoinRoomResponse());
-	}
-	catch (messageException& e)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
-	catch (...)
-	{
-		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
-	}
 	return result;
-	return RequestResult();
 }
 
 RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
