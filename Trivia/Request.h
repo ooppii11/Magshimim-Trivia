@@ -54,7 +54,7 @@ typedef struct GetPlayersInRoomRequest
 
 typedef struct AddCategorieRequest
 {
-	std::string categorieName;
+	std::string categoryName;
 	bool permission;
 }addCategorieRequest;
 
