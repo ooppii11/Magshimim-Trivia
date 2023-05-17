@@ -14,9 +14,9 @@ std::vector<History> HistoryManager::getUserLastFiveHistory(const std::string& u
 	return this->_database->getUserLastFiveHistory(username);
 }
 
-std::vector<History> HistoryManager::getCategoryHistory(const unsigned int categorieId) const
+std::vector<History> HistoryManager::getCategoryHistory(const unsigned int categoryId) const
 {
-	return this->_database->getCategoryHistory(categorieId);
+	return this->_database->getCategoryHistory(categoryId);
 }
 
 

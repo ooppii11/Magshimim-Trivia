@@ -4,6 +4,9 @@
 #include <ctime>
 
 
+#define PUBLIC true 
+#define PRIVATE false
+
 typedef struct Question
 {
 	std::string question;
@@ -51,13 +54,13 @@ public:
 	virtual std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const = 0;
 	
 	// Questions:
-	virtual void addNewQuestion(std::string categoryName, std::string  username, Question question) = 0;
-	virtual std::vector<Question> getCategoryQuestions(const std::string& CategoryName) const = 0;
+	virtual void addNewQuestion(int categorieId, std::string  username, Question question) = 0;
+	virtual std::vector<Question> getCategoryQuestions(int categoryId, const std::string& username) const = 0;
 	
 	// History:
 	virtual void addNewHistory(const std::string& username, History history) = 0;
 	virtual std::vector<History> getUserLastFiveHistory(const std::string& username) const = 0;
-	virtual std::vector<History> getCategoryHistory(const std::string& categoryname) const = 0;
+	virtual std::vector<History> getCategoryHistory(int categoryId) const = 0;
 	
 	// Statistics:
 	virtual float getPlayerAverageAnswerTime(std::string username) const = 0;
