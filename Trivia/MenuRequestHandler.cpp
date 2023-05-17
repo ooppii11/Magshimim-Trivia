@@ -1,5 +1,4 @@
 #include "MenuRequestHandler.h"
-
 #include "MenuRequestHandler.h"
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
@@ -8,8 +7,8 @@
 #include "Request.h"
 #include "Response.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory) :
-	_user(user), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory)
+MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager):
+	_user(user), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory), _categoriesManager(categoriesManager)
 {
 	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &MenuRequestHandler::signout;
 	this->_handleRequestFunctions[GET_ROOMS_REQUEST_CODE] = &MenuRequestHandler::getRooms;
@@ -155,22 +154,51 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 
 RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 {
-	return RequestResult();
+	RequestResult result;
+	return result;
 }
 
 RequestResult MenuRequestHandler::createCategory(RequestInfo requestInfo) 
 {
-	return RequestResult();
+	RequestResult result;
+	AddCategorieRequest request;
+	Category category;
+	
+	request = Deserializer::addCategorieToUser(requestInfo.buffer);
+
+	category.categoryName = request.categoryName;
+	category.permission = request.permission;
+	this->_categoriesManager.addNewCategory(category, this->_user.getUsername());
+
+	return result;
 }
 
 RequestResult MenuRequestHandler::deleteCategory(RequestInfo requestInfo)
 {
-	return RequestResult();
+	RequestResult result;
+	return result;
 }
 
 RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
 {
-	return RequestResult();
+	RequestResult result;
+	AddQuestionRequest request;
+	Question question;
+
+	request = Deserializer::addQuestionToUserCategorie(requestInfo.buffer);
+	if (request.answers.size() != FOUR) { throw std::exception("Answers are missing"); }
+	if (request.correctAnswerIndex < 0 || request.correctAnswerIndex >= FOUR) { std::exception("Unvalid Index"); }
+
+	question.question = request.questionName;
+	question.correctAnswerIndex = request.correctAnswerIndex;
+	question.firstAnswer = request.answers[0];
+	question.secondAnswer = request.answers[1];
+	question.thirdAnswer = request.answers[TWO];
+	question.fourthAnswer = request.answers[THREE];
+
+	this->_categoriesManager.addNewQuestion(request.categorieId, this->_user.getUsername(), question);
+
+	return result;
 }
 
 RequestResult MenuRequestHandler::removeQuestion(RequestInfo requestInfo)
