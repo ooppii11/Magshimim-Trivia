@@ -4,8 +4,12 @@
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
 #include "LoggedUser.h"
+#include "RoomManager.h"
+#include "StatisticsManager.h"
 
 class LoginRequestHandler;
+class MenuRequestHandler;
+
 
 class RequestHandlerFactory
 {
@@ -15,9 +19,15 @@ public:
 	LoginManager& getLoginManager();
 	std::shared_ptr<MenuRequestHandler> createMenuRequestHandler(LoggedUser user);
 	std::shared_ptr<LoginRequestHandler> createLoginRequestHandler();
+	StatisticsManager&  getStatisticsManager() const;
+	RoomManager&  getRoomManager() const;
+
 
 
 private:
 	std::shared_ptr<IDatabase> _database;
 	LoginManager _loginManager;
+	RoomManager _roomManager;	
+	StatisticsManager _statisticsManager;
+
 };

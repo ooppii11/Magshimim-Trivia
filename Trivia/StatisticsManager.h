@@ -7,8 +7,8 @@ class StatisticsManager
 {
 public:
 	StatisticsManager(std::shared_ptr<IDatabase> db);
-	std::vector<std::string> getHighScore();
-	std::vector<std::string> getUserStatistics(std::string username);
+	std::vector<int> getHighScore(int numOfScores) const;
+	std::vector<std::string> getUserStatistics(const std::string& username) const;
 
 private:
 	std::shared_ptr<IDatabase> _database;

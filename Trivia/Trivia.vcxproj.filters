@@ -93,9 +93,6 @@
     <ClCompile Include="LoginRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="MenuRequestHandler.cpp">
-      <Filter>Resource Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
@@ -127,6 +124,15 @@
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="QuizManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -210,6 +216,12 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuizManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
