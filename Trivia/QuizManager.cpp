@@ -24,7 +24,7 @@ void QuizManager::addNewQuestion(const unsigned int categorieId, std::string use
 	this->_database->addNewQuestion(categorieId, username, question);
 }
 
-std::vector<Question> QuizManager::getCategoryQuestions(const unsigned int categorieId) const
+std::vector<Question> QuizManager::getCategoryQuestions(const unsigned int categoryId, const std::string& username) const
 {
-	return this->_database->getCategoryQuestions(categorieId);
+	return this->_database->getCategoryQuestions(categoryId, username);
 }

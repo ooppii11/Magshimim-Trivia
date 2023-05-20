@@ -101,7 +101,7 @@ addCategorieRequest Deserializer::addCategorieToUser(const Buffer& buffer)
 	{
 		json data = json::parse(buffer.message);
 		addCategorieRequest temp;
-		temp.categorieName = data["categorieName"];
+		temp.categoryName = data["categorieName"];
 		temp.permission = data["permission"];
 		return temp;
 	}

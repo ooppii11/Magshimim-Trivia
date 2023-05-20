@@ -148,16 +148,32 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(c
 	return categories;
 }
 
-void SqliteDatabase::addNewQuestion(std::string categoryName, std::string username, Question question)
+void SqliteDatabase::deleteCategory(int categoryId, const std::string& username)
 {
 	SqliteCommand command;
 	std::string query = "";
-	int categoryId = 0;
+	int userId = 0;
+	int creatorId = 0;
+
+	creatorId = this->getCategoryCreatorId(categoryId);
+	userId = this->getUserId(username);
+
+	if (creatorId != userId) { throw std::exception("Not your category"); }
+
+	query = "DELETE FROM CATEGORIES  WHERE = ID = " + std::to_string(categoryId) + "; ";
+
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
+}
+
+void SqliteDatabase::addNewQuestion(int categoryId, std::string username, Question question)
+{
+	SqliteCommand command;
+	std::string query = "";
 	int uesrId = 0;
 	int creatorId = 0;
 
-	categoryId = this->getCategoryId(categoryName);
-	creatorId = this->getCategoryCreatorId(categoryName);
+	creatorId = this->getCategoryCreatorId(categoryId);
 	uesrId = this->getUserId(username);
 
 	if (uesrId != creatorId)
@@ -186,14 +202,21 @@ void SqliteDatabase::addNewQuestion(std::string categoryName, std::string userna
 	SqliteUtilities::executeCommand(command);
 }
 
-std::vector<Question> SqliteDatabase::getCategoryQuestions(const std::string& categoryName) const
+std::vector<Question> SqliteDatabase::getCategoryQuestions(int categoryId, const std::string& username) const
 {
 	SqliteCommand command;
 	std::vector<Question> questions;
 	std::string query = "";
-	int categoryId = 0;
+	int uesrId = 0;
+	int creatorId = 0;
 
-	categoryId = this->getCategoryId(categoryName);
+	creatorId = this->getCategoryCreatorId(categoryId);
+	uesrId = this->getUserId(username);
+
+	if (uesrId != creatorId && this->getCategoryPermssion(categoryId) == PUBLIC)
+	{
+		throw std::exception("Not your category");
+	}
 
 	query = "SELECT * "
 			"FROM QUESTIONS ";
@@ -202,6 +225,23 @@ std::vector<Question> SqliteDatabase::getCategoryQuestions(const std::string& ca
 	command = createDbCommand(query, SqliteDatabase::questionsCollback , &questions);
 	SqliteUtilities::executeCommand(command);
 	return questions;
+}
+
+void SqliteDatabase::deleteQuestion(int categoryId, const std::string& username, const std::string& question)
+{
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+	int creatorId = 0;
+
+	creatorId = this->getCategoryCreatorId(categoryId);
+	userId = this->getUserId(username);
+
+	if (creatorId != userId) { throw std::exception("Not your category"); }
+
+	query = "DELETE FROM QUESTIONS WHERE CATEGORY_ID = " + std::to_string(categoryId) + " AND QUESTION = \"" + question + "\";";
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
 }
 
 void SqliteDatabase::addNewHistory(const std::string& username, History history)
@@ -249,14 +289,11 @@ std::vector<History> SqliteDatabase::getUserLastFiveHistory(const std::string& u
 	return lastHistories;
 }
 
-std::vector<History> SqliteDatabase::getCategoryHistory(const std::string& categoryName) const
+std::vector<History> SqliteDatabase::getCategoryHistory(int categoryId) const
 {
 	std::vector<History> histories;
 	SqliteCommand command;
 	std::string query = "";
-	int categoryId = 0;
-
-	categoryId = this->getCategoryId(categoryName);
 
 	query = "SELECT * "
 			"FROM HISTORY "
@@ -333,19 +370,50 @@ int SqliteDatabase::getCategoryId(const std::string& categoryName) const
 	return categoryId;
 }
 
-int SqliteDatabase::getCategoryCreatorId(const std::string& categoryName) const
+int SqliteDatabase::getCategoryCreatorId(int categoryId) const
 {
 	int creatorId;
 	SqliteCommand command;
 	std::string query = "";
 
-	query = "SELECT * "
+	query = "SELECT CREATOR_ID  "
 		"FROM CATEGORIES "
-		"WHERE CREATOR_ID = \"" + categoryName + "\";";
+		"WHERE  ID = " + std::to_string(categoryId) + ";";
 
 	command = createDbCommand(query, SqliteDatabase::idCollback, &creatorId);
 	SqliteUtilities::executeCommand(command);
 	return creatorId;
+}
+
+bool SqliteDatabase::getCategoryPermssion(int categoryId) const
+{
+	bool permssion = PRIVATE;
+	SqliteCommand command;
+	std::string query = "";
+
+	query = "SELECT PERMISSION  "
+		"FROM CATEGORIES "
+		"WHERE  ID = " + std::to_string(categoryId) + ";";
+
+	command = createDbCommand(query, SqliteDatabase::categoryPremssionCollback, &permssion);
+	SqliteUtilities::executeCommand(command);
+	return permssion;
+}
+
+int SqliteDatabase::categoryPremssionCollback(void* data, int argc, char** argv, char** azColName)
+{
+	if (argc == 1 && std::string(azColName[0]) == PERMISSION)
+	{
+		if(argv[0])
+		{ 
+			*((bool*)data) = true;
+		}
+		else
+		{
+			*((bool*)data) = false;
+		}
+	}
+	return 0;
 }
 
 int SqliteDatabase::boolCollback(void* data, int argc, char** argv, char** azColName)
