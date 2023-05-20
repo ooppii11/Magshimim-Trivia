@@ -148,6 +148,24 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(c
 	return categories;
 }
 
+void SqliteDatabase::deleteCategory(int categoryId, const std::string& username)
+{
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+	int creatorId = 0;
+
+	creatorId = this->getCategoryCreatorId(categoryId);
+	userId = this->getUserId(username);
+
+	if (creatorId != userId) { throw std::exception("Not your category"); }
+
+	query = "DELETE FROM CATEGORIES  WHERE = ID = " + std::to_string(categoryId) + "; ";
+
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
+}
+
 void SqliteDatabase::addNewQuestion(int categoryId, std::string username, Question question)
 {
 	SqliteCommand command;
@@ -207,6 +225,23 @@ std::vector<Question> SqliteDatabase::getCategoryQuestions(int categoryId, const
 	command = createDbCommand(query, SqliteDatabase::questionsCollback , &questions);
 	SqliteUtilities::executeCommand(command);
 	return questions;
+}
+
+void SqliteDatabase::deleteQuestion(int categoryId, const std::string& username, const std::string& question)
+{
+	SqliteCommand command;
+	std::string query = "";
+	int userId = 0;
+	int creatorId = 0;
+
+	creatorId = this->getCategoryCreatorId(categoryId);
+	userId = this->getUserId(username);
+
+	if (creatorId != userId) { throw std::exception("Not your category"); }
+
+	query = "DELETE FROM QUESTIONS WHERE CATEGORY_ID = " + std::to_string(categoryId) + " AND QUESTION = \"" + question + "\";";
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
 }
 
 void SqliteDatabase::addNewHistory(const std::string& username, History history)

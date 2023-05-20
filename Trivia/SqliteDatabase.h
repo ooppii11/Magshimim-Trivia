@@ -41,10 +41,12 @@ public:
 	bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const;
 	std::vector<std::pair<std::string, int>> getPublicCategories() const;
 	std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const;
+	void deleteCategory(int categoryId, const std::string& username);
 
 	// Questions:
 	void addNewQuestion(int categorieId, std::string username, Question question);
 	std::vector<Question> getCategoryQuestions(int categoryId, const std::string& username) const;
+	void deleteQuestion(int categoryId, const std::string& username, const std::string& question);
 
 	// History:
 	void addNewHistory(const std::string& username, History history);
