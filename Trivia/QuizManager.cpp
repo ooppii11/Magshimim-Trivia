@@ -24,7 +24,17 @@ void QuizManager::addNewQuestion(const unsigned int categorieId, std::string use
 	this->_database->addNewQuestion(categorieId, username, question);
 }
 
-std::vector<Question> QuizManager::getCategoryQuestions(const unsigned int categorieId) const
+void QuizManager::deleteCategory(int categoryId, const std::string& username)
 {
-	return this->_database->getCategoryQuestions(categorieId);
+	return this->_database->deleteCategory(categoryId, username);
+}
+
+void QuizManager::deleteQuestion(int categoryId, const std::string& username, const std::string& question)
+{
+	return this->_database->deleteQuestion(categoryId, username, question);
+}
+
+std::vector<Question> QuizManager::getCategoryQuestions(const unsigned int categoryId, const std::string& username) const
+{
+	return this->_database->getCategoryQuestions(categoryId, username);
 }

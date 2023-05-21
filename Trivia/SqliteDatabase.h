@@ -21,6 +21,7 @@
 #define PASSWORD "PASSWORD"
 #define ID "ID" 
 #define NAME "NAME"
+#define PERMISSION "PERMISSION"
 
 
 class SqliteDatabase : public IDatabase
@@ -40,15 +41,17 @@ public:
 	bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const;
 	std::vector<std::pair<std::string, int>> getPublicCategories() const;
 	std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const;
+	void deleteCategory(int categoryId, const std::string& username);
 
 	// Questions:
-	void addNewQuestion(std::string categoryName, std::string username, Question question);
-	std::vector<Question> getCategoryQuestions(const std::string& categoryName) const;
+	void addNewQuestion(int categorieId, std::string username, Question question);
+	std::vector<Question> getCategoryQuestions(int categoryId, const std::string& username) const;
+	void deleteQuestion(int categoryId, const std::string& username, const std::string& question);
 
 	// History:
 	void addNewHistory(const std::string& username, History history);
 	std::vector<History> getUserLastFiveHistory(const std::string& username) const;
-	std::vector<History> getCategoryHistory(const std::string& categoryname) const;
+	std::vector<History> getCategoryHistory(int categoryId) const;
 
 	// Statistics:
 	float getPlayerAverageAnswerTime(std::string username) const;
@@ -68,10 +71,12 @@ private:
 	SqliteCommand createDbCommand(std::string query, int(*collback)(void*, int, char**, char**) = nullptr, void* data = nullptr) const;
 	int getUserId(std::string username) const;
 	int getCategoryId(const std::string& categoryName) const;
-	int getCategoryCreatorId(const std::string& categoryName) const;
+	int getCategoryCreatorId(int categoryId) const;
+	bool getCategoryPermssion(int categoryId) const;
 
 
 	// Collbacks:
+	static int categoryPremssionCollback(void* data, int argc, char** argv, char** azColName);
 	static int boolCollback(void* data, int argc, char** argv, char** azColName);
 	static int intCollback(void* data, int argc, char** argv, char** azColName);
 	static int floatCollback(void* data, int argc, char** argv, char** azColName);
