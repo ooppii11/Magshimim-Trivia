@@ -4,6 +4,7 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonRequestPacketSerializer.hpp"
 #include "messageException.h"
+#include "IDatabase.h"
 #include "Request.h"
 #include "Response.h"
 
@@ -58,7 +59,7 @@ RequestResult MenuRequestHandler::wrapperHandleRequest(function function, Reques
 	RequestResult result;
 	try
 	{
-		(this->*(function))(requestInfo);
+		result = (this->*(function))(requestInfo);
 	}
 	catch (messageException& e)
 	{
@@ -70,7 +71,7 @@ RequestResult MenuRequestHandler::wrapperHandleRequest(function function, Reques
 		result.response = Serializer::serializeResponse(ErrorResponse());
 		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
 	}
-	return RequestResult();
+	return result;
 }
 
 RequestResult MenuRequestHandler::signout(RequestInfo requestInfo)
@@ -170,12 +171,23 @@ RequestResult MenuRequestHandler::createCategory(RequestInfo requestInfo)
 	category.permission = request.permission;
 	this->_categoriesManager.addNewCategory(category, this->_user.getUsername());
 
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(CreateRoomResponse());
+
 	return result;
 }
 
 RequestResult MenuRequestHandler::deleteCategory(RequestInfo requestInfo)
 {
 	RequestResult result;
+	RemoveCategorieRequest request;
+
+	request = Deserializer::removeCategorieFromUser(requestInfo.buffer);
+	this->_categoriesManager.deleteCategory(request.categorieId, this->_user.getUsername());
+
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(RemoveCategorieResponse());
+
 	return result;
 }
 
@@ -198,10 +210,22 @@ RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
 
 	this->_categoriesManager.addNewQuestion(request.categorieId, this->_user.getUsername(), question);
 
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(AddQuestionResponse());
+
 	return result;
 }
 
 RequestResult MenuRequestHandler::removeQuestion(RequestInfo requestInfo)
 {
-	return RequestResult();
+	RequestResult result;
+	RemoveQuestionRequest request;
+
+	request = Deserializer::removeQuestionFromUserCategorie(requestInfo.buffer);
+	this->_categoriesManager.deleteQuestion(request.categorieId, this->_user.getUsername(), request.questionName);
+
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(RemoveQuestionResponse());
+
+	return result;
 }
