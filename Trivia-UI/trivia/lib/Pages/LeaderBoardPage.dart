@@ -1,4 +1,5 @@
 import 'package:trivia/SocketService.dart';
+import 'package:trivia/user.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
@@ -14,6 +15,15 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPage extends State<LeaderBoardPage> {
+  final List<User> _leaderboardScores = [
+    User("aviv", 1000),
+    User("itamar", 100)
+  ];
+
+  void getUsersStatistic() {
+    // TODO: update Users list.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,24 +88,69 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               ),
             ]),
         body: SingleChildScrollView(
-          child: Column(children: [
-            Text("Leadrboard"),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  gradient: LinearGradient(colors: [
-                    Colors.yellow.shade600,
-                    Colors.orange,
-                    Colors.red
-                  ])),
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Container(
-                  height: 600,
-                ),
-              ),
-            ),
-          ]),
-        ));
+            child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+              Text("Leadrboard"),
+              const SizedBox(height: 20),
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 5,
+                      ),
+                      gradient: LinearGradient(colors: [
+                        Colors.yellow.shade600,
+                        Colors.orange,
+                        Colors.red
+                      ])),
+                  height: 575,
+                  width: 325,
+                  child: SingleChildScrollView(
+                      child: DefaultTextStyle(
+                    style: const TextStyle(color: Colors.white),
+                    child: DataTable(
+                        dataTextStyle: const TextStyle(color: Colors.white),
+                        columns: const [
+                          DataColumn(
+                            label: Text('Rank'),
+                          ),
+                          DataColumn(
+                            label: Text('Name'),
+                          ),
+                          DataColumn(
+                            label: Text('Score'),
+                          ),
+                        ],
+                        rows: List.generate(_leaderboardScores.length, (index) {
+                          final leaderboard = _leaderboardScores[index];
+                          return DataRow(
+                            cells: [
+                              DataCell(Text('${index + 1}',
+                                  style: TextStyle(
+                                      color: leaderboard.getUsername() == 'You'
+                                          ? Colors.grey[600]
+                                          : Colors.black))),
+                              DataCell(
+                                Text(
+                                  leaderboard.getUsername(),
+                                  style: TextStyle(
+                                      color: leaderboard.getUsername() == 'You'
+                                          ? Colors.grey[600]
+                                          : Colors.black),
+                                ),
+                              ),
+                              DataCell(Text(leaderboard.getScore().toString(),
+                                  style: TextStyle(
+                                      color: leaderboard.getUsername() == 'You'
+                                          ? Colors.grey[600]
+                                          : Colors.black))),
+                            ],
+                          );
+                        })),
+                  )))
+            ]))));
   }
 }
