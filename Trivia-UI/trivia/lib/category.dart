@@ -1,6 +1,6 @@
 class Category {
-  String _name;
-  bool _permission;
+  final String _name;
+  final bool _permission;
 
   Category(this._name, this._permission);
 

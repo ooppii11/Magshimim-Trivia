@@ -7,7 +7,7 @@ import 'package:trivia/SocketService.dart';
 class SignupPage extends StatefulWidget {
   final SocketService socketService;
 
-  SignupPage({required this.socketService});
+  const SignupPage({super.key, required this.socketService});
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -24,30 +24,30 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Signup page"),
+        title: const Text("Signup page"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                   hintText: 'Enter username',
-                  icon: const Icon(Icons.person),
+                  icon: Icon(Icons.person),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter valid email id as abc@gmail.com',
-                  icon: const Icon(Icons.email),
+                  icon: Icon(Icons.email),
                 ),
               ),
             ),
@@ -102,14 +102,14 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'SginUp',
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 130,
             ),
             TextButton(
@@ -123,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Alrady Have User? Login',
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),

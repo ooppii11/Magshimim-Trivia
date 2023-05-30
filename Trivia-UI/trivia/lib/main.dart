@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Create an instance of SocketService
     final SocketService socketService = SocketService();
+    socketService.connect();
 
     return MaterialApp(
       home: LoginPage(socketService: socketService),

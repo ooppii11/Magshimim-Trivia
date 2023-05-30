@@ -10,7 +10,7 @@ import 'package:trivia/Pages/HomePage.dart';
 class LoginPage extends StatefulWidget {
   final SocketService socketService;
 
-  LoginPage({required this.socketService});
+  const LoginPage({super.key, required this.socketService});
 
   @override
   _LoginPageState createState() => _LoginPageState();
