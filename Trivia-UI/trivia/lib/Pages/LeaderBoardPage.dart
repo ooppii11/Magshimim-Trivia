@@ -8,7 +8,7 @@ import 'package:trivia/Pages/HomePage.dart';
 class LeaderBoardPage extends StatefulWidget {
   final SocketService socketService;
 
-  LeaderBoardPage({required this.socketService});
+  const LeaderBoardPage({super.key, required this.socketService});
 
   @override
   _LeaderBoardPage createState() => _LeaderBoardPage();
@@ -32,21 +32,21 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
             items: [
               BottomNavigationBarItem(
                   icon: Icon(Icons.person, color: Colors.grey[600]), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+              const BottomNavigationBarItem(
                   icon: Icon(
                     Icons.leaderboard_rounded,
                     color: Colors.blue,
                   ),
                   label: ''),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(
                     Icons.home,
                   ),
                   label: ''),
             ],
             onTap: (value) {
-              if (value == 0)
+              if (value == 0) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -55,7 +55,8 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                     ),
                   ),
                 );
-              if (value == 3)
+              }
+              if (value == 3) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -64,15 +65,16 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                     ),
                   ),
                 );
+              }
             }),
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             actions: <Widget>[
               Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout,
                       color: Colors.black,
                       size: 26.0,
@@ -92,7 +94,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-              Text("Leadrboard"),
+              const Text("Leadrboard"),
               const SizedBox(height: 20),
               Container(
                   decoration: BoxDecoration(

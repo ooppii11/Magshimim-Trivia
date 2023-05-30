@@ -7,7 +7,7 @@ import 'package:trivia/Pages/loginPage.dart';
 class UserPage extends StatefulWidget {
   final SocketService socketService;
 
-  UserPage({required this.socketService});
+  const UserPage({super.key, required this.socketService});
 
   @override
   _UserPage createState() => _UserPage();
@@ -22,9 +22,9 @@ class _UserPage extends State<UserPage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.logout,
                     color: Colors.black,
                     size: 26.0,
@@ -43,20 +43,20 @@ class _UserPage extends State<UserPage> {
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: [
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person,
                   color: Colors.blue,
                 ),
                 label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+            const BottomNavigationBarItem(
                 icon: Icon(Icons.leaderboard_rounded), label: ''),
             BottomNavigationBarItem(
                 icon: Icon(Icons.home, color: Colors.grey[600]), label: ''),
           ],
           onTap: (value) {
-            if (value == 2)
+            if (value == 2) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -64,7 +64,8 @@ class _UserPage extends State<UserPage> {
                       socketService: widget.socketService,
                     ),
                   ));
-            if (value == 3)
+            }
+            if (value == 3) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -73,6 +74,7 @@ class _UserPage extends State<UserPage> {
                   ),
                 ),
               );
+            }
           }),
     );
   }

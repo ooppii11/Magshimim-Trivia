@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatefulWidget {
   final SocketService socketService;
 
-  HomePage({required this.socketService});
+  const HomePage({super.key, required this.socketService});
 
   @override
   _HomePage createState() => _HomePage();
@@ -43,7 +43,7 @@ class _HomePage extends State<HomePage> {
                 label: ''),
           ],
           onTap: (value) {
-            if (value == 0)
+            if (value == 0) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -52,7 +52,8 @@ class _HomePage extends State<HomePage> {
                   ),
                 ),
               );
-            if (value == 2)
+            }
+            if (value == 2) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -60,6 +61,7 @@ class _HomePage extends State<HomePage> {
                       socketService: widget.socketService,
                     ),
                   ));
+            }
           }),
       appBar: AppBar(
           backgroundColor: Colors.transparent,
