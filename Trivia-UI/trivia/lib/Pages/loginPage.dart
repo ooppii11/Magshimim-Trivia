@@ -5,6 +5,7 @@ import 'package:trivia/Pages/signupPage.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/ForgotPasswordPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
+import 'package:trivia/message.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -13,13 +14,15 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.socketService});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState(socketService);
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
+  final SocketService _socketService;
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
+  _LoginPageState(this._socketService);
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,10 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-                controller: emailController,
+                controller: usernameController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter valid email id as abc@gmail.com',
+                  labelText: 'Username',
+                  hintText: 'Enter valid useranme',
                   icon: const Icon(Icons.email),
                 ),
               ),
@@ -85,14 +88,20 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => HomePage(
-                          socketService: widget.socketService,
+                    this._socketService.sendMessage(Message(2, {
+                          "username": usernameController.text,
+                          "password": passwordController.text
+                        }));
+                    if (this._socketService.receiveMessage().getCode() == 4) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => HomePage(
+                            socketService: _socketService,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                   child: Text(
                     'Login',

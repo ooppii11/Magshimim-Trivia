@@ -64,7 +64,7 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 		throw std::exception("User already exist!");
 	}
 
-	query = "INSERT INTO USERS(USERNAME, PASSWORD, GMAIL) VALUES(\"" + username + "\", \"" + \
+	query = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL) VALUES(\"" + username + "\", \"" + \
 		password + "\", \"" + email + "\");";
 
 	command = createDbCommand(query);

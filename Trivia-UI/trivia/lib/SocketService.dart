@@ -1,33 +1,58 @@
 // ignore_for_file: constant_identifier_names
-import 'package:socket_io_client/socket_io_client.dart' as SocketIO;
-//import 'dart:io';
+import 'dart:typed_data';
+import 'dart:io';
+import 'package:trivia/message.dart';
+import 'dart:convert';
+import 'dart:async';
 
-const int PORT = 5555;
-const String ADDRESS = '127.0.0.1';
+const String SERVER_ADDRESS = '127.0.0.1';
+const int SERVER_PORT = 6666;
 
 class SocketService {
-  //late Socket _socket;
-  late SocketIO.Socket _socket;
+  late Socket _socket;
 
-  Future<void> connect() async {
-    _socket = SocketIO.io('http://localhost:5555', 
-    SocketIO.OptionBuilder()
-      .setTransports(['websocket']) // for Flutter or Dart VM
-      .disableAutoConnect()  // disable auto-connection
-      .disableForceNewConnection()
-      .disableReconnection()
-      .build()
-  );
-  _socket.connect();
+  SocketService(this._socket);
+  void sendMessage(Message message) {
+    _socket.add(message.encode());
   }
 
-  void sendRequest(String request) {
-    // Send request to the server
-    //_socket.write(request);
+  Future<Message> receiveMessage() async {
+    var messageSubscription = _socket.listen((Uint8List data) {});
+    Uint8List messgeBytes =
+        await convertSubscriptionToUint8List(messageSubscription);
+    return Message.BytesConstructor(messageSubscription);
   }
 
   void close() {
-    // Close the socket connection
-    //_socket.close();
+    _socket.close();
   }
+}
+
+Future<Socket> createSocket() async {
+  try {
+    final socket = await Socket.connect(SERVER_ADDRESS, SERVER_PORT);
+    print(
+        'Connected to server: ${socket.remoteAddress.address}:${socket.remotePort}');
+    return socket;
+  } catch (error) {
+    print('Socket connection error: $error');
+    rethrow;
+  }
+}
+
+Future<Uint8List> convertSubscriptionToUint8List(
+    StreamSubscription<Uint8List> subscription) {
+  var completer = Completer<Uint8List>();
+  var bytes = <int>[];
+
+  subscription.onData((Uint8List data) {
+    bytes.addAll(data);
+  });
+
+  subscription.onDone(() {
+    final uint8List = Uint8List.fromList(bytes);
+    completer.complete(uint8List);
+  });
+
+  return completer.future;
 }

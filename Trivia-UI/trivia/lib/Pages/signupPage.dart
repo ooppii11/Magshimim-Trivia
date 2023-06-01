@@ -2,6 +2,7 @@ import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
+import 'package:trivia/message.dart';
 
 // ignore: must_be_immutable
 class SignupPage extends StatefulWidget {
@@ -10,14 +11,17 @@ class SignupPage extends StatefulWidget {
   const SignupPage({super.key, required this.socketService});
 
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _SignupPageState createState() => _SignupPageState(socketService);
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final SocketService _socketService;
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
+
+  _SignupPageState(this._socketService);
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +97,23 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => HomePage(
-                          socketService: widget.socketService,
+                    this._socketService.sendMessage(Message(1, {
+                          "username": usernameController.text,
+                          "password": "passwordController.text",
+                          "email": emailController.text
+                        }));
+                    final message = this._socketService.receiveMessage();
+                    if (message.getCode() == 0) {
+                      print(message.getCode());
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => HomePage(
+                            socketService: widget.socketService,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                   child: const Text(
                     'SginUp',
