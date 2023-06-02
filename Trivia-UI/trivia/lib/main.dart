@@ -6,7 +6,7 @@ import 'package:trivia/SocketService.dart';
 
 Future<void> main() async {
   final socket = await createSocket();
-  SocketService socketService = new SocketService(socket);
+  SocketService socketService = SocketService(socket);
 
   // Call the MyApp widget and pass the socketService instance
   runApp(MyApp(socketService));

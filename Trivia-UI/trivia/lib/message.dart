@@ -7,28 +7,28 @@ class Message {
 
   Message(this._code, this._data);
   Message.BytesConstructor(rawData) {
-    this._code = 0;
-    this._data = {};
+    _code = 0;
+    _data = {};
 
     int messageLength = 0;
 
     ByteData byteData = ByteData.sublistView(rawData);
-    this._code = byteData.getUint8(0);
+    _code = byteData.getUint8(0);
     messageLength = byteData.getInt16(1, Endian.little);
     String jsonString = "";
 
     for (int i = 4; i < messageLength + 4; i++) {
       jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
     }
-    this._data = jsonDecode(jsonString);
+    _data = jsonDecode(jsonString);
   }
 
   int getCode() {
-    return this._code;
+    return _code;
   }
 
   Map<String, dynamic> getData() {
-    return this._data;
+    return _data;
   }
 
   Uint8List encode() {

@@ -14,7 +14,7 @@ import 'package:trivia/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     final socket = await createSocket();
-    SocketService socketService = new SocketService(socket);
+    SocketService socketService = SocketService(socket);
     await tester.pumpWidget(MyApp(socketService));
 
     // Verify that our counter starts at 0.

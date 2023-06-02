@@ -97,12 +97,12 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async{
-                    this._socketService.sendMessage(Message(1, {
+                    _socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
                           "password": "passwordController.text",
                           "email": emailController.text
                         }));
-                    final message = await this._socketService.receiveMessage();
+                    final message = await _socketService.receiveMessage();
                     if (message.getCode() == 0) {
                       print(message.getCode());
                       Navigator.pushReplacement(
