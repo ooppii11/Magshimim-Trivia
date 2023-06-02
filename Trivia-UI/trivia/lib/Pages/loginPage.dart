@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/signupPage.dart';
 import 'package:trivia/SocketService.dart';
@@ -93,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                           "password": passwordController.text
                         }));
                     final receivedMessage = await this._socketService.receiveMessage();
+                    log(receivedMessage.getCode());
                     if (receivedMessage.getCode() == 4) {
                       Navigator.pushReplacement(
                         context,

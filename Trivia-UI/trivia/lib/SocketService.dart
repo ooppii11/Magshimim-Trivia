@@ -10,18 +10,23 @@ const int SERVER_PORT = 6666;
 
 class SocketService {
   late Socket _socket;
-
-  SocketService(this._socket);
+  late StreamSubscription<Uint8List> _messageSubscription;
+  late Stream<Uint8List> _bcStream;
+  
+  SocketService(this._socket)
+  {
+    this._bcStream = _socket.asBroadcastStream();
+  }
   void sendMessage(Message message) {
     _socket.add(message.encode());
   }
   
   
   Future<Message> receiveMessage() async {
-    var messageSubscription = _socket.listen((Uint8List data) {});
+    this._messageSubscription = this._bcStream.listen((Uint8List data) {});
     Uint8List messgeBytes =
-        await convertSubscriptionToUint8List(messageSubscription);
-    return Message.BytesConstructor(messageSubscription);
+        await convertSubscriptionToUint8List(this._messageSubscription);
+    return Message.BytesConstructor(messgeBytes);
   }
 
   void close() {
