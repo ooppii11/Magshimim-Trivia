@@ -64,12 +64,12 @@ RequestResult MenuRequestHandler::wrapperHandleRequest(function function, Reques
 	catch (messageException& e)
 	{
 		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+		result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
 	catch (...)
 	{
 		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+		result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
 	return result;
 }
