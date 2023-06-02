@@ -15,7 +15,7 @@ void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     final socket = await createSocket();
     SocketService socketService = new SocketService(socket);
-    await tester.pumpWidget(const MyApp(socketService));
+    await tester.pumpWidget(MyApp(socketService));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

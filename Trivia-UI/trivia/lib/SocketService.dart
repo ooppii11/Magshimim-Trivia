@@ -15,7 +15,8 @@ class SocketService {
   void sendMessage(Message message) {
     _socket.add(message.encode());
   }
-
+  
+  
   Future<Message> receiveMessage() async {
     var messageSubscription = _socket.listen((Uint8List data) {});
     Uint8List messgeBytes =

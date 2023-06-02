@@ -87,12 +87,13 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     this._socketService.sendMessage(Message(2, {
                           "username": usernameController.text,
                           "password": passwordController.text
                         }));
-                    if (this._socketService.receiveMessage().getCode() == 4) {
+                    final receivedMessage = await this._socketService.receiveMessage();
+                    if (receivedMessage.getCode() == 4) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
