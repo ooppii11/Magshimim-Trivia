@@ -17,7 +17,7 @@ class LeaderBoardPage extends StatefulWidget {
 class _LeaderBoardPage extends State<LeaderBoardPage> {
   final List<User> _leaderboardScores = [
     User("aviv", 1000),
-    User("itamar", 100)
+    User("itamar", 10000)
   ];
 
   void getUsersStatistic() {
