@@ -11,8 +11,4 @@ class User {
   int getScore() {
     return _score;
   }
-
-  static User fromMap(Map<String, int?> map) {
-    return User((map['username'] ?? '').toString(), map['score'] ?? 0);
-  }
 }

@@ -1,4 +1,4 @@
-# Install script for directory: C:/magshimim/cpp/pull2/trivia_aviv_and_itamar_2023/Trivia-UI/trivia/windows/flutter
+# Install script for directory: C:/src/trivia_aviv_and_itamar_2023/Trivia-UI/trivia/windows/flutter
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

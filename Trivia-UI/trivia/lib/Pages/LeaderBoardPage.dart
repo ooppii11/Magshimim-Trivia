@@ -22,6 +22,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   final SocketService _socketService;
   _LeaderBoardPage(this._socketService)
   {
+    _leaderboardScores = [];
     getUsersStatistic();
   }
 

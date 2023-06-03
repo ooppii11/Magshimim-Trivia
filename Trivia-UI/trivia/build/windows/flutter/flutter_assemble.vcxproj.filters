@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\CMakeFiles\579e129ae6827c92521c764103e25a91\flutter_windows.dll.rule">
+    <CustomBuild Include="C:\src\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\CMakeFiles\41db4ead41fcb023a2660ec6b2e0fa9a\flutter_windows.dll.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\CMakeFiles\e61309043bf75af5f98bf54baad44dbf\flutter_assemble.rule">
+    <CustomBuild Include="C:\src\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\CMakeFiles\7dfca6e7922a7af2ba152ed8895478c0\flutter_assemble.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\src\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\flutter\CMakeFiles\flutter_assemble" />
+    <None Include="C:\src\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\build\windows\flutter\CMakeFiles\flutter_assemble" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{7C5845CB-C2D5-35F0-9685-625C74129152}</UniqueIdentifier>
+      <UniqueIdentifier>{09C5F2C2-F8AA-3F40-833B-96D82A1B2E23}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
