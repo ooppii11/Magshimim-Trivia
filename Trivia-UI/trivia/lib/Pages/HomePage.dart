@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
@@ -9,7 +10,7 @@ import 'package:trivia/message.dart';
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 0;
+int GET_CATEGORIES_CODE = 7;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -22,22 +23,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final SocketService _socketService;
+  late List<Category> _categories;
 
-  _HomePage(this._socketService);
-
-  List<Category> _categories = [
-    Category('Category 1', true),
-    Category('Category 2', true),
-  ];
+  _HomePage(this._socketService) {
+    getCategories();
+  }
 
   void getCategories() async {
-    List<Category> list;
-
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message? response = await _socketService.receiveMessage();
-    //for (var data in response.getCode()[""]) {
-    // list.push()
-    // }
+    final Message response = await _socketService.receiveMessage();
+
+    Map<String, dynamic> data = response.getData();
+    for (var categoryString in data["publicCategories"]) {
+      this
+          ._categories
+          .add(Category(categoryString[0], categoryString[1], true));
+    }
   }
 
   @override
