@@ -45,4 +45,7 @@ private:
 	RequestResult deleteCategory(RequestInfo requestInfo);
 	RequestResult addQuestion(RequestInfo requestInfo);
 	RequestResult removeQuestion(RequestInfo requestInfo);
+	RequestResult getPublicCategories(RequestInfo requestInfo);
+	RequestResult getPrivateCategories(RequestInfo requestInfo);
+
 };

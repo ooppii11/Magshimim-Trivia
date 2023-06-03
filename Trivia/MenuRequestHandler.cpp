@@ -22,6 +22,8 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManage
 	this->_handleRequestFunctions[REMOVE_CATEGORIE_REQUEST_CODE] = &MenuRequestHandler::deleteCategory;
 	this->_handleRequestFunctions[ADD_QUESTION_REQUEST_CODE] = &MenuRequestHandler::addQuestion;
 	this->_handleRequestFunctions[REMOVE_QUESTION_REQUEST_CODE] = &MenuRequestHandler::removeQuestion;
+	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPrivateCategories;
+	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPublicCategories;
 }
 
 
@@ -32,6 +34,8 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo requestInfo)
 		GET_PLAYERS_IN_ROOM_REQUEST_CODE == requestInfo.id ||
 		HIGH_SCORE_REQUEST_CODE == requestInfo.id ||
 		PERSONAL_STATS_REQUEST_CODE == requestInfo.id ||
+		GET_PUBLIC_CATEGORIES_RESPONSE_CODE == requestInfo.id ||
+		GET_PRIVATE_CATEGORIES_RESPONSE_CODE == requestInfo.id ||
 		JOIN_ROOM_REQUEST_CODE == requestInfo.id ||
 		CREATE_ROOM_REQUEST_CODE == requestInfo.id ||
 		ADD_CATEGORIE_REQUEST_CODE == requestInfo.id ||
@@ -226,6 +230,34 @@ RequestResult MenuRequestHandler::removeQuestion(RequestInfo requestInfo)
 
 	result.newHandler = std::shared_ptr<IRequestHandler>(this);
 	result.response = Serializer::serializeResponse(RemoveQuestionResponse());
+
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPublicCategories(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getPublicCategoriesResponse reponse;
+
+	reponse.status = GET_PUBLIC_CATEGORIES_RESPONSE_CODE;
+	reponse.publicCategories = this->_categoriesManager.getPublicCategories();
+
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(reponse);
+
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPrivateCategories(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getPrivateCategoriesResponse reponse;
+
+	reponse.status = GET_PRIVATE_CATEGORIES_RESPONSE_CODE;
+	reponse.PrivateCategories = this->_categoriesManager.getPrivagteCategories(this->_user.getUsername());
+
+	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.response = Serializer::serializeResponse(reponse);
 
 	return result;
 }
