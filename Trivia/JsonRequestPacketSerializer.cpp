@@ -89,6 +89,26 @@ Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 	return temp;
 }
 
+Buffer Serializer::serializeResponse(const getPublicCategoriesResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["publicCategories"] = response.publicCategories;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const getPrivateCategoriesResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["PrivateCategories"] = response.PrivateCategories;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
 Buffer Serializer::serializeResponse(const AddCategorieResponse& response)
 {
 	return Serializer::setStatus(response);
