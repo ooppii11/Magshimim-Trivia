@@ -1,4 +1,5 @@
 #include "StatisticsManager.h"
+#include <map>
 
 StatisticsManager::StatisticsManager(std::shared_ptr<IDatabase> db) : _database(db) {}
 

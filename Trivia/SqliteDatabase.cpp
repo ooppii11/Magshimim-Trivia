@@ -1,5 +1,6 @@
 #include "SqliteDatabase.h"
 #include "SqliteUtilities.h"
+#include <map>
 
 SqliteDatabase::SqliteDatabase()
 {
@@ -495,11 +496,11 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 	return 0;
 }
 
-int SqliteDatabase::scoreVectorCollback(void* data, int argc, char** argv, char** azColName)
+int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azColName)
 {
-	if (argc == 1 && std::string(azColName[0]) == SCORE)
+	if (argc == 2 && std::string(azColName[0]) == NAME  && std::string(azColName[1]) == SCORE)
 	{
-		(*(std::vector<int> *)data).push_back(atoi(argv[0]));
+		(*(std::map<std::string,int> *)data)[std::string(argv[0])] = atoi(argv[1]);
 	}
 	return 0;
 }
@@ -602,17 +603,18 @@ int SqliteDatabase::getPlayerScore(std::string username) const
 	return score;
 }
 
-std::vector<int> SqliteDatabase::getHighScores(int numberOfUsers) const
+std::map<std::string, int> SqliteDatabase::getHighScores(int numberOfUsers) const
 {
-	std::vector<int> scores;
 	SqliteCommand command;
 	std::string query = "";
+	std::map<std::string, int> scores;
 
-	query = "SELECT SCORE "
+	query = "SELECT STATISTICS.SCORE, USERS.USERNAME "
 			"FROM STATISTICS "
+			"JOIN USERS ON USERS.ID = STATISTICS.USER_ID"
 			"ORDER BY SCORE DESC LIMIT " + std::to_string(numberOfUsers)  + ";";
 
-	command = createDbCommand(query, SqliteDatabase::scoreVectorCollback, &scores);
+	command = createDbCommand(query, SqliteDatabase::scoreCollback, &scores);
 	SqliteUtilities::executeCommand(command);
 	return scores;
 }

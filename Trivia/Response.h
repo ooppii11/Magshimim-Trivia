@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Room.h"
+#include <map>
 
 enum ResponseCodes {
 	SIGNUP_AND_LOGIN_RESPONSE_CODE = 1,
