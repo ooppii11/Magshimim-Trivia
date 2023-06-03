@@ -90,10 +90,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: TextButton(
                   onPressed: () async {
+                    /*
                     _socketService.sendMessage(Message(2, {
                           "username": usernameController.text,
                           "password": passwordController.text
                         }));
+                        */
+                    _socketService.sendMessage(Message(2, {
+                      "username": "knhhh",
+                      "password": "passwordController.text"
+                    }));
                     final receivedMessage = await _socketService.receiveMessage();
                     if (receivedMessage.getCode() == 1) {
                       Navigator.pushReplacement(
