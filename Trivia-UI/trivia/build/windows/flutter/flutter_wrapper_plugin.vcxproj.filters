@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
+    <ClCompile Include="C:\magshimim\cpp\new pull\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
+    <ClCompile Include="C:\magshimim\cpp\new pull\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
+    <ClCompile Include="C:\magshimim\cpp\new pull\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\magshimim\cpp\pull2\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\magshimim\cpp\new pull\trivia_aviv_and_itamar_2023\Trivia-UI\trivia\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{7C5845CB-C2D5-35F0-9685-625C74129152}</UniqueIdentifier>
+      <UniqueIdentifier>{479F8FFF-B443-34D8-A827-74EF910373A7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{E22E95F5-5097-30FE-A79D-5E0D44100DC2}</UniqueIdentifier>
+      <UniqueIdentifier>{D26F90BB-FD58-3F06-BE7D-F7852E7A285D}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

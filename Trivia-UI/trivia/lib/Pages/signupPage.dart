@@ -98,7 +98,6 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async {
-<<<<<<< HEAD
                     this._socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
                           "password": "passwordController.text",
@@ -106,19 +105,7 @@ class _SignupPageState extends State<SignupPage> {
                         }));
                     final Message receivedMessage =
                         await this._socketService.receiveMessage();
-                    print(receivedMessage.getCode());
                     if (receivedMessage.getCode() != 99) {
-                      print(receivedMessage.getCode());
-=======
-                    _socketService.sendMessage(Message(1, {
-                      "username": usernameController.text,
-                      "password": "passwordController.text",
-                      "email": emailController.text
-                    }));
-                    final message = await _socketService.receiveMessage();
-                    if (message.getCode() == 0) {
-                      print(message.getCode());
->>>>>>> 03c6666be99a436906e18dc0001983516d1ad67f
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

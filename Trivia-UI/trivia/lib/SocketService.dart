@@ -8,7 +8,6 @@ const String SERVER_ADDRESS = '127.0.0.1';
 const int SERVER_PORT = 6666;
 
 class SocketService {
-<<<<<<< HEAD
   late Socket? _socket;
   late StreamController<Message> _streamController;
 
@@ -34,24 +33,6 @@ class SocketService {
 
   Future<Message> receiveMessage() async {
     return await _streamController.stream.first;
-=======
-  late final Socket _socket;
-  late StreamSubscription<Uint8List> _messageSubscription;
-  late Stream<Uint8List> _bcStream;
-
-  SocketService(this._socket) {
-    _bcStream = _socket.asBroadcastStream();
-  }
-  void sendMessage(Message message) {
-    _socket.add(message.encode());
-  }
-
-  Future<Message> receiveMessage() async {
-    _messageSubscription = _bcStream.listen((Uint8List data) {});
-    Uint8List messgeBytes =
-        await convertSubscriptionToUint8List(_messageSubscription);
-    return Message.BytesConstructor(messgeBytes);
->>>>>>> 03c6666be99a436906e18dc0001983516d1ad67f
   }
 
   void close() {

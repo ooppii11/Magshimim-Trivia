@@ -105,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                         }));
                     final Message receivedMessage =
                         await this._socketService.receiveMessage();
-                    print(receivedMessage.getCode());
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
