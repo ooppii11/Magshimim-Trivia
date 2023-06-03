@@ -3,6 +3,7 @@ import 'package:trivia/Pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class SignupPage extends StatefulWidget {
@@ -96,12 +97,12 @@ class _SignupPageState extends State<SignupPage> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     _socketService.sendMessage(Message(1, {
-                          "username": usernameController.text,
-                          "password": "passwordController.text",
-                          "email": emailController.text
-                        }));
+                      "username": usernameController.text,
+                      "password": "passwordController.text",
+                      "email": emailController.text
+                    }));
                     final message = await _socketService.receiveMessage();
                     if (message.getCode() == 0) {
                       print(message.getCode());
@@ -112,6 +113,15 @@ class _SignupPageState extends State<SignupPage> {
                             socketService: widget.socketService,
                           ),
                         ),
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "Login error",
+                        toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
                       );
                     }
                   },
