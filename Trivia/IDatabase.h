@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <map>
 
 
 #define PUBLIC true 
@@ -71,7 +72,7 @@ public:
 	virtual int getNumOfTotalAnswers(std::string username) const = 0;
 	virtual int getNumOfPlayerGames(std::string username) const = 0;
 	virtual int getPlayerScore(std::string username) const = 0;
-	virtual std::vector<int> getHighScores(int numberOfUsers) const = 0;
+	virtual std::map<std::string, int> getHighScores(int numberOfUsers) const = 0;
 private:
 	virtual void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime) = 0;
 };

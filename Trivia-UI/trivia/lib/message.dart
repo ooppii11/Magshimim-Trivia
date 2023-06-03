@@ -13,7 +13,7 @@ class Message {
     int messageLength = 0;
 
     ByteData byteData = ByteData.sublistView(rawData);
-    this._code = byteData.getUint8(0);
+    _code = byteData.getUint8(0);
     messageLength = byteData.getInt16(1, Endian.little);
     if (messageLength > 0) {
       String jsonString = "";
@@ -26,11 +26,11 @@ class Message {
   }
 
   int getCode() {
-    return this._code;
+    return _code;
   }
 
   Map<String, dynamic> getData() {
-    return this._data;
+    return _data;
   }
 
   Uint8List encode() {

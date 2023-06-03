@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/signupPage.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/ForgotPasswordPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/message.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -116,7 +116,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     } else {
-                      showToast(context);
+                      Fluttertoast.showToast(
+                        msg: "Login error",
+                        toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
                     }
                   },
                   child: Text(

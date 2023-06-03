@@ -3,6 +3,7 @@ import 'package:trivia/Pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class SignupPage extends StatefulWidget {
@@ -97,6 +98,7 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async {
+<<<<<<< HEAD
                     this._socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
                           "password": "passwordController.text",
@@ -107,6 +109,16 @@ class _SignupPageState extends State<SignupPage> {
                     print(receivedMessage.getCode());
                     if (receivedMessage.getCode() != 99) {
                       print(receivedMessage.getCode());
+=======
+                    _socketService.sendMessage(Message(1, {
+                      "username": usernameController.text,
+                      "password": "passwordController.text",
+                      "email": emailController.text
+                    }));
+                    final message = await _socketService.receiveMessage();
+                    if (message.getCode() == 0) {
+                      print(message.getCode());
+>>>>>>> 03c6666be99a436906e18dc0001983516d1ad67f
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -114,6 +126,15 @@ class _SignupPageState extends State<SignupPage> {
                             socketService: widget.socketService,
                           ),
                         ),
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "Login error",
+                        toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
                       );
                     }
                   },
