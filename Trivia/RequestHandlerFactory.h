@@ -7,6 +7,8 @@
 #include "RoomManager.h"
 #include "QuizManager.h"
 #include "StatisticsManager.h"
+#include "HistoryManager.h"
+#include "QuizManager.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
@@ -20,8 +22,8 @@ public:
 	LoginManager& getLoginManager();
 	std::shared_ptr<MenuRequestHandler> createMenuRequestHandler(LoggedUser user);
 	std::shared_ptr<LoginRequestHandler> createLoginRequestHandler();
-	StatisticsManager&  getStatisticsManager() const;
-	RoomManager&  getRoomManager() const;
+	StatisticsManager&  getStatisticsManager();
+	RoomManager&  getRoomManager();
 
 
 
@@ -30,5 +32,6 @@ private:
 	LoginManager _loginManager;
 	RoomManager _roomManager;	
 	StatisticsManager _statisticsManager;
-	QuizManager _categoriesManager;
+	QuizManager _quizManager;
+	HistoryManager _historyManager;
 };
