@@ -2,7 +2,7 @@
 
 StatisticsManager::StatisticsManager(std::shared_ptr<IDatabase> db) : _database(db) {}
 
-std::vector<int> StatisticsManager::getHighScore(int numOfScores) const
+std::map<std::string, int> StatisticsManager::getHighScore(int numOfScores) const
 { 
 	return this->_database->getHighScores(numOfScores);
 }

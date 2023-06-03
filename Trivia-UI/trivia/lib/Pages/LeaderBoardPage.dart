@@ -26,10 +26,13 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   }
 
   void getUsersStatistic() async{
-    _socketService.sendMessage(Message(2/*TODO: update to the right code*/, {}));
+    _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
-    if (receivedMessage.getCode() == 4/*TODO: update to the right code*/) {
-      _leaderboardScores = receivedMessage.getData()["users"];
+    if (receivedMessage.getCode() == 5) {
+      Map<String, int> UsersScoreMap = receivedMessage.getData()["HighScores"];
+      UsersScoreMap.forEach((key, value) { 
+        _leaderboardScores.add(User(key, value));
+        });
       /*
       setState(() {
         _leaderboardScores = receivedMessage.getData()["users"];

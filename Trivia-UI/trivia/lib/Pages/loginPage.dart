@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                           "password": passwordController.text
                         }));
                     final receivedMessage = await _socketService.receiveMessage();
-                    if (receivedMessage.getCode() == 4) {
+                    if (receivedMessage.getCode() == 1) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
