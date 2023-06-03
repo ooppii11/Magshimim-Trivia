@@ -9,27 +9,31 @@ const String SERVER_ADDRESS = '127.0.0.1';
 const int SERVER_PORT = 6666;
 
 class SocketService {
-  late final Socket _socket;
-  late StreamSubscription<Uint8List> _messageSubscription;
-  late Stream<Uint8List> _bcStream;
-  
-  SocketService(this._socket)
-  {
-    _bcStream = _socket.asBroadcastStream();
+  late Socket? _socket;
+  late StreamController<Message> _streamController;
+
+  SocketService(this._socket) {
+    _streamController = StreamController<Message>.broadcast();
+    _receiveDataFromSocket();
+  }
+
+  void _receiveDataFromSocket() {
+    _socket?.listen((Uint8List data) {
+      final message = Message.BytesConstructor(data);
+      _streamController.add(message);
+    }, onError: (error) {
+      print('Socket communication error: $error');
+    }, onDone: () {
+      _streamController.close();
+    });
   }
 
   void sendMessage(Message message) {
-    _socket.add(message.encode());
-    //_socket.write(message.encode().toString());
+    _socket?.add(message.encode());
   }
-  
-  
+
   Future<Message> receiveMessage() async {
-    _messageSubscription = _bcStream.listen((Uint8List data) {});
-    _bcStream.drain();
-    Uint8List messgeBytes =
-        await convertSubscriptionToUint8List(_messageSubscription);
-    return Message.BytesConstructor(messgeBytes);
+    return await _streamController.stream.first;
   }
   
   /*
@@ -55,8 +59,8 @@ class SocketService {
 
 
   void close() {
-    _socket.close();
-    _bcStream.drain();
+    _streamController.close();
+    _socket?.close();
   }
 }
 
@@ -71,23 +75,3 @@ Future<Socket> createSocket() async {
     rethrow;
   }
 }
-
-
-
-Future<Uint8List> convertSubscriptionToUint8List(
-    StreamSubscription<Uint8List> subscription) {
-  var completer = Completer<Uint8List>();
-  var bytes = <int>[];
-
-  subscription.onData((Uint8List data) {
-    bytes.addAll(data);
-  });
-
-  subscription.onDone(() {
-    final uint8List = Uint8List.fromList(bytes);
-    completer.complete(uint8List);
-  });
-
-  return completer.future;
-}
-

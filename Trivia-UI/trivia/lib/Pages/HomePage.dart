@@ -1,27 +1,44 @@
+import 'dart:async';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
 import 'package:trivia/category.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
+import 'package:trivia/message.dart';
 
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
+int GET_CATEGORIES_CODE = 7;
+
 class HomePage extends StatefulWidget {
   final SocketService socketService;
 
   const HomePage({super.key, required this.socketService});
 
   @override
-  _HomePage createState() => _HomePage();
+  _HomePage createState() => _HomePage(socketService);
 }
 
 class _HomePage extends State<HomePage> {
-  List<Category> categories = [
-    Category('Category 1', true),
-    Category('Category 2', true),
-  ];
+  final SocketService _socketService;
+  late List<Category> _categories;
+
+  _HomePage(this._socketService) {
+    getCategories();
+  }
+
+  void getCategories() async {
+    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
+    final Message response = await _socketService.receiveMessage();
+
+    Map<String, dynamic> data = response.getData();
+    for (var categoryString in data["publicCategories"]) {
+      this._categories
+          .add(Category(categoryString[0], categoryString[1], true));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +104,7 @@ class _HomePage extends State<HomePage> {
           ]),
       body: SingleChildScrollView(
         child: Column(children: [
-          for (Category category in categories)
+          for (Category category in this._categories)
             Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,

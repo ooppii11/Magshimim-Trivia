@@ -3,6 +3,8 @@
 #include <vector>
 #include "Room.h"
 #include <map>
+#include <algorithm>
+
 
 enum ResponseCodes {
 	SIGNUP_AND_LOGIN_RESPONSE_CODE = 1,
@@ -11,6 +13,8 @@ enum ResponseCodes {
 	GET_PLAYERS_IN_ROOM_RESPONSE_CODE,
 	HIGH_SCORE_RESPONSE_CODE,
 	PERSONAL_STATS_RESPONSE_CODE,
+	GET_PUBLIC_CATEGORIES_RESPONSE_CODE,
+	GET_PRIVATE_CATEGORIES_RESPONSE_CODE,
 	JOIN_ROOM_RESPONSE_CODE,
 	CREATE_ROOM_RESPONSE_CODE,
 	ADD_CATEGORIE_RESPONSE_CODE,
@@ -78,6 +82,20 @@ typedef struct getPersonalStatsResponse
 	std::vector<std::string> statistics;
 	getPersonalStatsResponse() : status(PERSONAL_STATS_RESPONSE_CODE) {}
 }getPersonalStatsResponse;
+
+typedef struct getPublicCategoriesResponse
+{
+	unsigned int status;
+	std::vector<std::pair<std::string, int>> publicCategories;
+	getPublicCategoriesResponse() : status(GET_PUBLIC_CATEGORIES_RESPONSE_CODE) {}
+}getPublicCategoriesResponse;
+
+typedef struct getPrivateCategoriesResponse
+{
+	unsigned int status;
+	std::vector<std::pair<std::string, int>> PrivateCategories;
+	getPrivateCategoriesResponse() : status(GET_PRIVATE_CATEGORIES_RESPONSE_CODE) {}
+}getPrivateCategoriesResponse;
 
 typedef struct JoinRoomResponse : OnlyStatus
 {

@@ -19,6 +19,8 @@ public:
 	static Buffer serializeResponse(const JoinRoomResponse& response);
 	static Buffer serializeResponse(const CreateRoomResponse& response);
 	static Buffer serializeResponse(const getPersonalStatsResponse& response);
+	static Buffer serializeResponse(const getPublicCategoriesResponse& response);
+	static Buffer serializeResponse(const getPrivateCategoriesResponse& response);
 	static Buffer serializeResponse(const AddCategorieResponse& response);
 	static Buffer serializeResponse(const RemoveCategorieResponse& response);
 	static Buffer serializeResponse(const AddQuestionResponse& response);
