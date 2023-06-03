@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Room.h"
+#include <map>
 
 enum ResponseCodes {
 	SIGNUP_AND_LOGIN_RESPONSE_CODE = 1,
@@ -67,7 +68,7 @@ typedef struct GetPlayersInRoomResponse
 typedef struct getHighScoreResponse
 {
 	unsigned int status;
-	std::vector<int> statistics;
+	std::map<std::string, int> statistics;
 	getHighScoreResponse() : status(HIGH_SCORE_RESPONSE_CODE) {}
 }getHighScoreResponse;
 

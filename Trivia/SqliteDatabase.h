@@ -59,7 +59,7 @@ public:
 	int getNumOfTotalAnswers(std::string username) const;
 	int getNumOfPlayerGames(std::string username) const;
 	int getPlayerScore(std::string username) const;
-	std::vector<int> getHighScores(int numberOfUsers) const;
+	std::map<std::string, int> getHighScores(int numberOfUsers) const;
 
 private:
 	sqlite3* _db;
@@ -84,6 +84,6 @@ private:
 	static int idCollback(void* data, int argc, char** argv, char** azColName);
 	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
 	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
-	static int scoreVectorCollback(void* data, int argc, char** argv, char** azColName);
+	static int scoreCollback(void* data, int argc, char** argv, char** azColName);
 	static int categoiesCollback(void* data, int argc, char** argv, char** azColName);
 };
