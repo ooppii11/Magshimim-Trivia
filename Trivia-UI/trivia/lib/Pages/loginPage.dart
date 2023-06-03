@@ -24,6 +24,17 @@ class _LoginPageState extends State<LoginPage> {
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
   _LoginPageState(this._socketService);
 
+  void showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text("Login Error"),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +103,10 @@ class _LoginPageState extends State<LoginPage> {
                           "username": usernameController.text,
                           "password": passwordController.text
                         }));
-                    final receivedMessage = await this._socketService.receiveMessage();
-                    if (receivedMessage.getCode() == 4) {
+                    final Message receivedMessage =
+                        await this._socketService.receiveMessage();
+                    print(receivedMessage.getCode());
+                    if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -102,6 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       );
+                    } else {
+                      showToast(context);
                     }
                   },
                   child: Text(

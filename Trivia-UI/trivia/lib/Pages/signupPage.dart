@@ -96,15 +96,17 @@ class _SignupPageState extends State<SignupPage> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     this._socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
                           "password": "passwordController.text",
                           "email": emailController.text
                         }));
-                    final message = await this._socketService.receiveMessage();
-                    if (message.getCode() == 0) {
-                      print(message.getCode());
+                    final Message receivedMessage =
+                        await this._socketService.receiveMessage();
+                    print(receivedMessage.getCode());
+                    if (receivedMessage.getCode() != 99) {
+                      print(receivedMessage.getCode());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

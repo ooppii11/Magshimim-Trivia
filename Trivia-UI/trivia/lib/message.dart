@@ -6,7 +6,7 @@ class Message {
   late Map<String, dynamic> _data;
 
   Message(this._code, this._data);
-  Message.BytesConstructor(rawData) {
+  Message.BytesConstructor(Uint8List rawData) {
     this._code = 0;
     this._data = {};
 
@@ -15,12 +15,14 @@ class Message {
     ByteData byteData = ByteData.sublistView(rawData);
     this._code = byteData.getUint8(0);
     messageLength = byteData.getInt16(1, Endian.little);
-    String jsonString = "";
+    if (messageLength > 0) {
+      String jsonString = "";
 
-    for (int i = 4; i < messageLength + 4; i++) {
-      jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
+      for (int i = 4; i < messageLength + 4; i++) {
+        jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
+      }
+      this._data = jsonDecode(jsonString);
     }
-    this._data = jsonDecode(jsonString);
   }
 
   int getCode() {
