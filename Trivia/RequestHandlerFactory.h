@@ -5,6 +5,7 @@
 #include "MenuRequestHandler.h"
 #include "LoggedUser.h"
 #include "RoomManager.h"
+#include "QuizManager.h"
 #include "StatisticsManager.h"
 #include "HistoryManager.h"
 #include "QuizManager.h"
