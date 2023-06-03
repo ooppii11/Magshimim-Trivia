@@ -54,22 +54,22 @@ typedef struct GetPlayersInRoomRequest
 
 typedef struct AddCategorieRequest
 {
-	std::string categorieName;
+	std::string categoryName;
 	bool permission;
 }addCategorieRequest;
 
 typedef struct RemoveCategorieRequest
 {
-	std::string categorieName;
+	unsigned int categorieId;
 }removeCategorieRequest;
 
 typedef struct AddQuestionRequest
 {
-	std::string categorieName;
+	unsigned int categorieId;
 	std::string questionName;
 	unsigned int correctAnswerIndex;
 	std::vector<std::string> answers;
-	AddQuestionRequest() : correctAnswerIndex(0)
+	AddQuestionRequest() : correctAnswerIndex(0), categorieId(0)
 	{
 		answers.resize(NUM_OF_ANSWERS);
 	}
@@ -77,6 +77,6 @@ typedef struct AddQuestionRequest
 
 typedef struct RemoveQuestionRequest
 {
-	std::string categorieName;
+	unsigned int categorieId;
 	std::string questionName;
 }removeQuestionRequest;

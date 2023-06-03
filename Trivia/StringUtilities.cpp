@@ -7,7 +7,7 @@ std::vector<std::string> StringUtilities::splitStringToVector(std::string string
     
     while ((postion = string.find(delimiter)) != std::string::npos)
     {
-        strings.push_back(string.substr(0, postion));
+        strings.push_back(string.substr(0, postion + 1));
         string.erase(0, postion + delimiter.length());
     }
     

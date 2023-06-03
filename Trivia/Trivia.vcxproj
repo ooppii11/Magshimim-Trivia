@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferDeserializer.cpp" />
+    <ClCompile Include="HistoryManager.cpp" />
+    <ClCompile Include="QuizManager.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
@@ -31,16 +33,20 @@
     <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferDeserializer.hpp" />
+    <ClInclude Include="HistoryManager.h" />
+    <ClInclude Include="QuizManager.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="FileUtilities.h" />
     <ClInclude Include="messageException.h" />
@@ -56,11 +62,13 @@
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SqliteUtilities.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>

@@ -13,6 +13,7 @@ std::string FileUtilities::readFile(std::string filePath)
         {
             std::getline(file, line);
             fileContent +=  line + '\n';
+            line = "";
         }
     }
     return fileContent;
