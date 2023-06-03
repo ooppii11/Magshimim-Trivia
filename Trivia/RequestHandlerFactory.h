@@ -5,6 +5,7 @@
 #include "MenuRequestHandler.h"
 #include "LoggedUser.h"
 #include "RoomManager.h"
+#include "QuizManager.h"
 #include "StatisticsManager.h"
 
 class LoginRequestHandler;
@@ -29,5 +30,5 @@ private:
 	LoginManager _loginManager;
 	RoomManager _roomManager;	
 	StatisticsManager _statisticsManager;
-
+	QuizManager _categoriesManager;
 };
