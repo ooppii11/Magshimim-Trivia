@@ -23,26 +23,44 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final SocketService _socketService;
-  late List<Category> _categories;
+  List<Category> _categories = [];
 
-  _HomePage(this._socketService) {
-    _categories = [];
-    getCategories();
-  }
-
-  void getCategories() async {
+  Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
-      this._categories
+      print("object");
+      this
+          ._categories
           .add(Category(categoryString[0], categoryString[1], true));
     }
   }
 
+  _HomePage(this._socketService) {
+    _categories = [];
+    getCategories();
+  }
+  @override
+  void initState() {
+    super.initState();
+    //getCategories().then((value) => {print('Async done')});
+    getCategories()
+        // as suggested in the comment
+        // .whenComplete() {
+        // or
+        .then((result) {
+      print('Async done');
+      setState(() {});
+    });
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
+    print("object3");
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
