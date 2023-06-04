@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
+import 'dart:async';
+import 'package:trivia/message.dart';
 
 class LeaderBoardPage extends StatefulWidget {
   final SocketService socketService;
@@ -11,19 +13,52 @@ class LeaderBoardPage extends StatefulWidget {
   const LeaderBoardPage({super.key, required this.socketService});
 
   @override
-  _LeaderBoardPage createState() => _LeaderBoardPage();
+  _LeaderBoardPage createState() => _LeaderBoardPage(socketService);
 }
 
 class _LeaderBoardPage extends State<LeaderBoardPage> {
-  final List<User> _leaderboardScores = [
-    User("aviv", 1000),
-    User("itamar", 10000)
-  ];
-
-  void getUsersStatistic() {
-    // TODO: update Users list.
+  late List<User> _leaderboardScores;
+  late Timer _timer;
+  final SocketService _socketService;
+  _LeaderBoardPage(this._socketService)
+  {
+    _leaderboardScores = [];
+    getUsersStatistic();
   }
 
+  void getUsersStatistic() async{
+    _socketService.sendMessage(Message(6, {}));
+    final receivedMessage = await _socketService.receiveMessage();
+    if (receivedMessage.getCode() == 5) {
+      Map<String, int> UsersScoreMap = receivedMessage.getData()["HighScores"];
+      UsersScoreMap.forEach((key, value) { 
+        _leaderboardScores.add(User(key, value));
+        });
+      /*
+      setState(() {
+        _leaderboardScores = receivedMessage.getData()["users"];
+      });
+      */
+    }
+  }
+
+   void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
+      setState(() {
+        getUsersStatistic();
+      });
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

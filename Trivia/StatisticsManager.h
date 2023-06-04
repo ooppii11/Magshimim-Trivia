@@ -2,6 +2,7 @@
 #include "IDatabase.h"
 #include <vector>
 #include <memory>
+#include <map>
 
 class StatisticsManager 
 {

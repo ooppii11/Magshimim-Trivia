@@ -5,6 +5,7 @@ import 'package:trivia/message.dart';
 import 'dart:async';
 
 const String SERVER_ADDRESS = '127.0.0.1';
+//const String SERVER_ADDRESS = 'localhost';
 const int SERVER_PORT = 6666;
 
 class SocketService {
@@ -34,6 +35,7 @@ class SocketService {
   Future<Message> receiveMessage() async {
     return await _streamController.stream.first;
   }
+
 
   void close() {
     _streamController.close();
