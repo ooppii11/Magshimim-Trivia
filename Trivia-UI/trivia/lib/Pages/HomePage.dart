@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:trivia/Pages/roomPage.dart';
 import 'package:trivia/components/increment_decrement_button.dart';
-import 'package:flutter/services.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
@@ -192,5 +192,16 @@ class _HomePage extends State<HomePage> {
 
   void cancel() {
     Navigator.of(context).pop();
+  }
+
+  void create() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => RoomPage(
+          socketService: widget.socketService,
+        ),
+      ),
+    );
   }
 }
