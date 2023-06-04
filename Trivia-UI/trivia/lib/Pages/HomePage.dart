@@ -13,6 +13,8 @@ import 'package:trivia/message.dart';
 
 // ignore: must_be_immutable
 int GET_CATEGORIES_CODE = 7;
+int CREATE_ROOM_REQUEST_CODE = 11;
+int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -185,7 +187,11 @@ class _HomePage extends State<HomePage> {
               IncrementDecrementButton(controller: maxTime, minValue: 1),
             ]),
             actions: [
-              TextButton(child: Text("CREATE"), onPressed: () {}),
+              TextButton(
+                  child: Text("CREATE"),
+                  onPressed: (() {
+                    create(category);
+                  })),
               TextButton(child: Text("CANCEL"), onPressed: cancel),
             ],
           ));
@@ -194,14 +200,29 @@ class _HomePage extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
-  void create() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => RoomPage(
-          socketService: widget.socketService,
+  void create(Category category) async {
+    if (await createRoom(category)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: true,
+          ),
         ),
-      ),
-    );
+      );
+    }
+  }
+
+  Future<bool> createRoom(Category category) async {
+    this._socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, {
+          "id": category.getId(),
+          "maxPlayers": maxNumberOfPlayers,
+          "questionCount": numberOfQuestions,
+          "answerTimeout": maxTime,
+          //"name":
+        }));
+    final Message response = await this._socketService.receiveMessage();
+    return response.getCode() != ERROR_CODE;
   }
 }
