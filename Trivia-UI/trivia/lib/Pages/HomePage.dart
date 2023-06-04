@@ -30,13 +30,7 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    //getCategories().then((value) => {print('Async done')});
-    getCategories()
-        // as suggested in the comment
-        // .whenComplete() {
-        // or
-        .then((result) {
-      print('Async done');
+    getCategories().then((result) {
       setState(() {});
     });
   }
@@ -47,7 +41,6 @@ class _HomePage extends State<HomePage> {
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
-      print("object");
       this
           ._categories
           .add(Category(categoryString[0], categoryString[1], true));
@@ -56,7 +49,6 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("object3");
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
