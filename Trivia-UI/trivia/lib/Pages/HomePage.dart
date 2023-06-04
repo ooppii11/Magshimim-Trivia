@@ -25,8 +25,23 @@ class _HomePage extends State<HomePage> {
   final SocketService _socketService;
   List<Category> _categories = [];
 
-  _HomePage(this._socketService);
+  Future<void> getCategories() async {
+    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
+    final Message response = await _socketService.receiveMessage();
 
+    Map<String, dynamic> data = response.getData();
+    for (var categoryString in data["publicCategories"]) {
+      print("object");
+      this
+          ._categories
+          .add(Category(categoryString[0], categoryString[1], true));
+    }
+  }
+
+  _HomePage(this._socketService) {
+    _categories = [];
+    getCategories();
+  }
   @override
   void initState() {
     super.initState();
@@ -35,17 +50,8 @@ class _HomePage extends State<HomePage> {
     });
   }
 
-  Future<void> getCategories() async {
-    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message response = await _socketService.receiveMessage();
-
-    Map<String, dynamic> data = response.getData();
-    for (var categoryString in data["publicCategories"]) {
-      this
-          ._categories
-          .add(Category(categoryString[0], categoryString[1], true));
-    }
-  }
+  
+  
 
   @override
   Widget build(BuildContext context) {
