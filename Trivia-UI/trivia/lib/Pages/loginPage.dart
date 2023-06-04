@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                         }));
                         */
                     this._socketService.sendMessage(Message(2, {
-                          "username": "knhhh",
+                          "username": "TEST1",
                           "password": "passwordController.text"
                         }));
                     final Message receivedMessage =
