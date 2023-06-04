@@ -60,6 +60,7 @@ public:
 	int getNumOfPlayerGames(std::string username) const;
 	int getPlayerScore(std::string username) const;
 	std::map<std::string, int> getHighScores(int numberOfUsers) const;
+	void createStatistics(int userId);
 
 private:
 	sqlite3* _db;

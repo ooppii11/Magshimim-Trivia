@@ -31,7 +31,6 @@ class _HomePage extends State<HomePage> {
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
-      print("object");
       this
           ._categories
           .add(Category(categoryString[0], categoryString[1], true));
@@ -49,9 +48,6 @@ class _HomePage extends State<HomePage> {
       setState(() {});
     });
   }
-
-  
-  
 
   @override
   Widget build(BuildContext context) {
