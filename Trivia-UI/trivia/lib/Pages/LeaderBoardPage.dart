@@ -22,29 +22,30 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   final SocketService _socketService;
   _LeaderBoardPage(this._socketService)
   {
-    _leaderboardScores = [];
     getUsersStatistic();
   }
 
   void getUsersStatistic() async{
+    _leaderboardScores = [];
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 5) {
-      Map<String, int> UsersScoreMap = receivedMessage.getData()["HighScores"];
-      UsersScoreMap.forEach((key, value) { 
-        _leaderboardScores.add(User(key, value));
+      Map<String, dynamic> UsersScoreMap = receivedMessage.getData()["HighScores"];
+      for(String key in UsersScoreMap.keys)
+      {
+        _leaderboardScores.add(User(key, UsersScoreMap[key]));
+        setState(() {
+        _leaderboardScores;
         });
-      /*
-      setState(() {
-        _leaderboardScores = receivedMessage.getData()["users"];
-      });
-      */
+        await Future.delayed(Duration(milliseconds: 500));
+      }
     }
   }
 
    void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 60), (timer) {
       setState(() {
+        //add a toast here tgat says "updating leaderboard"
         getUsersStatistic();
       });
     });
