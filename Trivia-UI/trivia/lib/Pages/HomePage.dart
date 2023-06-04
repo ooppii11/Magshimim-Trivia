@@ -26,6 +26,7 @@ class _HomePage extends State<HomePage> {
   late List<Category> _categories;
 
   _HomePage(this._socketService) {
+    _categories = [];
     getCategories();
   }
 
