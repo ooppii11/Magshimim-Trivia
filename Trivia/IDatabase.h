@@ -67,6 +67,7 @@ public:
 	virtual std::vector<History> getCategoryHistory(int categoryId) const = 0;
 	
 	// Statistics:
+	virtual void createStatistics(int userId) = 0;
 	virtual float getPlayerAverageAnswerTime(std::string username) const = 0;
 	virtual int getNumOfCorrectAnswers(std::string username) const = 0;
 	virtual int getNumOfTotalAnswers(std::string username) const = 0;
