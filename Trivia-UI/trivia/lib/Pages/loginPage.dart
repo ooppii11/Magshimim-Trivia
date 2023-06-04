@@ -98,10 +98,17 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
+                  
                   onPressed: () async {
+                    /*
                     this._socketService.sendMessage(Message(2, {
                           "username": usernameController.text,
                           "password": passwordController.text
+                        }));
+                        */
+                    this._socketService.sendMessage(Message(2, {
+                          "username": "knhhh",
+                          "password": "passwordController.text"
                         }));
                     final Message receivedMessage =
                         await this._socketService.receiveMessage();

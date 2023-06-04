@@ -25,22 +25,6 @@ class _HomePage extends State<HomePage> {
   final SocketService _socketService;
   List<Category> _categories = [];
 
-  _HomePage(this._socketService);
-
-  @override
-  void initState() {
-    super.initState();
-    //getCategories().then((value) => {print('Async done')});
-    getCategories()
-        // as suggested in the comment
-        // .whenComplete() {
-        // or
-        .then((result) {
-      print('Async done');
-      setState(() {});
-    });
-  }
-
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
@@ -54,9 +38,23 @@ class _HomePage extends State<HomePage> {
     }
   }
 
+  _HomePage(this._socketService) {
+    _categories = [];
+    getCategories();
+  }
+  @override
+  void initState() {
+    super.initState();
+    getCategories().then((result) {
+      setState(() {});
+    });
+  }
+
+  
+  
+
   @override
   Widget build(BuildContext context) {
-    print("object3");
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
