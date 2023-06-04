@@ -65,7 +65,7 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 		throw std::exception("User already exist!");
 	}
 
-	query = "INSERT INTO USERS(USERNAME, PASSWORD, GMAIL) VALUES(\"" + username + "\", \"" + \
+	query = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL) VALUES(\"" + username + "\", \"" + \
 		password + "\", \"" + email + "\");";
 
 	command = createDbCommand(query);
@@ -127,7 +127,7 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() c
 
 	query = "SELECT ID, NAME "
 		"FROM CATEGORIES "
-		"WHERE PERMISSION = True;";
+		"WHERE PERMISSION = \"True\";";
 
 	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
 	SqliteUtilities::executeCommand(command);
@@ -142,7 +142,7 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(c
 
 	query = "SELECT ID, NAME "
 		"FROM CATEGORIES "
-		"WHERE PERMISSION = False AND CREATOR_ID = " + std::to_string(this->getUserId(username)) + ";";
+		"WHERE PERMISSION = \"False\" AND CREATOR_ID = " + std::to_string(this->getUserId(username)) + ";";
 
 	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
 	SqliteUtilities::executeCommand(command);
