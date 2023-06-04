@@ -21,6 +21,7 @@
 #define PASSWORD "PASSWORD"
 #define ID "ID" 
 #define NAME "NAME"
+#define USERNAME "USERNAME"
 #define PERMISSION "PERMISSION"
 
 

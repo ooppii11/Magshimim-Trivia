@@ -30,26 +30,22 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 5) {
-      print("Leaderboard received");
-      print(receivedMessage.getData());
       Map<String, dynamic> UsersScoreMap = receivedMessage.getData()["HighScores"];
-      UsersScoreMap.forEach((key, value) { 
-        print(key);
-        print(value);
-        _leaderboardScores.add(User(key, value));
+      for(String key in UsersScoreMap.keys)
+      {
+        _leaderboardScores.add(User(key, UsersScoreMap[key]));
+        setState(() {
+        _leaderboardScores;
         });
-      /*
-      setState(() {
-        _leaderboardScores = receivedMessage.getData()["users"];
-      });
-      */
+        await Future.delayed(Duration(milliseconds: 500));
+      }
     }
   }
 
    void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 60), (timer) {
       setState(() {
-        print("update leaderboard");
+        //add a toast here tgat says "updating leaderboard"
         getUsersStatistic();
       });
     });
@@ -57,7 +53,6 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   @override
   void initState() {
     super.initState();
-        print("Timer started");
     _startTimer();
   }
   @override
