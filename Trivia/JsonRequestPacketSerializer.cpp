@@ -129,6 +129,34 @@ Buffer Serializer::serializeResponse(const RemoveQuestionResponse& response)
 	return Serializer::setStatus(response);
 }
 
+Buffer Serializer::serializeResponse(const CloseRoomResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const StartGameResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const GetRoomStateResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["answerTimeout"] = response.answerTimeout;
+	data["hasGameBegun"] = response.hasGameBegun;
+	data["players"] = response.players;
+	data["questionCount"] = response.questionCount;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const LeaveRoomResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
 Buffer Serializer::setStatus(const OnlyStatus& response)
 {
 	Buffer temp;
