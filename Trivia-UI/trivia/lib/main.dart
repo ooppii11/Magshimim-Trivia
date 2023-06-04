@@ -10,15 +10,6 @@ Future<void> main() async {
 
   // Call the MyApp widget and pass the socketService instance
   runApp(MyApp(socketService));
-  /*// Send data to the server
-  final message = 'Hello, server!';
-  socket.write(message);
-
-  // Receive data from the server
-  socket.listen((List<int> data) {
-    final message = String.fromCharCodes(data).trim();
-    print('Received message from server: $message');
-  });*/
 }
 
 class MyApp extends StatelessWidget {

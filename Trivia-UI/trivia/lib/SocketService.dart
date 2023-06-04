@@ -35,27 +35,6 @@ class SocketService {
   Future<Message> receiveMessage() async {
     return await _streamController.stream.first;
   }
-  
-  /*
-  Future<Message> receiveMessage() async {
-  final completer = Completer<Message>();
-
-  final subscription = _bcStream.listen((Uint8List data) async {
-    final message = Message.BytesConstructor(data);
-    completer.complete(message);
-    await for (final nextData in _bcStream) {
-      final nextMessage = Message.BytesConstructor(nextData);
-    }
-  });
-
-  try {
-    final message = await completer.future;
-    return message;
-  } finally {
-    subscription.cancel();
-  }
-}
-*/
 
 
   void close() {
