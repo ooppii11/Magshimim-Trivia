@@ -22,6 +22,7 @@
 #define ID "ID" 
 #define NAME "NAME"
 #define PERMISSION "PERMISSION"
+#define USERNAME "USERNAME"
 
 
 class SqliteDatabase : public IDatabase

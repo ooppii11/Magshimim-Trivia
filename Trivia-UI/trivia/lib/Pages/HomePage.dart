@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:trivia/components/increment_decrement_button.dart';
+import 'package:flutter/services.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
@@ -24,6 +26,27 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   final SocketService _socketService;
   List<Category> _categories = [];
+  late TextEditingController maxNumberOfPlayers;
+  late TextEditingController numberOfQuestions;
+  late TextEditingController maxTime;
+
+  _HomePage(this._socketService);
+
+  @override
+  void initState() {
+    maxNumberOfPlayers = TextEditingController();
+    numberOfQuestions = TextEditingController();
+    maxTime = TextEditingController();
+
+    maxNumberOfPlayers.text = "2";
+    numberOfQuestions.text = "1";
+    maxTime.text = "1";
+
+    super.initState();
+    getCategories().then((result) {
+      setState(() {});
+    });
+  }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
@@ -35,18 +58,6 @@ class _HomePage extends State<HomePage> {
           ._categories
           .add(Category(categoryString[0], categoryString[1], true));
     }
-  }
-
-  _HomePage(this._socketService) {
-    _categories = [];
-    getCategories();
-  }
-  @override
-  void initState() {
-    super.initState();
-    getCategories().then((result) {
-      setState(() {});
-    });
   }
 
   @override
@@ -129,7 +140,9 @@ class _HomePage extends State<HomePage> {
                       borderRadius: BorderRadius.circular(0),
                     ),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          openDialg(category);
+                        },
                         child: Column(
                           children: [
                             Padding(
@@ -155,5 +168,29 @@ class _HomePage extends State<HomePage> {
         ]),
       ),
     );
+  }
+
+  Future openDialg(Category category) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(category.getName()),
+            content: Column(children: [
+              Text("Max number of players: "),
+              IncrementDecrementButton(
+                  controller: maxNumberOfPlayers, minValue: 2),
+              Text("Number of Questions: "),
+              IncrementDecrementButton(
+                  controller: numberOfQuestions, minValue: 1),
+              Text("Max timr per Questions: "),
+              IncrementDecrementButton(controller: maxTime, minValue: 1),
+            ]),
+            actions: [
+              TextButton(child: Text("CREATE"), onPressed: () {}),
+              TextButton(child: Text("CANCEL"), onPressed: cancel),
+            ],
+          ));
+
+  void cancel() {
+    Navigator.of(context).pop();
   }
 }
