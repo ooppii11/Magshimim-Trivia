@@ -106,9 +106,11 @@ typedef struct JoinRoomResponse : OnlyStatus
 	JoinRoomResponse() : OnlyStatus(JOIN_ROOM_RESPONSE_CODE) {}
 }JoinRoomResponse;
 
-typedef struct CreateRoomResponse : OnlyStatus
+typedef struct CreateRoomResponse 
 {
-	CreateRoomResponse() : OnlyStatus(CREATE_ROOM_RESPONSE_CODE) {}
+	unsigned int status;
+	unsigned int roomId;
+	CreateRoomResponse() : status(CREATE_ROOM_RESPONSE_CODE) {}
 }CreateRoomResponse;
 
 typedef struct AddCategorieResponse : OnlyStatus

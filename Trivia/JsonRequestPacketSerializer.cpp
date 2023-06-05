@@ -76,7 +76,12 @@ Buffer Serializer::serializeResponse(const JoinRoomResponse& response)
 
 Buffer Serializer::serializeResponse(const CreateRoomResponse& response)
 {
-	return Serializer::setStatus(response);
+	Buffer temp;
+	json data;
+	data["roomId"] = response.roomId;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
 }
 
 Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
