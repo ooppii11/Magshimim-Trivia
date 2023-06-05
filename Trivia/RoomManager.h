@@ -14,4 +14,7 @@ public:
 	Room& getRoom(roomID id);
 private:
 	std::map<roomID, Room> _rooms;
+
+	unsigned int createRoomId();
+	bool alreadyExists(unsigned int id);
 };
