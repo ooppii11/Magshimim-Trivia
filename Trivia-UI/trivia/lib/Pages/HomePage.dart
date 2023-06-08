@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:trivia/Pages/roomPage.dart';
+import 'package:trivia/components/increment_decrement_button.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
@@ -11,6 +13,8 @@ import 'package:trivia/message.dart';
 
 // ignore: must_be_immutable
 int GET_CATEGORIES_CODE = 7;
+int CREATE_ROOM_REQUEST_CODE = 11;
+int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -24,6 +28,27 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   final SocketService _socketService;
   List<Category> _categories = [];
+  late TextEditingController maxNumberOfPlayers;
+  late TextEditingController numberOfQuestions;
+  late TextEditingController maxTime;
+
+  _HomePage(this._socketService);
+
+  @override
+  void initState() {
+    maxNumberOfPlayers = TextEditingController();
+    numberOfQuestions = TextEditingController();
+    maxTime = TextEditingController();
+
+    maxNumberOfPlayers.text = "2";
+    numberOfQuestions.text = "1";
+    maxTime.text = "1";
+
+    super.initState();
+    getCategories().then((result) {
+      setState(() {});
+    });
+  }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
@@ -38,18 +63,6 @@ class _HomePage extends State<HomePage> {
           .add(Category(categoryString[0], categoryString[1], true));
     }
     */
-  }
-
-  _HomePage(this._socketService) {
-    _categories = [];
-    getCategories();
-  }
-  @override
-  void initState() {
-    super.initState();
-    getCategories().then((result) {
-      setState(() {});
-    });
   }
 
   @override
@@ -137,7 +150,9 @@ class _HomePage extends State<HomePage> {
                       borderRadius: BorderRadius.circular(0),
                     ),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          openDialg(category);
+                        },
                         child: Column(
                           children: [
                             Padding(
@@ -163,5 +178,59 @@ class _HomePage extends State<HomePage> {
         ]),
       ),
     );
+  }
+
+  Future openDialg(Category category) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(category.getName()),
+            content: Column(children: [
+              Text("Max number of players: "),
+              IncrementDecrementButton(
+                  controller: maxNumberOfPlayers, minValue: 2),
+              Text("Number of Questions: "),
+              IncrementDecrementButton(
+                  controller: numberOfQuestions, minValue: 1),
+              Text("Max timr per Questions: "),
+              IncrementDecrementButton(controller: maxTime, minValue: 1),
+            ]),
+            actions: [
+              TextButton(
+                  child: Text("CREATE"),
+                  onPressed: (() {
+                    create(category);
+                  })),
+              TextButton(child: Text("CANCEL"), onPressed: cancel),
+            ],
+          ));
+
+  void cancel() {
+    Navigator.of(context).pop();
+  }
+
+  void create(Category category) async {
+    if (await createRoom(category)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: true,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<bool> createRoom(Category category) async {
+    this._socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, {
+          "categorieId": category.getId(),
+          "maxPlayers": maxNumberOfPlayers,
+          "questionCount": numberOfQuestions,
+          "answerTimeout": maxTime,
+          "name": ""
+        }));
+    final Message response = await this._socketService.receiveMessage();
+    return response.getCode() != ERROR_CODE;
   }
 }

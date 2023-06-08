@@ -499,9 +499,15 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azColName)
 {
+<<<<<<< HEAD
 	if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
 	{
 		(*(std::map<std::string, int>*)data)[std::string(argv[1])] = atoi(argv[0]);
+=======
+	if (argc == 2 && std::string(azColName[0]) == SCORE   && std::string(azColName[1]) == USERNAME)
+	{
+		(*(std::map<std::string,int> *)data)[std::string(argv[1])] = atoi(argv[0]);
+>>>>>>> e80edccf159432fb8c5c12404b802e57becab917
 	}
 	return 0;
 }
