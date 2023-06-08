@@ -82,8 +82,7 @@ Buffer Serializer::serializeResponse(const CreateRoomResponse& response)
 Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 {
 	Buffer temp;
-	json data;
-	data["UserStatistics"] = response.statistics;
+	json data(response.statistics);
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -92,8 +91,7 @@ Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 Buffer Serializer::serializeResponse(const getPublicCategoriesResponse& response)
 {
 	Buffer temp;
-	json data;
-	data["publicCategories"] = response.publicCategories;
+	json data(response.publicCategories);
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -102,8 +100,7 @@ Buffer Serializer::serializeResponse(const getPublicCategoriesResponse& response
 Buffer Serializer::serializeResponse(const getPrivateCategoriesResponse& response)
 {
 	Buffer temp;
-	json data;
-	data["PrivateCategories"] = response.PrivateCategories;
+	json data(response.PrivateCategories);
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -127,6 +124,16 @@ Buffer Serializer::serializeResponse(const AddQuestionResponse& response)
 Buffer Serializer::serializeResponse(const RemoveQuestionResponse& response)
 {
 	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const getUserHistory& response)
+{
+	Buffer temp;
+	json data;
+	data["History"] = Serializer::vectorToString(response.history);
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
 }
 
 Buffer Serializer::setStatus(const OnlyStatus& response)

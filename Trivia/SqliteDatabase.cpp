@@ -70,6 +70,7 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 
 	command = createDbCommand(query);
 	SqliteUtilities::executeCommand(command);
+	this->createStatistics(this->getUserId(username));
 }
 
 void SqliteDatabase::addNewCategory(Category category, const std::string& username)
@@ -119,10 +120,10 @@ bool SqliteDatabase::doesPrivateCategoryExist(const std::string& categoryName, c
 	return categoryExist;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() const
+std::map<int, std::string> SqliteDatabase::getPublicCategories() const
 {
 	SqliteCommand command;
-	std::vector<std::pair<std::string, int>> categories;
+	std::map<int, std::string> categories;
 	std::string query = "";
 
 	query = "SELECT ID, NAME "
@@ -134,10 +135,10 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() c
 	return categories;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(const std::string& username) const
+std::map<int, std::string> SqliteDatabase::getPrivagteCategories(const std::string& username) const
 {
 	SqliteCommand command;
-	std::vector<std::pair<std::string, int>> categories;
+	std::map<int, std::string> categories;
 	std::string query = "";
 
 	query = "SELECT ID, NAME "
@@ -343,11 +344,11 @@ SqliteCommand SqliteDatabase::createDbCommand(std::string query, int(*collback)(
 
 int SqliteDatabase::getUserId(std::string username) const
 {
-	int userId;
+	int userId = 0;
 	SqliteCommand command;
 	std::string query = "";
 
-	query = "SELECT * "
+	query = "SELECT ID "
 			"FROM USERS "
 			"WHERE USERNAME = \"" +  username + "\";";
 
@@ -498,9 +499,9 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azColName)
 {
-	if (argc == 2 && std::string(azColName[0]) == NAME  && std::string(azColName[1]) == SCORE)
+	if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
 	{
-		(*(std::map<std::string,int> *)data)[std::string(argv[0])] = atoi(argv[1]);
+		(*(std::map<std::string, int>*)data)[std::string(argv[1])] = atoi(argv[0]);
 	}
 	return 0;
 }
@@ -508,13 +509,13 @@ int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azCo
 int SqliteDatabase::categoiesCollback(void* data, int argc, char** argv, char** azColName)
 {
 	int i = 0;
-	std::pair<std::string, int> category;
+	std::pair<int, std::string> category;
 	for (i = 0; i < argc; i++)
 	{
-		if (std::string(azColName[i]) == NAME) { category.first = std::string(argv[i]); }
-		else if (std::string(azColName[i]) == ID) { category.second = atoi(argv[i]); }
+		if (std::string(azColName[i]) == NAME) { category.second = std::string(argv[i]); }
+		else if (std::string(azColName[i]) == ID) { category.first = atoi(argv[i]); }
 	}
-	(*(std::vector<std::pair<std::string, int>> *)data).push_back(category);
+	(*(std::map<int, std::string> *)data).insert(category);
 	return 0;
 }
 
@@ -611,10 +612,23 @@ std::map<std::string, int> SqliteDatabase::getHighScores(int numberOfUsers) cons
 
 	query = "SELECT STATISTICS.SCORE, USERS.USERNAME "
 			"FROM STATISTICS "
-			"JOIN USERS ON USERS.ID = STATISTICS.USER_ID"
+			"JOIN USERS ON USERS.ID = STATISTICS.USER_ID "
 			"ORDER BY SCORE DESC LIMIT " + std::to_string(numberOfUsers)  + ";";
 
 	command = createDbCommand(query, SqliteDatabase::scoreCollback, &scores);
 	SqliteUtilities::executeCommand(command);
 	return scores;
+}
+
+void SqliteDatabase::createStatistics(int userId)
+{
+	SqliteCommand command;
+	std::string query = "";
+
+	query = "INSERT INTO STATISTICS"
+		"(\"USER_ID\", \"SCORE\", \"AVERAGE_TIME\", \"NUMBER_OF_GAMES\", \"NUMBER_OF_ANSWERS\", \"NUMBER_OF_CORRECT_ANSWERS\")"
+		"VALUES(" +std::to_string(userId) + ", 0, 0, 0, 0, 0); ";
+	
+	command = createDbCommand(query);
+	SqliteUtilities::executeCommand(command);
 }

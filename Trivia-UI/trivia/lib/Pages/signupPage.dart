@@ -3,7 +3,7 @@ import 'package:trivia/Pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class SignupPage extends StatefulWidget {
@@ -114,7 +114,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       );
-                    } else {
+                    } /*else {
                       Fluttertoast.showToast(
                         msg: "Login error",
                         toastLength: Toast.LENGTH_SHORT,
@@ -124,6 +124,7 @@ class _SignupPageState extends State<SignupPage> {
                         fontSize: 16.0,
                       );
                     }
+                  },*/
                   },
                   child: const Text(
                     'SginUp',
