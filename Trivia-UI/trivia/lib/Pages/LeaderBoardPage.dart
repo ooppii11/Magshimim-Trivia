@@ -104,27 +104,32 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               }
             }),
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.black,
-                      size: 26.0,
-                    ),
-                    onPressed: () {
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                  icon: Icon(
+                    Icons.logout,
+                    color: Colors.black,
+                    size: 26.0,
+                  ),
+                  onPressed: () async{
+                    _socketService.sendMessage(Message(3, {}));
+                    final Message response = await _socketService.receiveMessage();
+                    if(response.getCode() == 2)
+                    {
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginPage(
-                                    socketService: widget.socketService,
-                                  )));
-                    }),
-              ),
-            ]),
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => LoginPage(
+                                  socketService: widget.socketService,
+                                )));
+                    }
+                  }),
+            ),
+          ]),
         body: SingleChildScrollView(
             child: Center(
                 child: Column(

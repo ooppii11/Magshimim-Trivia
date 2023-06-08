@@ -13,14 +13,15 @@ class UserPage extends StatefulWidget {
   const UserPage({super.key, required this.socketService});
 
   @override
-  _UserPage createState() => _UserPage();
+  _UserPage createState() => _UserPage(socketService);
 }
 
 class _UserPage extends State<UserPage> {
+  final SocketService _socketService;
   late List<History> _history;
   late List<Statistic> _statistics;
 
-  _UserPage()
+  _UserPage(this._socketService)
   {
     getHistory();
     getStatistics();
@@ -61,20 +62,25 @@ class _UserPage extends State<UserPage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.only(right: 20.0),
               child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.logout,
                     color: Colors.black,
                     size: 26.0,
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
+                  onPressed: () async{
+                    _socketService.sendMessage(Message(3, {}));
+                    final Message response = await _socketService.receiveMessage();
+                    if(response.getCode() == 2)
+                    {
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (_) => LoginPage(
                                   socketService: widget.socketService,
                                 )));
+                    }
                   }),
             ),
           ]),
