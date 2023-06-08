@@ -64,6 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -100,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   onPressed: () async {
                     this._socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
-                          "password": "passwordController.text",
+                          "password": passwordController.text,
                           "email": emailController.text
                         }));
                     final Message receivedMessage =

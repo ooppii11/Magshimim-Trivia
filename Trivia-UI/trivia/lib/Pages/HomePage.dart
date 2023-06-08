@@ -29,12 +29,15 @@ class _HomePage extends State<HomePage> {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
 
-    Map<String, dynamic> data = response.getData();
-    for (var categoryString in data["publicCategories"]) {
+    //Map<String, dynamic> data = response.getData();
+    Map<int, dynamic> data = response.getData();
+    /*
+    for (var categoryString in data) {
       this
           ._categories
           .add(Category(categoryString[0], categoryString[1], true));
     }
+    */
   }
 
   _HomePage(this._socketService) {
@@ -101,13 +104,18 @@ class _HomePage extends State<HomePage> {
                     color: Colors.black,
                     size: 26.0,
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
+                  onPressed: () async{
+                    _socketService.sendMessage(Message(3, {}));
+                    final Message response = await _socketService.receiveMessage();
+                    if(response.getCode() == 2)
+                    {
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (_) => LoginPage(
                                   socketService: widget.socketService,
                                 )));
+                    }
                   }),
             ),
           ]),
