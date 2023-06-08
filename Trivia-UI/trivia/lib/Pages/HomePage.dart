@@ -216,11 +216,11 @@ class _HomePage extends State<HomePage> {
 
   Future<bool> createRoom(Category category) async {
     this._socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, {
-          "id": category.getId(),
+          "categorieId": category.getId(),
           "maxPlayers": maxNumberOfPlayers,
           "questionCount": numberOfQuestions,
           "answerTimeout": maxTime,
-          //"name":
+          "name": ""
         }));
     final Message response = await this._socketService.receiveMessage();
     return response.getCode() != ERROR_CODE;
