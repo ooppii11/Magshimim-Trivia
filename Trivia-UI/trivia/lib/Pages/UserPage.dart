@@ -39,6 +39,10 @@ class _UserPage extends State<UserPage> {
                   }),
             ),
           ]),
+      // User page content:
+      // TODO: add a card that is on the top center and has user private stats
+      // TODO: add a container that has user last five games
+      
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

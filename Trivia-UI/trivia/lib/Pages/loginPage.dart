@@ -5,7 +5,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/ForgotPasswordPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/message.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       );
-                    } else {
+                    } /*else {
                       Fluttertoast.showToast(
                         msg: "Login error",
                         toastLength: Toast.LENGTH_SHORT,
@@ -131,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 16.0,
                       );
                     }
+                  },*/
                   },
                   child: Text(
                     'Login',
