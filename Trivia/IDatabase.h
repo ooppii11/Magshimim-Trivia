@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <map>
+#include "History.h"
 
 
 #define PUBLIC true 
@@ -19,15 +20,6 @@ typedef struct Question
 } Question;
 
 
-typedef struct History
-{
-	int categoryId;
-	int rank;
-	double avergeTime;
-	int answers;
-	int correctAnswers;
-	time_t creationDate;
-} History;
 
 
 typedef struct Category
@@ -51,8 +43,8 @@ public:
 	virtual void addNewCategory(Category category, const std::string& username) = 0;
 	virtual bool doesPublicCategoryExist(std::string categoryName) const = 0;
 	virtual bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const = 0;
-	virtual std::vector<std::pair<std::string, int>> getPublicCategories() const = 0;
-	virtual std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const = 0;
+	virtual std::map<int, std::string> getPublicCategories() const = 0;
+	virtual std::map<int, std::string> getPrivagteCategories(const std::string& username) const = 0;
 	virtual void deleteCategory(int categoryId, const std::string& username) = 0;
 
 	

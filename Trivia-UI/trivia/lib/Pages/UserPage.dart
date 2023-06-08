@@ -4,6 +4,8 @@ import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/message.dart';
+import 'package:trivia/history.dart';
+import 'package:trivia/statistics.dart';
 
 class UserPage extends StatefulWidget {
   final SocketService socketService;
@@ -15,23 +17,38 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPage extends State<UserPage> {
-  late List<Map<String, dynamic>> _history;
-  late Map<String, dynamic> _statistics;
+  late List<History> _history;
+  late List<Statistic> _statistics;
 
   _UserPage()
   {
-    this._history = [];
-    this._statistics = {}; 
     getHistory();
     getStatistics();
   }
 
   void getHistory() async {
+    _history = [];
+    widget.socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
+    final receivedMessage = await widget.socketService.receiveMessage();
+    if (receivedMessage.getCode() == 0/*TODO: set the correct code*/) {
+      List<Map<String, dynamic>> historyList = receivedMessage.getData()["History"];
+      historyList.forEach((element) {
+        _history.add(History(element["Category"], element["Score"]));//TODO: add date to history date
+      });
+    }
     
   }
   
   void getStatistics() async {
-
+    _statistics = [];
+    widget.socketService.sendMessage(Message(9, {}));
+    final receivedMessage = await widget.socketService.receiveMessage();
+    if (receivedMessage.getCode() == 8) {
+      Map<String, dynamic> statisticsMap = receivedMessage.getData();
+      statisticsMap.forEach((key, value) {
+        _statistics.add(Statistic(key, value));
+      });
+    }
   }
 
 
@@ -104,14 +121,16 @@ class _UserPage extends State<UserPage> {
                                   label: Text('User Results'),
                                 )
                               ],
-                              rows: _statistics.entries.map((entry) {
+                              rows: List.generate(_statistics.length, (index) {
+                                final statistics = _statistics[index];
                                 return DataRow(
                                   cells: [
-                                    DataCell(Text(entry.key)),
-                                    DataCell(Text(entry.value.toString())),
+                                    DataCell(Text(statistics.getStatisticsName())),
+                                    DataCell(Text(statistics.getScore().toString()))
                                   ],
-                                );
-                              }).toList(),
+                                  );
+                                }
+                              ),
                             ),
                           ),
                         ),
@@ -162,15 +181,16 @@ class _UserPage extends State<UserPage> {
                                   label: Text('Score'),
                                 ),
                               ],
-                              rows: _history.map((entry) {
+                              rows: List.generate(_history.length, (index) {
+                                final history = _history[index];
                                 return DataRow(
                                   cells: [
-                                    DataCell(Text((_history.indexOf(entry) + 1).toString())),
-                                    DataCell(Text(entry['category'].toString())),
-                                    DataCell(Text(entry['score'].toString())),
+                                    DataCell(Text(history.getCategoryName())),
+                                    DataCell(Text(history.getScore().toString()))
                                   ],
-                                );
-                              }).toList(),
+                                  );
+                                }
+                              ),
                             ),
                           ),
                         ),
