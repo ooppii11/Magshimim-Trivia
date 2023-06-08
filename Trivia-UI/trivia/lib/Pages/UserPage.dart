@@ -29,8 +29,8 @@ class _UserPage extends State<UserPage> {
 
   void getHistory() async {
     _history = [];
-    widget.socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
-    final receivedMessage = await widget.socketService.receiveMessage();
+    _socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
+    final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 0/*TODO: set the correct code*/) {
       List<Map<String, dynamic>> historyList = receivedMessage.getData()["History"];
       historyList.forEach((element) {
@@ -42,8 +42,8 @@ class _UserPage extends State<UserPage> {
   
   void getStatistics() async {
     _statistics = [];
-    widget.socketService.sendMessage(Message(9, {}));
-    final receivedMessage = await widget.socketService.receiveMessage();
+    _socketService.sendMessage(Message(9, {}));
+    final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 8) {
       Map<String, dynamic> statisticsMap = receivedMessage.getData();
       statisticsMap.forEach((key, value) {
