@@ -120,10 +120,10 @@ bool SqliteDatabase::doesPrivateCategoryExist(const std::string& categoryName, c
 	return categoryExist;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() const
+std::map<int, std::string> SqliteDatabase::getPublicCategories() const
 {
 	SqliteCommand command;
-	std::vector<std::pair<std::string, int>> categories;
+	std::map<int, std::string> categories;
 	std::string query = "";
 
 	query = "SELECT ID, NAME "
@@ -135,10 +135,10 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::getPublicCategories() c
 	return categories;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::getPrivagteCategories(const std::string& username) const
+std::map<int, std::string> SqliteDatabase::getPrivagteCategories(const std::string& username) const
 {
 	SqliteCommand command;
-	std::vector<std::pair<std::string, int>> categories;
+	std::map<int, std::string> categories;
 	std::string query = "";
 
 	query = "SELECT ID, NAME "
@@ -509,13 +509,13 @@ int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azCo
 int SqliteDatabase::categoiesCollback(void* data, int argc, char** argv, char** azColName)
 {
 	int i = 0;
-	std::pair<std::string, int> category;
+	std::pair<int, std::string> category;
 	for (i = 0; i < argc; i++)
 	{
-		if (std::string(azColName[i]) == NAME) { category.first = std::string(argv[i]); }
-		else if (std::string(azColName[i]) == ID) { category.second = atoi(argv[i]); }
+		if (std::string(azColName[i]) == NAME) { category.second = std::string(argv[i]); }
+		else if (std::string(azColName[i]) == ID) { category.first = atoi(argv[i]); }
 	}
-	(*(std::vector<std::pair<std::string, int>> *)data).push_back(category);
+	(*(std::map<int, std::string> *)data).insert(category);
 	return 0;
 }
 

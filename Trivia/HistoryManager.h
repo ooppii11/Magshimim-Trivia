@@ -3,6 +3,9 @@
 #include <memory>
 #include <string>
 #include "IDatabase.h"
+#include "History.h"
+
+
 
 class HistoryManager
 {

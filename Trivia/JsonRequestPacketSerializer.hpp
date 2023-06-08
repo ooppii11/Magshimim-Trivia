@@ -25,6 +25,7 @@ public:
 	static Buffer serializeResponse(const RemoveCategorieResponse& response);
 	static Buffer serializeResponse(const AddQuestionResponse& response);
 	static Buffer serializeResponse(const RemoveQuestionResponse& response);
+	static Buffer serializeResponse(const getUserHistory& response);
 
 private:
 	template <typename T>
