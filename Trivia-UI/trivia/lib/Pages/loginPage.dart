@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -100,15 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextButton(
                   
                   onPressed: () async {
-                    /*
                     this._socketService.sendMessage(Message(2, {
                           "username": usernameController.text,
                           "password": passwordController.text
-                        }));
-                        */
-                    this._socketService.sendMessage(Message(2, {
-                          "username": "TEST1",
-                          "password": "passwordController.text"
                         }));
                     final Message receivedMessage =
                         await this._socketService.receiveMessage();
