@@ -55,7 +55,7 @@ class _HomePage extends State<HomePage> {
     final Message response = await _socketService.receiveMessage();
 
     //Map<String, dynamic> data = response.getData();
-    Map<int, dynamic> data = response.getData();
+    //Map<int, dynamic> data = response.getData();
     /*
     for (var categoryString in data) {
       this
