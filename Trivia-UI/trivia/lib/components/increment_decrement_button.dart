@@ -10,7 +10,7 @@ class IncrementDecrementButton extends StatefulWidget {
 
   @override
   _IncrementDecrementButton createState() =>
-      _IncrementDecrementButton(controller, this.minValue);
+      _IncrementDecrementButton(controller, minValue);
 }
 
 class _IncrementDecrementButton extends State<IncrementDecrementButton> {
@@ -28,13 +28,13 @@ class _IncrementDecrementButton extends State<IncrementDecrementButton> {
           child: TextFormField(
             textAlign: TextAlign.center,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(8.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
             ),
             controller: controller,
-            keyboardType: TextInputType.numberWithOptions(
+            keyboardType: const TextInputType.numberWithOptions(
               decimal: false,
               signed: true,
             ),
@@ -43,14 +43,14 @@ class _IncrementDecrementButton extends State<IncrementDecrementButton> {
             ],
           ),
         ),
-        Container(
+        SizedBox(
           height: 38.0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       width: 0.5,
@@ -58,7 +58,7 @@ class _IncrementDecrementButton extends State<IncrementDecrementButton> {
                   ),
                 ),
                 child: InkWell(
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_drop_up,
                     size: 18.0,
                   ),
@@ -73,14 +73,14 @@ class _IncrementDecrementButton extends State<IncrementDecrementButton> {
                 ),
               ),
               InkWell(
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_drop_down,
                   size: 18.0,
                 ),
                 onTap: () {
                   int currentValue = int.parse(controller.text);
                   setState(() {
-                    if (currentValue > this.minValue) {
+                    if (currentValue > minValue) {
                       currentValue--;
                       controller.text = (currentValue > 0 ? currentValue : 0)
                           .toString(); // decrementing value

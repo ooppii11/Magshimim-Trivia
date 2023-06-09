@@ -88,5 +88,5 @@ private:
 	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
 	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
 	static int scoreCollback(void* data, int argc, char** argv, char** azColName);
-	static int categoiesCollback(void* data, int argc, char** argv, char** azColName);
+	static int categoriesCollback(void* data, int argc, char** argv, char** azColName);
 };

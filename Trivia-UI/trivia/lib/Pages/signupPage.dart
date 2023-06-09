@@ -99,13 +99,13 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async {
-                    this._socketService.sendMessage(Message(1, {
+                    _socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
                           "password": passwordController.text,
                           "email": emailController.text
                         }));
                     final Message receivedMessage =
-                        await this._socketService.receiveMessage();
+                        await _socketService.receiveMessage();
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,

@@ -37,13 +37,13 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
         setState(() {
         _leaderboardScores;
         });
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
     }
   }
 
    void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       setState(() {
         //add a toast here tgat says "updating leaderboard"
         getUsersStatistic();
@@ -108,9 +108,9 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.logout,
                     color: Colors.black,
                     size: 26.0,

@@ -10,7 +10,7 @@ const String SERVER_ADDRESS = '127.0.0.1';
 const int SERVER_PORT = 6666;
 
 class SocketService {
-  late Socket? _socket;
+  late final Socket? _socket;
   late StreamController<Message> _streamController;
 
   SocketService(this._socket) {

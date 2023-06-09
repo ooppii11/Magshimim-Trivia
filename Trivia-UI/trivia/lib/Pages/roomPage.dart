@@ -8,7 +8,7 @@ class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.socketService, required this.admin});
 
   @override
-  _RoomPage createState() => _RoomPage(socketService, this.admin);
+  _RoomPage createState() => _RoomPage(socketService, admin);
 }
 
 class _RoomPage extends State<RoomPage> {
@@ -19,6 +19,6 @@ class _RoomPage extends State<RoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

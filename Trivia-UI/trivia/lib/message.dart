@@ -8,8 +8,8 @@ class Message {
 
   Message(this._code, this._data);
   Message.BytesConstructor(Uint8List rawData) {
-    this._code = 0;
-    this._data = {};
+    _code = 0;
+    _data = {};
 
     int messageLength = 0;
 
@@ -22,7 +22,7 @@ class Message {
       for (int i = 4; i < messageLength + 4; i++) {
         jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
       }
-      this._data = jsonDecode(jsonString);
+      _data = jsonDecode(jsonString);
     }
   }
 
