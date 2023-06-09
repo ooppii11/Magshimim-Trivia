@@ -31,12 +31,12 @@ class _UserPage extends State<UserPage> {
 //fix this
   void getHistory() async {
     _history = [];
-    _socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
+    _socketService.sendMessage(Message(10, {}));
     final receivedMessage = await _socketService.receiveMessage();
-    if (receivedMessage.getCode() == 0/*TODO: set the correct code*/) {
+    if (receivedMessage.getCode() == 9) {
       List<Map<String, dynamic>> historyList = receivedMessage.getData()["History"];
       for (var element in historyList) {
-        _history.add(History(element["Category"], element["Score"]));//TODO: add date to history date
+        _history.add(History(element["CategoryName"], element["CategoryId"], element["UserRank"], element["CorrectAnswers"], element["TotalAnswers"], element["AvergeTime"], element["CreationDate"]));
       }
     }
     
@@ -185,10 +185,25 @@ class _UserPage extends State<UserPage> {
                                       label: Text('Num'),
                                     ),
                                     DataColumn(
-                                      label: Text('Category'),
+                                      label: Text('Category Name'),
                                     ),
                                     DataColumn(
-                                      label: Text('Score'),
+                                      label: Text('Category Id'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('User Rank'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Num Answers'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Num Of Correct Answers'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Average Time'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Creation Date'),
                                     ),
                                   ],
                                   rows: List.generate(_history.length, (index) {
@@ -196,7 +211,12 @@ class _UserPage extends State<UserPage> {
                                     return DataRow(
                                       cells: [
                                         DataCell(Text(history.getCategoryName())),
-                                        DataCell(Text(history.getScore().toString()))
+                                        DataCell(Text(history.getCategoryId().toString())),
+                                        DataCell(Text(history.getUserRank().toString())), 
+                                        DataCell(Text(history.getTotalAnswers().toString())),
+                                        DataCell(Text(history.getCorrectAnswers().toString())),
+                                        DataCell(Text(history.getAverageTime().toString())),
+                                        DataCell(Text(history.getCreationDate().toString())),
                                       ],
                                       );
                                     }
