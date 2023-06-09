@@ -604,7 +604,7 @@ int SqliteDatabase::getPlayerScore(std::string username) const
 	userId = this->getUserId(username);
 	query = "SELECT SCORE "
 			"FROM STATISTICS "
-			"WHERE ID = " + std::to_string(userId) + ";";
+			"WHERE USER_ID = " + std::to_string(userId) + ";";
 
 	command = createDbCommand(query, SqliteDatabase::intCollback, &score);
 	SqliteUtilities::executeCommand(command);
