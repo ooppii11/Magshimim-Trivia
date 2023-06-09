@@ -13,7 +13,7 @@ import 'package:trivia/message.dart';
 
 // ignore: must_be_immutable
 int GET_CATEGORIES_CODE = 6;
-int CREATE_ROOM_REQUEST_CODE = 11;
+int CREATE_ROOM_REQUEST_CODE = 12;
 int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
@@ -56,8 +56,7 @@ class _HomePage extends State<HomePage> {
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
-      _categories
-          .add(Category(categoryString[1], categoryString[0], true));
+      _categories.add(Category(categoryString[1], categoryString[0], true));
     }
   }
 
@@ -221,13 +220,14 @@ class _HomePage extends State<HomePage> {
   Future<bool> createRoom(Category category) async {
     Map<String, dynamic> data = {
       "categorieId": category.getId(),
-      "maxPlayers": int.parse(maxNumberOfPlayers.text),
+      "maxUsers": int.parse(maxNumberOfPlayers.text),
       "questionCount": int.parse(numberOfQuestions.text),
       "answerTimeout": int.parse(maxTime.text),
-      "name": ""
+      "roomName": ""
     };
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
+    print(response.getCode());
     return response.getCode() != ERROR_CODE;
   }
 }
