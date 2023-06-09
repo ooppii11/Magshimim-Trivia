@@ -12,9 +12,9 @@ class RequestHandlerFactory;
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public: 
-	RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory, RequestHandlerFactory& handlerFactory);
+	RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory);
 
-	bool isRequestRelevant(RequestInfo requestInfo) const;
+	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
 
 private:
@@ -26,6 +26,7 @@ private:
 	std::map<int, function> _handleRequestFunctions;
 
 	RequestResult wrapperHandleRequest(function function, RequestInfo requestInfo);
+
 	RequestResult closeRoom(RequestInfo requestInfo);
 	RequestResult startGame(RequestInfo requestInfo);
 	RequestResult getRoomState(RequestInfo requestInfo);

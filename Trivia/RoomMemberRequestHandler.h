@@ -12,9 +12,9 @@ class RequestHandlerFactory;
 class RoomMemberRequestHandler : public IRequestHandler
 {
 public:
-	RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory, RequestHandlerFactory& handlerFactory);
+	RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory);
 
-	bool isRequestRelevant(RequestInfo requestInfo) const;
+	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
 
 

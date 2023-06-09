@@ -6,7 +6,7 @@
 #include "messageException.h"
 
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory, RequestHandlerFactory& handlerFactory):
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory):
 	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
 {
 	this->_handleRequestFunctions[CLOSE_ROOM_REQUEST_CODE] = &RoomAdminRequestHandler::closeRoom;
@@ -15,7 +15,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, Roo
 }
 
 
-bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
+bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo requestInfo) 
 {
 	return CLOSE_ROOM_REQUEST_CODE == requestInfo.id || START_GAME_REQUEST_CODE == requestInfo.id || GET_ROOM_STATE_REQUEST_CODE == requestInfo.id;
 }

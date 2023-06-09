@@ -22,6 +22,7 @@ unsigned int RoomManager::createRoomId()
 		id = hshed % (unsigned int)std::pow(2, (sizeof(unsigned int) * 8));
 		i++;
 	} while (this->alreadyExists(id));
+	return id;
 }
 
 bool RoomManager::alreadyExists(unsigned int id)

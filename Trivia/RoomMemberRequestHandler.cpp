@@ -6,14 +6,14 @@
 #include "messageException.h"
 #include "IDatabase.h"
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory, RequestHandlerFactory& handlerFactory):
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory):
 	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
 {
 	this->_handleRequestFunctions[LEAVE_ROOM_REQUEST_CODE] = &RoomMemberRequestHandler::leaveRoom;
 	this->_handleRequestFunctions[GET_ROOM_STATE_REQUEST_CODE] = &RoomMemberRequestHandler::getRoomState;
 }
 
-bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
+bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo requestInfo)
 {
 	return GET_ROOM_STATE_REQUEST_CODE == requestInfo.id || LEAVE_ROOM_REQUEST_CODE == requestInfo.id;
 }
@@ -58,7 +58,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo requestInfo)
 
 	this->_room.removeUser(this->_user);
 
-	result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
+	result.newHandler = std::shared_ptr<RoomMemberRequestHandler> (this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
