@@ -45,7 +45,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///C:/src/flutter/packages/flutter",
+      "rootUri": "file:///C:/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -57,13 +57,13 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///C:/src/flutter/packages/flutter_test",
+      "rootUri": "file:///C:/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///C:/src/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///C:/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -117,7 +117,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///C:/src/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///C:/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -170,6 +170,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "toast",
+      "rootUri": "file:///C:/Users/test0/AppData/Local/Pub/Cache/hosted/pub.dev/toast-0.2.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///C:/Users/test0/AppData/Local/Pub/Cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
@@ -182,7 +188,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-06-04T15:11:03.440575Z",
+  "generated": "2023-06-09T12:10:15.057787Z",
   "generator": "pub",
   "generatorVersion": "3.0.2"
 }

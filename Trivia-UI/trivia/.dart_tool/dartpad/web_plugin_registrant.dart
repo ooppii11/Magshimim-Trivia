@@ -7,10 +7,12 @@
 // ignore_for_file: type=lint
 
 import 'package:fluttertoast/fluttertoast_web.dart';
+import 'package:toast/toast_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
   FluttertoastWebPlugin.registerWith(registrar);
+  ToastWebPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }

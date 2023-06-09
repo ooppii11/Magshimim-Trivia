@@ -213,6 +213,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+  toast:
+    dependency: "direct main"
+    description:
+      name: toast
+      sha256: "9f877c2bf17931941b55b22e7e3d432779b769683ca292e0f5f8c3e6cfe62c89"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.9"
   vector_math:
     dependency: transitive
     description:
@@ -223,4 +231,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.1 <4.0.0"
-  flutter: ">=1.10.0"
+  flutter: ">=1.20.0"
