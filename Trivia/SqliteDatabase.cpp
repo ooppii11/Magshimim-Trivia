@@ -130,7 +130,7 @@ std::map<int, std::string> SqliteDatabase::getPublicCategories() const
 		"FROM CATEGORIES "
 		"WHERE PERMISSION = \"True\";";
 
-	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
+	command = createDbCommand(query, SqliteDatabase::categoriesCollback, &categories);
 	SqliteUtilities::executeCommand(command);
 	return categories;
 }
@@ -145,7 +145,7 @@ std::map<int, std::string> SqliteDatabase::getPrivagteCategories(const std::stri
 		"FROM CATEGORIES "
 		"WHERE PERMISSION = \"False\" AND CREATOR_ID = " + std::to_string(this->getUserId(username)) + ";";
 
-	command = createDbCommand(query, SqliteDatabase::categoiesCollback, &categories);
+	command = createDbCommand(query, SqliteDatabase::categoriesCollback, &categories);
 	SqliteUtilities::executeCommand(command);
 	return categories;
 }
@@ -499,14 +499,21 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azColName)
 {
+//<<<<<<< HEAD
 	if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
 	{
 		(*(std::map<std::string, int>*)data)[std::string(argv[1])] = atoi(argv[0]);
+/*=======
+		if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
+		{
+			(*(std::map<std::string, int> *)data)[std::string(argv[1])] = atoi(argv[0]);
+			>>>>>> > e80edccf159432fb8c5c12404b802e57becab917
+	*/
 	}
 	return 0;
 }
 
-int SqliteDatabase::categoiesCollback(void* data, int argc, char** argv, char** azColName)
+int SqliteDatabase::categoriesCollback(void* data, int argc, char** argv, char** azColName)
 {
 	int i = 0;
 	std::pair<int, std::string> category;

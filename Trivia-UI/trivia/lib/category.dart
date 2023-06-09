@@ -3,7 +3,7 @@ class Category {
   final bool _permission;
   final int _id;
 
-  Category(this._name, this._id, this._permission);
+  const Category(this._name, this._id, this._permission);
 
   String getName() {
     return _name;

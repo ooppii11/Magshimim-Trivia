@@ -76,13 +76,19 @@ Buffer Serializer::serializeResponse(const JoinRoomResponse& response)
 
 Buffer Serializer::serializeResponse(const CreateRoomResponse& response)
 {
-	return Serializer::setStatus(response);
+	Buffer temp;
+	json data;
+	data["roomId"] = response.roomId;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
 }
 
 Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 {
 	Buffer temp;
-	json data(response.statistics);
+	json data;
+	data["statistics"] = response.statistics;
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -91,7 +97,8 @@ Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 Buffer Serializer::serializeResponse(const getPublicCategoriesResponse& response)
 {
 	Buffer temp;
-	json data(response.publicCategories);
+	json data;
+	data["publicCategories"] = response.publicCategories;
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -100,7 +107,8 @@ Buffer Serializer::serializeResponse(const getPublicCategoriesResponse& response
 Buffer Serializer::serializeResponse(const getPrivateCategoriesResponse& response)
 {
 	Buffer temp;
-	json data(response.PrivateCategories);
+	json data;
+	data["PrivateCategories"] = response.PrivateCategories;
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
@@ -134,6 +142,35 @@ Buffer Serializer::serializeResponse(const getUserHistory& response)
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;
+}
+
+
+Buffer Serializer::serializeResponse(const CloseRoomResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const StartGameResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
+Buffer Serializer::serializeResponse(const GetRoomStateResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["answerTimeout"] = response.answerTimeout;
+	data["hasGameBegun"] = response.hasGameBegun;
+	data["players"] = response.players;
+	data["questionCount"] = response.questionCount;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const LeaveRoomResponse& response)
+{
+	return Serializer::setStatus(response);
 }
 
 Buffer Serializer::setStatus(const OnlyStatus& response)

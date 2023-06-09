@@ -29,21 +29,21 @@ class _UserPage extends State<UserPage> {
 
   void getHistory() async {
     _history = [];
-    widget.socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
-    final receivedMessage = await widget.socketService.receiveMessage();
+    _socketService.sendMessage(Message(0/*TODO: set the correct code*/, {}));
+    final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 0/*TODO: set the correct code*/) {
       List<Map<String, dynamic>> historyList = receivedMessage.getData()["History"];
-      historyList.forEach((element) {
+      for (var element in historyList) {
         _history.add(History(element["Category"], element["Score"]));//TODO: add date to history date
-      });
+      }
     }
     
   }
   
   void getStatistics() async {
     _statistics = [];
-    widget.socketService.sendMessage(Message(9, {}));
-    final receivedMessage = await widget.socketService.receiveMessage();
+    _socketService.sendMessage(Message(9, {}));
+    final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 8) {
       Map<String, dynamic> statisticsMap = receivedMessage.getData();
       statisticsMap.forEach((key, value) {
@@ -62,9 +62,9 @@ class _UserPage extends State<UserPage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.logout,
                     color: Colors.black,
                     size: 26.0,
@@ -89,14 +89,14 @@ class _UserPage extends State<UserPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'STATS',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
@@ -144,16 +144,16 @@ class _UserPage extends State<UserPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'HISTORY',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),

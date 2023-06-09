@@ -40,5 +40,5 @@ void Room::setRoomData(const RoomData& data)
 
 std::ostream& operator<<(std::ostream& os, const RoomData& data)
 {
-	return os << data.name;
+	return os << "{" << data.id  << " : " << data.name << "}";
 }

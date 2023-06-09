@@ -23,6 +23,10 @@ enum ResponseCodes {
 	REMOVE_CATEGORIE_RESPONSE_CODE,
 	ADD_QUESTION_RESPONSE_CODE,
 	REMOVE_QUESTION_RESPONSE_CODE,
+	CLOSE_ROOM_RESPONSE_CODE,
+	START_GAME_RESPONSE_CODE,
+	GET_ROOM_STATE_RESPONSE_CODE,
+	LEAVE_ROOM_RESPONSE_CODE,
 
 	ERROR_RESPONSE_CODE = 99
 };
@@ -111,9 +115,11 @@ typedef struct JoinRoomResponse : OnlyStatus
 	JoinRoomResponse() : OnlyStatus(JOIN_ROOM_RESPONSE_CODE) {}
 }JoinRoomResponse;
 
-typedef struct CreateRoomResponse : OnlyStatus
+typedef struct CreateRoomResponse 
 {
-	CreateRoomResponse() : OnlyStatus(CREATE_ROOM_RESPONSE_CODE) {}
+	unsigned int status;
+	unsigned int roomId;
+	CreateRoomResponse() : status(CREATE_ROOM_RESPONSE_CODE) {}
 }CreateRoomResponse;
 
 typedef struct AddCategorieResponse : OnlyStatus
@@ -135,3 +141,28 @@ typedef struct RemoveQuestionResponse : OnlyStatus
 {
 	RemoveQuestionResponse() : OnlyStatus(REMOVE_QUESTION_RESPONSE_CODE) {}
 }removeQuestionResponse;
+
+typedef struct CloseRoomResponse : OnlyStatus
+{
+	CloseRoomResponse() : OnlyStatus(CLOSE_ROOM_RESPONSE_CODE) {}
+}CloseRoomResponse;
+
+typedef struct StartGameResponse : OnlyStatus
+{
+	StartGameResponse() : OnlyStatus(START_GAME_RESPONSE_CODE) {}
+}StartGameResponse;
+
+typedef struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	std::vector<std::string> players;
+	unsigned int questionCount;
+	time_t answerTimeout;
+	GetRoomStateResponse() : status(GET_ROOM_STATE_RESPONSE_CODE) {}
+}GetRoomStateResponse;
+
+typedef struct LeaveRoomResponse : OnlyStatus
+{
+	LeaveRoomResponse() : OnlyStatus(LEAVE_ROOM_RESPONSE_CODE) {}
+}LeaveRoomResponse;
