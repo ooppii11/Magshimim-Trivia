@@ -31,6 +31,8 @@ class _HomePage extends State<HomePage> {
   late TextEditingController maxNumberOfPlayers;
   late TextEditingController numberOfQuestions;
   late TextEditingController maxTime;
+  bool _isFloatingScreenOpen = false;
+  String _enteredValue = '';
 
   _HomePage(this._socketService);
 
@@ -90,6 +92,9 @@ class _HomePage extends State<HomePage> {
                 ),
               );
             }
+            if (value == 1) {
+              _openPopUp();
+            }
             if (value == 2) {
               Navigator.pushReplacement(
                   context,
@@ -127,50 +132,55 @@ class _HomePage extends State<HomePage> {
                   }),
             ),
           ]),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          for (Category category in _categories)
-            Padding(
-                padding: const EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
-                  top: 15,
-                  bottom: 0,
-                ),
-                child: Container(
-                    height: 125,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(0),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(children: [
+              for (Category category in _categories)
+                Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      right: 15.0,
+                      top: 15,
+                      bottom: 0,
                     ),
-                    child: TextButton(
-                        onPressed: () {
-                          openDialg(category);
-                        },
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                category.getName(),
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                category.getPermission()
-                                    ? "Permission: Public"
-                                    : "Permission:Private",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 10),
-                              ),
-                            )
-                          ],
-                        ))))
-        ]),
+                    child: Container(
+                        height: 125,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: TextButton(
+                            onPressed: () {
+                              openDialg(category);
+                            },
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    category.getName(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 25),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    category.getPermission()
+                                        ? "Permission: Public"
+                                        : "Permission:Private",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
+                                )
+                              ],
+                            ))))
+            ]),
+          ),
+          if (_isFloatingScreenOpen) _buildFloatingScreen(),
+        ],
       ),
     );
   }
@@ -202,6 +212,89 @@ class _HomePage extends State<HomePage> {
   void cancel() {
     Navigator.of(context).pop();
   }
+
+  void _openPopUp() {
+    setState(() {
+      _isFloatingScreenOpen = true;
+    });
+  }
+  
+  Widget _buildFloatingScreen() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _isFloatingScreenOpen = false;
+              });
+            },
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 60,
+            color: Colors.grey[200],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Join'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextField(
+                                onChanged: (value) {
+                                  _enteredValue = value;
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter a sequence of numbers',
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                child: Text('Save'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    setState(() {
+                      _isFloatingScreenOpen = false;
+                    });
+                  },
+                  child: Icon(Icons.people),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Handle Create icon press
+                    setState(() {
+                      _isFloatingScreenOpen = false;
+                    });
+                  },
+                  child: Icon(Icons.create),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 
   void create(Category category) async {
     if (await createRoom(category)) {
