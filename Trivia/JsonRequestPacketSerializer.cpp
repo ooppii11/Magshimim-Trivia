@@ -88,7 +88,7 @@ Buffer Serializer::serializeResponse(const getPersonalStatsResponse& response)
 {
 	Buffer temp;
 	json data;
-	data["UserStatistics"] = response.statistics;
+	data["statistics"] = response.statistics;
 	temp.header = response.status;
 	temp.message = data.dump();
 	return temp;

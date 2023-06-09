@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Room.h"
+#include "IDatabase.h"
 #include <map>
 #include <algorithm>
 
@@ -12,9 +13,10 @@ enum ResponseCodes {
 	GET_ROOMS_RESPONSE_CODE,
 	GET_PLAYERS_IN_ROOM_RESPONSE_CODE,
 	HIGH_SCORE_RESPONSE_CODE,
-	PERSONAL_STATS_RESPONSE_CODE,
 	GET_PUBLIC_CATEGORIES_RESPONSE_CODE,
 	GET_PRIVATE_CATEGORIES_RESPONSE_CODE,
+	PERSONAL_STATS_RESPONSE_CODE,
+	GET_USER_HISTORY_RESPONSE_CODE,
 	JOIN_ROOM_RESPONSE_CODE,
 	CREATE_ROOM_RESPONSE_CODE,
 	ADD_CATEGORIE_RESPONSE_CODE,
@@ -83,21 +85,28 @@ typedef struct getHighScoreResponse
 typedef struct getPersonalStatsResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	std::map<std::string, int> statistics;
 	getPersonalStatsResponse() : status(PERSONAL_STATS_RESPONSE_CODE) {}
 }getPersonalStatsResponse;
+//
+typedef struct getUserHistory
+{
+	unsigned int status;
+	std::vector<History> history;
+	getUserHistory() : status(GET_USER_HISTORY_RESPONSE_CODE) {}
+}getUserHistory;
 
 typedef struct getPublicCategoriesResponse
 {
 	unsigned int status;
-	std::vector<std::pair<std::string, int>> publicCategories;
+	std::map<int, std::string> publicCategories;
 	getPublicCategoriesResponse() : status(GET_PUBLIC_CATEGORIES_RESPONSE_CODE) {}
 }getPublicCategoriesResponse;
 
 typedef struct getPrivateCategoriesResponse
 {
 	unsigned int status;
-	std::vector<std::pair<std::string, int>> PrivateCategories;
+	std::map<int, std::string> PrivateCategories;
 	getPrivateCategoriesResponse() : status(GET_PRIVATE_CATEGORIES_RESPONSE_CODE) {}
 }getPrivateCategoriesResponse;
 

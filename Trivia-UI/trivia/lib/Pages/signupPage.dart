@@ -3,7 +3,7 @@ import 'package:trivia/Pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class SignupPage extends StatefulWidget {
@@ -64,6 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -98,13 +99,13 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async {
-                    this._socketService.sendMessage(Message(1, {
+                    _socketService.sendMessage(Message(1, {
                           "username": usernameController.text,
-                          "password": "passwordController.text",
+                          "password": passwordController.text,
                           "email": emailController.text
                         }));
                     final Message receivedMessage =
-                        await this._socketService.receiveMessage();
+                        await _socketService.receiveMessage();
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
@@ -114,7 +115,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       );
-                    } else {
+                    } /*else {
                       Fluttertoast.showToast(
                         msg: "Login error",
                         toastLength: Toast.LENGTH_SHORT,
@@ -124,6 +125,7 @@ class _SignupPageState extends State<SignupPage> {
                         fontSize: 16.0,
                       );
                     }
+                  },*/
                   },
                   child: const Text(
                     'SginUp',

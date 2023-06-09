@@ -5,7 +5,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/ForgotPasswordPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/message.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -98,13 +99,14 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
+                  
                   onPressed: () async {
-                    this._socketService.sendMessage(Message(2, {
+                    _socketService.sendMessage(Message(2, {
                           "username": usernameController.text,
                           "password": passwordController.text
                         }));
                     final Message receivedMessage =
-                        await this._socketService.receiveMessage();
+                        await _socketService.receiveMessage();
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       );
-                    } else {
+                    } /*else {
                       Fluttertoast.showToast(
                         msg: "Login error",
                         toastLength: Toast.LENGTH_SHORT,
@@ -124,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 16.0,
                       );
                     }
+                  },*/
                   },
                   child: Text(
                     'Login',
