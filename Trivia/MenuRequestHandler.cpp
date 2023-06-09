@@ -149,7 +149,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 	JoinRoomRequest request;
 	RequestResult result;	
 
-	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
+	request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
 	this->_roomManager.getRoom(request.roomId).addUser(this->_user);
 	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(JoinRoomResponse());
