@@ -134,6 +134,17 @@ Buffer Serializer::serializeResponse(const RemoveQuestionResponse& response)
 	return Serializer::setStatus(response);
 }
 
+Buffer Serializer::serializeResponse(const getUserHistory& response)
+{
+	Buffer temp;
+	json data;
+	data["History"] = Serializer::vectorToString(response.history);
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+
 Buffer Serializer::serializeResponse(const CloseRoomResponse& response)
 {
 	return Serializer::setStatus(response);
