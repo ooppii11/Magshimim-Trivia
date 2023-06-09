@@ -22,17 +22,35 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
+  late FToast fToast;
+
   _LoginPageState(this._socketService);
 
-  void showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text("Login Error"),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  void errorToast(String content, int sconds) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.redAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.error),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(content),
+        ],
       ),
     );
+    fToast.showToast(child: toast, toastDuration: Duration(seconds: sconds));
   }
 
   @override
@@ -64,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -98,20 +117,13 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
-                  
                   onPressed: () async {
-                    /*
-                    this._socketService.sendMessage(Message(2, {
-                          "username": usernameController.text,
-                          "password": passwordController.text
-                        }));
-                        */
-                    this._socketService.sendMessage(Message(2, {
-                          "username": "knhhh",
-                          "password": "passwordController.text"
-                        }));
+                    _socketService.sendMessage(Message(2, {
+                      "username": usernameController.text,
+                      "password": passwordController.text
+                    }));
                     final Message receivedMessage =
-                        await this._socketService.receiveMessage();
+                        await _socketService.receiveMessage();
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
@@ -122,14 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     } else {
-                      Fluttertoast.showToast(
-                        msg: "Login error",
-                        toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
+                      errorToast("Login error", 2);
                     }
                   },
                   child: Text(

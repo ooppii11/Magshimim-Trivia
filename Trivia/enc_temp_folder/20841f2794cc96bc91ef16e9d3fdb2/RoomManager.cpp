@@ -20,6 +20,7 @@ unsigned int RoomManager::createRoomId()
 	{
 		id = 0;
 		auto hshed = hasher(this->_rooms.size() + i);
+		unsigned int X = (unsigned int)std::pow(2, (sizeof(unsigned int) * 8));
 		id = (unsigned int)hshed % ((unsigned int)std::pow(2, (sizeof(unsigned int) * 8)) -1);
 		i++;
 	} while (this->alreadyExists(id));

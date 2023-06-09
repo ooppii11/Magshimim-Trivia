@@ -22,29 +22,30 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   final SocketService _socketService;
   _LeaderBoardPage(this._socketService)
   {
-    _leaderboardScores = [];
     getUsersStatistic();
   }
 
   void getUsersStatistic() async{
+    _leaderboardScores = [];
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 5) {
-      Map<String, int> UsersScoreMap = receivedMessage.getData()["HighScores"];
-      UsersScoreMap.forEach((key, value) { 
-        _leaderboardScores.add(User(key, value));
+      Map<String, dynamic> UsersScoreMap = receivedMessage.getData()["HighScores"];
+      for(String key in UsersScoreMap.keys)
+      {
+        _leaderboardScores.add(User(key, UsersScoreMap[key]));
+        setState(() {
+        _leaderboardScores;
         });
-      /*
-      setState(() {
-        _leaderboardScores = receivedMessage.getData()["users"];
-      });
-      */
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
     }
   }
 
    void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       setState(() {
+        //add a toast here tgat says "updating leaderboard"
         getUsersStatistic();
       });
     });
@@ -103,27 +104,32 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               }
             }),
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.black,
-                      size: 26.0,
-                    ),
-                    onPressed: () {
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.black,
+                    size: 26.0,
+                  ),
+                  onPressed: () async{
+                    _socketService.sendMessage(Message(3, {}));
+                    final Message response = await _socketService.receiveMessage();
+                    if(response.getCode() == 2)
+                    {
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginPage(
-                                    socketService: widget.socketService,
-                                  )));
-                    }),
-              ),
-            ]),
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => LoginPage(
+                                  socketService: widget.socketService,
+                                )));
+                    }
+                  }),
+            ),
+          ]),
         body: SingleChildScrollView(
             child: Center(
                 child: Column(

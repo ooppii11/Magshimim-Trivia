@@ -160,6 +160,24 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 {
 	RequestResult result;
+	CreateRoomRequest request;
+	RoomData roomData;
+	CreateRoomResponse response;
+
+	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
+	roomData.categorieId = request.categorieId;
+	roomData.maxPlayers = request.maxUsers;
+	roomData.name = request.roomName;
+	roomData.numOfQuestionsInGame= request.questionCount;
+	roomData.timePerQuestion = request.answerTimeout;
+	roomData.isActive = false;
+
+	response.roomId  =this->_roomManager.createRoom(this->_user, roomData);
+	response.status = false;
+	
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(response);
+
 	return result;
 }
 

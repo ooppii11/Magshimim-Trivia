@@ -21,7 +21,9 @@
 #define PASSWORD "PASSWORD"
 #define ID "ID" 
 #define NAME "NAME"
+#define USERNAME "USERNAME"
 #define PERMISSION "PERMISSION"
+#define USERNAME "USERNAME"
 
 
 class SqliteDatabase : public IDatabase
@@ -39,8 +41,8 @@ public:
 	void addNewCategory(Category category, const std::string& username);
 	bool doesPublicCategoryExist(std::string categoryName) const;
 	bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const;
-	std::vector<std::pair<std::string, int>> getPublicCategories() const;
-	std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const;
+	std::map<int, std::string> getPublicCategories() const;
+	std::map<int, std::string> getPrivagteCategories(const std::string& username) const;
 	void deleteCategory(int categoryId, const std::string& username);
 
 	// Questions:
@@ -60,6 +62,7 @@ public:
 	int getNumOfPlayerGames(std::string username) const;
 	int getPlayerScore(std::string username) const;
 	std::map<std::string, int> getHighScores(int numberOfUsers) const;
+	void createStatistics(int userId);
 
 private:
 	sqlite3* _db;
@@ -85,5 +88,5 @@ private:
 	static int questionsCollback(void* data, int argc, char** argv, char** azColName);
 	static int historiesCollback(void* data, int argc, char** argv, char** azColName);
 	static int scoreCollback(void* data, int argc, char** argv, char** azColName);
-	static int categoiesCollback(void* data, int argc, char** argv, char** azColName);
+	static int categoriesCollback(void* data, int argc, char** argv, char** azColName);
 };

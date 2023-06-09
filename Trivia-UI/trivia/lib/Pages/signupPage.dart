@@ -21,8 +21,29 @@ class _SignupPageState extends State<SignupPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
+  late FToast fToast;
 
   _SignupPageState(this._socketService);
+  void errorToast(String content, int sconds) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.redAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.error),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(content),
+        ],
+      ),
+    );
+    fToast.showToast(child: toast, toastDuration: Duration(seconds: sconds));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +85,7 @@ class _SignupPageState extends State<SignupPage> {
                 bottom: 0,
               ),
               child: TextField(
+                controller: passwordController,
                 obscureText: !_showPasswordNotifier.value,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -98,13 +120,13 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () async {
-                    this._socketService.sendMessage(Message(1, {
-                          "username": usernameController.text,
-                          "password": "passwordController.text",
-                          "email": emailController.text
-                        }));
+                    _socketService.sendMessage(Message(1, {
+                      "username": usernameController.text,
+                      "password": passwordController.text,
+                      "email": emailController.text
+                    }));
                     final Message receivedMessage =
-                        await this._socketService.receiveMessage();
+                        await _socketService.receiveMessage();
                     if (receivedMessage.getCode() != 99) {
                       Navigator.pushReplacement(
                         context,
@@ -115,14 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       );
                     } else {
-                      Fluttertoast.showToast(
-                        msg: "Login error",
-                        toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
+                      errorToast("Sigunp error", 2);
                     }
                   },
                   child: const Text(

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:trivia/Pages/roomPage.dart';
+import 'package:trivia/components/increment_decrement_button.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
@@ -10,7 +12,9 @@ import 'package:trivia/message.dart';
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 7;
+int GET_CATEGORIES_CODE = 6;
+int CREATE_ROOM_REQUEST_CODE = 12;
+int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -23,7 +27,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final SocketService _socketService;
-  List<Category> _categories = [];
+  final List<Category> _categories = [];
+  late TextEditingController maxNumberOfPlayers;
+  late TextEditingController numberOfQuestions;
+  late TextEditingController maxTime;
+
+  _HomePage(this._socketService);
+
+  @override
+  void initState() {
+    maxNumberOfPlayers = TextEditingController();
+    numberOfQuestions = TextEditingController();
+    maxTime = TextEditingController();
+
+    maxNumberOfPlayers.text = "2";
+    numberOfQuestions.text = "1";
+    maxTime.text = "1";
+
+    super.initState();
+    getCategories().then((result) {
+      setState(() {});
+    });
+  }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
@@ -31,27 +56,9 @@ class _HomePage extends State<HomePage> {
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
-      print("object");
-      this
-          ._categories
-          .add(Category(categoryString[0], categoryString[1], true));
+      _categories.add(Category(categoryString[1], categoryString[0], true));
     }
   }
-
-  _HomePage(this._socketService) {
-    _categories = [];
-    getCategories();
-  }
-  @override
-  void initState() {
-    super.initState();
-    getCategories().then((result) {
-      setState(() {});
-    });
-  }
-
-  
-  
 
   @override
   Widget build(BuildContext context) {
@@ -105,19 +112,24 @@ class _HomePage extends State<HomePage> {
                     color: Colors.black,
                     size: 26.0,
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => LoginPage(
-                                  socketService: widget.socketService,
-                                )));
+                  onPressed: () async {
+                    _socketService.sendMessage(Message(3, {}));
+                    final Message response =
+                        await _socketService.receiveMessage();
+                    if (response.getCode() == 2) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => LoginPage(
+                                    socketService: widget.socketService,
+                                  )));
+                    }
                   }),
             ),
           ]),
       body: SingleChildScrollView(
         child: Column(children: [
-          for (Category category in this._categories)
+          for (Category category in _categories)
             Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,
@@ -133,7 +145,9 @@ class _HomePage extends State<HomePage> {
                       borderRadius: BorderRadius.circular(0),
                     ),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          openDialg(category);
+                        },
                         child: Column(
                           children: [
                             Padding(
@@ -159,5 +173,61 @@ class _HomePage extends State<HomePage> {
         ]),
       ),
     );
+  }
+
+  Future openDialg(Category category) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(category.getName()),
+            content: Column(children: [
+              Text("Max number of players: "),
+              IncrementDecrementButton(
+                  controller: maxNumberOfPlayers, minValue: 2),
+              Text("Number of Questions: "),
+              IncrementDecrementButton(
+                  controller: numberOfQuestions, minValue: 1),
+              Text("Max timr per Questions: "),
+              IncrementDecrementButton(controller: maxTime, minValue: 1),
+            ]),
+            actions: [
+              TextButton(
+                  onPressed: (() {
+                    create(category);
+                  }),
+                  child: Text("CREATE")),
+              TextButton(onPressed: cancel, child: Text("CANCEL")),
+            ],
+          ));
+
+  void cancel() {
+    Navigator.of(context).pop();
+  }
+
+  void create(Category category) async {
+    if (await createRoom(category)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: true,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<bool> createRoom(Category category) async {
+    Map<String, dynamic> data = {
+      "categorieId": category.getId(),
+      "maxUsers": int.parse(maxNumberOfPlayers.text),
+      "questionCount": int.parse(numberOfQuestions.text),
+      "answerTimeout": int.parse(maxTime.text),
+      "roomName": ""
+    };
+    _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
+    final Message response = await _socketService.receiveMessage();
+    print(response.getCode());
+    return response.getCode() != ERROR_CODE;
   }
 }

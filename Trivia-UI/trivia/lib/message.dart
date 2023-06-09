@@ -4,11 +4,12 @@ import 'dart:convert';
 class Message {
   late int _code;
   late Map<String, dynamic> _data;
+  //late dynamic _data;
 
   Message(this._code, this._data);
   Message.BytesConstructor(Uint8List rawData) {
-    this._code = 0;
-    this._data = {};
+    _code = 0;
+    _data = {};
 
     int messageLength = 0;
 
@@ -21,18 +22,23 @@ class Message {
       for (int i = 4; i < messageLength + 4; i++) {
         jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
       }
-      this._data = jsonDecode(jsonString);
+      _data = jsonDecode(jsonString);
     }
   }
 
   int getCode() {
     return _code;
   }
-
+  
   Map<String, dynamic> getData() {
     return _data;
   }
-
+  
+  /*
+  dynamic getData() {
+    return _data;
+  }
+  */
   Uint8List encode() {
     Uint8List message;
     Uint8List dataLength = Uint8List(4);
