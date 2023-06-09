@@ -6,6 +6,7 @@ import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/history.dart';
 import 'package:trivia/statistics.dart';
+import 'package:trivia/Pages/roomPage.dart';
 
 class UserPage extends StatefulWidget {
   final SocketService socketService;
@@ -255,6 +256,10 @@ class _UserPage extends State<UserPage> {
             if(value == 1)
             {
               _openPopUp();
+              if(_enteredValue != '')
+              {
+                joinRoom();
+              }
             }
             if (value == 2) {
               Navigator.pushReplacement(
@@ -360,5 +365,24 @@ class _UserPage extends State<UserPage> {
         ),
       ],
     );
+  }
+
+  void joinRoom() async {
+    _socketService.sendMessage(Message(11, {"roomId": _enteredValue}));
+    final Message response = await _socketService.receiveMessage();
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      //toast the error
+    }
   }
 }

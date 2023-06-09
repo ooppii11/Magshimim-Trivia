@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
+import 'package:trivia/Pages/roomPage.dart';
 import 'dart:async';
 import 'package:trivia/message.dart';
 
@@ -97,6 +98,10 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               if(value == 1)
               {
                   _openPopUp();
+                  if(_enteredValue != '')
+                  {
+                    joinRoom();
+                  }
               }
               if (value == 3) {
                 Navigator.pushReplacement(
@@ -289,5 +294,24 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
         ),
       ],
     );
+  }
+
+  void joinRoom() async {
+    _socketService.sendMessage(Message(11, {"roomId": _enteredValue}));
+    final Message response = await _socketService.receiveMessage();
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      //toast the error
+    }
   }
 }

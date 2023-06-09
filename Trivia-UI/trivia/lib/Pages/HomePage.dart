@@ -94,6 +94,10 @@ class _HomePage extends State<HomePage> {
             }
             if (value == 1) {
               _openPopUp();
+              if(_enteredValue != '')
+              {
+                joinRoom();
+              }
             }
             if (value == 2) {
               Navigator.pushReplacement(
@@ -295,6 +299,24 @@ class _HomePage extends State<HomePage> {
     );
   }
 
+  void joinRoom() async {
+    _socketService.sendMessage(Message(11, {"roomId": _enteredValue}));
+    final Message response = await _socketService.receiveMessage();
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      //toast the error
+    }
+  }
 
   void create(Category category) async {
     if (await createRoom(category)) {
@@ -304,6 +326,7 @@ class _HomePage extends State<HomePage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: true,
+            //pass the room id
           ),
         ),
       );
