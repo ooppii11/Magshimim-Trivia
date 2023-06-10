@@ -2,6 +2,14 @@
 
 std::ostream& operator<<(std::ostream& os, const History& data)
 {
-	//example:
-	return os << "{" << "rank: " << data.rank << "}";;
+	return os 
+		<< "{" 
+		<< "CategoryName: " << "" << ", " 
+		<< "CategoryId: " << data.categoryId << ", "
+		<< "UserRank: " << data.rank << ", "
+		<< "CorrectAnswers: " << data.correctAnswers << ", "
+		<< "TotalAnswers: " << data.answers << ", "
+		<< "AvergeTime: " << data.avergeTime << ","
+		<< "CreationDate: " << data.creationDate
+		<< "}";;
 }

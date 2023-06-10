@@ -22,8 +22,8 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManage
 	this->_handleRequestFunctions[REMOVE_CATEGORIE_REQUEST_CODE] = &MenuRequestHandler::deleteCategory;
 	this->_handleRequestFunctions[ADD_QUESTION_REQUEST_CODE] = &MenuRequestHandler::addQuestion;
 	this->_handleRequestFunctions[REMOVE_QUESTION_REQUEST_CODE] = &MenuRequestHandler::removeQuestion;
-	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPrivateCategories;
-	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPublicCategories;
+	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_REQUEST_CODE] = &MenuRequestHandler::getPrivateCategories;
+	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_REQUEST_CODE] = &MenuRequestHandler::getPublicCategories;
 }
 
 
