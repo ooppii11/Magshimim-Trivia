@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage(socketService);
 }
 
-class _HomePage extends State<HomePage> {
+class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   final SocketService _socketService;
   final List<Category> _categories = [];
   late TextEditingController maxNumberOfPlayers;
@@ -45,6 +45,7 @@ class _HomePage extends State<HomePage> {
     maxTime.text = "1";
 
     super.initState();
+
     getCategories().then((result) {
       setState(() {});
     });
@@ -62,115 +63,142 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person, color: Colors.grey[600]), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.leaderboard_rounded), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.blue,
-                ),
-                label: ''),
-          ],
-          onTap: (value) {
-            if (value == 0) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => UserPage(
-                    socketService: widget.socketService,
-                  ),
-                ),
-              );
-            }
-            if (value == 2) {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => LeaderBoardPage(
-                      socketService: widget.socketService,
-                    ),
-                  ));
-            }
-          }),
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.logout,
-                    color: Colors.black,
-                    size: 26.0,
-                  ),
-                  onPressed: () async {
-                    _socketService.sendMessage(Message(3, {}));
-                    final Message response =
-                        await _socketService.receiveMessage();
-                    if (response.getCode() == 2) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginPage(
-                                    socketService: widget.socketService,
-                                  )));
-                    }
-                  }),
-            ),
-          ]),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          for (Category category in _categories)
-            Padding(
-                padding: const EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
-                  top: 15,
-                  bottom: 0,
-                ),
-                child: Container(
-                    height: 125,
-                    width: 250,
-                    decoration: BoxDecoration(
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person, color: Colors.grey[600]),
+                    label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.leaderboard_rounded), label: ''),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
                       color: Colors.blue,
-                      borderRadius: BorderRadius.circular(0),
                     ),
-                    child: TextButton(
-                        onPressed: () {
-                          openDialg(category);
-                        },
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                category.getName(),
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
-                              ),
+                    label: ''),
+              ],
+              onTap: (value) {
+                if (value == 0) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => UserPage(
+                        socketService: widget.socketService,
+                      ),
+                    ),
+                  );
+                }
+                if (value == 2) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LeaderBoardPage(
+                          socketService: widget.socketService,
+                        ),
+                      ));
+                }
+              }),
+          appBar: AppBar(
+              bottom: TabBar(
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    25.0,
+                  ),
+                  color: Colors.green,
+                ),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                tabs: const [
+                  Tab(
+                    icon: Icon(Icons.category),
+                  ),
+                  Tab(
+                    text: 'Rooms',
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.logout,
+                        color: Colors.black,
+                        size: 26.0,
+                      ),
+                      onPressed: () async {
+                        _socketService.sendMessage(Message(3, {}));
+                        final Message response =
+                            await _socketService.receiveMessage();
+                        if (response.getCode() == 2) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => LoginPage(
+                                        socketService: widget.socketService,
+                                      )));
+                        }
+                      }),
+                ),
+              ]),
+          body: TabBarView(
+            children: [
+              SingleChildScrollView(
+                  child: Column(children: [
+                for (Category category in _categories)
+                  Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        right: 15.0,
+                        top: 15,
+                        bottom: 0,
+                      ),
+                      child: Container(
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(
+                              25.0,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                category.getPermission()
-                                    ? "Permission: Public"
-                                    : "Permission:Private",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 10),
-                              ),
-                            )
-                          ],
-                        ))))
-        ]),
+                          ),
+                          child: TextButton(
+                              onPressed: () {
+                                openDialg(category);
+                              },
+                              child: Column(children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Text(
+                                    category.getName(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 25),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(
+                                    category.getPermission()
+                                        ? "Permission: Public"
+                                        : "Permission:Private",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
+                                )
+                              ]))))
+              ])),
+              Icon(Icons.directions_car),
+            ],
+          ),
+        ),
       ),
     );
   }
