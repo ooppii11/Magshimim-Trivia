@@ -40,7 +40,7 @@ class _RoomsPage extends State<RoomsPage> {
     });
   }
 
-  Future<bool> joinRoom(Room room) async {}
+  Future<bool> joinRoom(Room room) async {return true;}
 
   @override
   Widget build(BuildContext context) {
