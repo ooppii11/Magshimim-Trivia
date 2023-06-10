@@ -8,9 +8,10 @@
 #include "Request.h"
 #include "Response.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager):
-	_user(user), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory), _categoriesManager(categoriesManager)
+MenuRequestHandler::MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager):
+	_user(user), _historyManager(historyManager), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory), _categoriesManager(categoriesManager)
 {
+	this->_handleRequestFunctions[GET_USER_HISTORY_REQUEST_CODE] = &MenuRequestHandler::getUserHistory;
 	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &MenuRequestHandler::signout;
 	this->_handleRequestFunctions[GET_ROOMS_REQUEST_CODE] = &MenuRequestHandler::getRooms;
 	this->_handleRequestFunctions[GET_PLAYERS_IN_ROOM_REQUEST_CODE] = &MenuRequestHandler::getPlayersInRoom;
@@ -29,7 +30,8 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManage
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo requestInfo)
 {
-	return LOGOUT_REQUEST_CODE == requestInfo.id ||
+	return GET_USER_HISTORY_REQUEST_CODE == requestInfo.id || 
+		LOGOUT_REQUEST_CODE == requestInfo.id ||
 		GET_ROOMS_REQUEST_CODE == requestInfo.id ||
 		GET_PLAYERS_IN_ROOM_REQUEST_CODE == requestInfo.id ||
 		HIGH_SCORE_REQUEST_CODE == requestInfo.id ||
@@ -273,6 +275,19 @@ RequestResult MenuRequestHandler::getPrivateCategories(RequestInfo requestInfo)
 
 	reponse.status = GET_PRIVATE_CATEGORIES_RESPONSE_CODE;
 	reponse.PrivateCategories = this->_categoriesManager.getPrivagteCategories(this->_user.getUsername());
+
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(reponse);
+
+	return result;
+}
+
+RequestResult MenuRequestHandler::getUserHistory(RequestInfo requestInfo)
+{
+	RequestResult result;
+	struct getUserHistory reponse;
+
+	reponse.history = this->_historyManager.getUserLastFiveHistory(this->_user.getUsername());
 
 	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(reponse);
