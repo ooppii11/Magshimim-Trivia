@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:trivia/Pages/roomPage.dart';
-import 'package:trivia/components/increment_decrement_button.dart';
+import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
 import 'package:trivia/Pages/leaderBoardPage.dart';
-import 'package:trivia/category.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
@@ -126,7 +124,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
           body: TabBarView(
             children: [
               CategoriesPage(socketService: _socketService),
-              Icon(Icons.directions_car),
+              RoomsPage(socketService: _socketService)
             ],
           ),
         ),
