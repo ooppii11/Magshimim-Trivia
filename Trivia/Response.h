@@ -2,6 +2,10 @@
 #include <string>
 #include <vector>
 #include "Room.h"
+#include "IDatabase.h"
+#include <map>
+#include <algorithm>
+
 
 enum ResponseCodes {
 	SIGNUP_AND_LOGIN_RESPONSE_CODE = 1,
@@ -9,13 +13,20 @@ enum ResponseCodes {
 	GET_ROOMS_RESPONSE_CODE,
 	GET_PLAYERS_IN_ROOM_RESPONSE_CODE,
 	HIGH_SCORE_RESPONSE_CODE,
+	GET_PUBLIC_CATEGORIES_RESPONSE_CODE,
+	GET_PRIVATE_CATEGORIES_RESPONSE_CODE,
 	PERSONAL_STATS_RESPONSE_CODE,
+	GET_USER_HISTORY_RESPONSE_CODE,
 	JOIN_ROOM_RESPONSE_CODE,
 	CREATE_ROOM_RESPONSE_CODE,
 	ADD_CATEGORIE_RESPONSE_CODE,
 	REMOVE_CATEGORIE_RESPONSE_CODE,
 	ADD_QUESTION_RESPONSE_CODE,
 	REMOVE_QUESTION_RESPONSE_CODE,
+	CLOSE_ROOM_RESPONSE_CODE,
+	START_GAME_RESPONSE_CODE,
+	GET_ROOM_STATE_RESPONSE_CODE,
+	LEAVE_ROOM_RESPONSE_CODE,
 
 	ERROR_RESPONSE_CODE = 99
 };
@@ -67,25 +78,48 @@ typedef struct GetPlayersInRoomResponse
 typedef struct getHighScoreResponse
 {
 	unsigned int status;
-	std::vector<int> statistics;
+	std::map<std::string, int> statistics;
 	getHighScoreResponse() : status(HIGH_SCORE_RESPONSE_CODE) {}
 }getHighScoreResponse;
 
 typedef struct getPersonalStatsResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	std::map<std::string, int> statistics;
 	getPersonalStatsResponse() : status(PERSONAL_STATS_RESPONSE_CODE) {}
 }getPersonalStatsResponse;
+//
+typedef struct getUserHistory
+{
+	unsigned int status;
+	std::vector<History> history;
+	getUserHistory() : status(GET_USER_HISTORY_RESPONSE_CODE) {}
+}getUserHistory;
+
+typedef struct getPublicCategoriesResponse
+{
+	unsigned int status;
+	std::map<int, std::string> publicCategories;
+	getPublicCategoriesResponse() : status(GET_PUBLIC_CATEGORIES_RESPONSE_CODE) {}
+}getPublicCategoriesResponse;
+
+typedef struct getPrivateCategoriesResponse
+{
+	unsigned int status;
+	std::map<int, std::string> PrivateCategories;
+	getPrivateCategoriesResponse() : status(GET_PRIVATE_CATEGORIES_RESPONSE_CODE) {}
+}getPrivateCategoriesResponse;
 
 typedef struct JoinRoomResponse : OnlyStatus
 {
 	JoinRoomResponse() : OnlyStatus(JOIN_ROOM_RESPONSE_CODE) {}
 }JoinRoomResponse;
 
-typedef struct CreateRoomResponse : OnlyStatus
+typedef struct CreateRoomResponse 
 {
-	CreateRoomResponse() : OnlyStatus(CREATE_ROOM_RESPONSE_CODE) {}
+	unsigned int status;
+	unsigned int roomId;
+	CreateRoomResponse() : status(CREATE_ROOM_RESPONSE_CODE) {}
 }CreateRoomResponse;
 
 typedef struct AddCategorieResponse : OnlyStatus
@@ -107,3 +141,28 @@ typedef struct RemoveQuestionResponse : OnlyStatus
 {
 	RemoveQuestionResponse() : OnlyStatus(REMOVE_QUESTION_RESPONSE_CODE) {}
 }removeQuestionResponse;
+
+typedef struct CloseRoomResponse : OnlyStatus
+{
+	CloseRoomResponse() : OnlyStatus(CLOSE_ROOM_RESPONSE_CODE) {}
+}CloseRoomResponse;
+
+typedef struct StartGameResponse : OnlyStatus
+{
+	StartGameResponse() : OnlyStatus(START_GAME_RESPONSE_CODE) {}
+}StartGameResponse;
+
+typedef struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	std::vector<std::string> players;
+	unsigned int questionCount;
+	time_t answerTimeout;
+	GetRoomStateResponse() : status(GET_ROOM_STATE_RESPONSE_CODE) {}
+}GetRoomStateResponse;
+
+typedef struct LeaveRoomResponse : OnlyStatus
+{
+	LeaveRoomResponse() : OnlyStatus(LEAVE_ROOM_RESPONSE_CODE) {}
+}LeaveRoomResponse;

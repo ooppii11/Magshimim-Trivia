@@ -87,6 +87,7 @@ CreateRoomRequest Deserializer::deserializeCreateRoomRequest(const Buffer& buffe
 		temp.maxUsers = data["maxUsers"];
 		temp.questionCount = data["questionCount"];
 		temp.answerTimeout = data["answerTimeout"];
+		temp.categorieId = data["categorieId"];
 		return temp;
 	}
 	catch (json::exception& e)

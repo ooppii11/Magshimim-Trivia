@@ -22,6 +22,8 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RoomManager& roomManage
 	this->_handleRequestFunctions[REMOVE_CATEGORIE_REQUEST_CODE] = &MenuRequestHandler::deleteCategory;
 	this->_handleRequestFunctions[ADD_QUESTION_REQUEST_CODE] = &MenuRequestHandler::addQuestion;
 	this->_handleRequestFunctions[REMOVE_QUESTION_REQUEST_CODE] = &MenuRequestHandler::removeQuestion;
+	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPrivateCategories;
+	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPublicCategories;
 }
 
 
@@ -32,6 +34,8 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo requestInfo)
 		GET_PLAYERS_IN_ROOM_REQUEST_CODE == requestInfo.id ||
 		HIGH_SCORE_REQUEST_CODE == requestInfo.id ||
 		PERSONAL_STATS_REQUEST_CODE == requestInfo.id ||
+		GET_PUBLIC_CATEGORIES_RESPONSE_CODE == requestInfo.id ||
+		GET_PRIVATE_CATEGORIES_RESPONSE_CODE == requestInfo.id ||
 		JOIN_ROOM_REQUEST_CODE == requestInfo.id ||
 		CREATE_ROOM_REQUEST_CODE == requestInfo.id ||
 		ADD_CATEGORIE_REQUEST_CODE == requestInfo.id ||
@@ -64,12 +68,12 @@ RequestResult MenuRequestHandler::wrapperHandleRequest(function function, Reques
 	catch (messageException& e)
 	{
 		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+		result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
 	catch (...)
 	{
 		result.response = Serializer::serializeResponse(ErrorResponse());
-		result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+		result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
 	return result;
 }
@@ -78,7 +82,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo requestInfo)
 {
 	RequestResult result;
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(nullptr);
 	result.response = Serializer::serializeResponse(LogoutResponse());
 	
 	return result;
@@ -91,7 +95,7 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo requestInfo)
 	
 	response.rooms = this->_roomManager.getRooms();
 	response.status = GET_ROOMS_RESPONSE_CODE;
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
 	return result;
@@ -108,7 +112,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 	room = this->_roomManager.getRoom(request.roomId);
 	response.rooms = room.getAllUsers();
 	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
 	return result;
@@ -121,7 +125,7 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo requestInfo)
 
 	response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
 	response.status = PERSONAL_STATS_RESPONSE_CODE;
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
 	return result;
@@ -134,7 +138,7 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo requestInfo)
 	
 	response.statistics = this->_statisticsManager.getHighScore(TOP_FIVE);
 	response.status = HIGH_SCORE_RESPONSE_CODE;
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
 	return result;
@@ -147,7 +151,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 
 	request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
 	this->_roomManager.getRoom(request.roomId).addUser(this->_user);
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(JoinRoomResponse());
 	
 	return result;
@@ -156,6 +160,24 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 {
 	RequestResult result;
+	CreateRoomRequest request;
+	RoomData roomData;
+	CreateRoomResponse response;
+
+	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
+	roomData.categorieId = request.categorieId;
+	roomData.maxPlayers = request.maxUsers;
+	roomData.name = request.roomName;
+	roomData.numOfQuestionsInGame= request.questionCount;
+	roomData.timePerQuestion = request.answerTimeout;
+	roomData.isActive = false;
+
+	response.roomId  =this->_roomManager.createRoom(this->_user, roomData);
+	response.status = false;
+	
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(response);
+
 	return result;
 }
 
@@ -171,7 +193,7 @@ RequestResult MenuRequestHandler::createCategory(RequestInfo requestInfo)
 	category.permission = request.permission;
 	this->_categoriesManager.addNewCategory(category, this->_user.getUsername());
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(CreateRoomResponse());
 
 	return result;
@@ -185,7 +207,7 @@ RequestResult MenuRequestHandler::deleteCategory(RequestInfo requestInfo)
 	request = Deserializer::removeCategorieFromUser(requestInfo.buffer);
 	this->_categoriesManager.deleteCategory(request.categorieId, this->_user.getUsername());
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(RemoveCategorieResponse());
 
 	return result;
@@ -210,7 +232,7 @@ RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
 
 	this->_categoriesManager.addNewQuestion(request.categorieId, this->_user.getUsername(), question);
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(AddQuestionResponse());
 
 	return result;
@@ -224,8 +246,36 @@ RequestResult MenuRequestHandler::removeQuestion(RequestInfo requestInfo)
 	request = Deserializer::removeQuestionFromUserCategorie(requestInfo.buffer);
 	this->_categoriesManager.deleteQuestion(request.categorieId, this->_user.getUsername(), request.questionName);
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this);
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(RemoveQuestionResponse());
+
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPublicCategories(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getPublicCategoriesResponse reponse;
+
+	reponse.status = GET_PUBLIC_CATEGORIES_RESPONSE_CODE;
+	reponse.publicCategories = this->_categoriesManager.getPublicCategories();
+
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(reponse);
+
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPrivateCategories(RequestInfo requestInfo)
+{
+	RequestResult result;
+	getPrivateCategoriesResponse reponse;
+
+	reponse.status = GET_PRIVATE_CATEGORIES_RESPONSE_CODE;
+	reponse.PrivateCategories = this->_categoriesManager.getPrivagteCategories(this->_user.getUsername());
+
+	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(reponse);
 
 	return result;
 }

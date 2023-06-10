@@ -124,6 +124,7 @@ RequestInfo Communicator::recvMessage(SOCKET sock)
 	buffer[dataLength] = 0;
 	recv(sock, buffer, dataLength, 0);
 	message.buffer.message = std::string(buffer);
+	message.buffer.header = message.id;
 	delete[] buffer;
 
 	return message;

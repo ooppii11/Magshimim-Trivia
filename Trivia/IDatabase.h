@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <map>
+#include "History.h"
 
 
 #define PUBLIC true 
@@ -18,15 +20,6 @@ typedef struct Question
 } Question;
 
 
-typedef struct History
-{
-	int categoryId;
-	int rank;
-	double avergeTime;
-	int answers;
-	int correctAnswers;
-	time_t creationDate;
-} History;
 
 
 typedef struct Category
@@ -50,8 +43,8 @@ public:
 	virtual void addNewCategory(Category category, const std::string& username) = 0;
 	virtual bool doesPublicCategoryExist(std::string categoryName) const = 0;
 	virtual bool doesPrivateCategoryExist(const std::string& categoryName, const std::string& username) const = 0;
-	virtual std::vector<std::pair<std::string, int>> getPublicCategories() const = 0;
-	virtual std::vector<std::pair<std::string, int>> getPrivagteCategories(const std::string& username) const = 0;
+	virtual std::map<int, std::string> getPublicCategories() const = 0;
+	virtual std::map<int, std::string> getPrivagteCategories(const std::string& username) const = 0;
 	virtual void deleteCategory(int categoryId, const std::string& username) = 0;
 
 	
@@ -66,12 +59,13 @@ public:
 	virtual std::vector<History> getCategoryHistory(int categoryId) const = 0;
 	
 	// Statistics:
+	virtual void createStatistics(int userId) = 0;
 	virtual float getPlayerAverageAnswerTime(std::string username) const = 0;
 	virtual int getNumOfCorrectAnswers(std::string username) const = 0;
 	virtual int getNumOfTotalAnswers(std::string username) const = 0;
 	virtual int getNumOfPlayerGames(std::string username) const = 0;
 	virtual int getPlayerScore(std::string username) const = 0;
-	virtual std::vector<int> getHighScores(int numberOfUsers) const = 0;
+	virtual std::map<std::string, int> getHighScores(int numberOfUsers) const = 0;
 private:
 	virtual void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime) = 0;
 };
