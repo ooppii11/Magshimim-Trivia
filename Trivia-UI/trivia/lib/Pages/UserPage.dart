@@ -90,6 +90,7 @@ class _UserPage extends State<UserPage> {
         body: Stack(
           children: [ 
             SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Center(
                 child: Column(
                   children: [
@@ -120,27 +121,31 @@ class _UserPage extends State<UserPage> {
                             height: MediaQuery.of(context).size.height * 0.4,
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
                               child: DefaultTextStyle(
                                 style: const TextStyle(color: Colors.black),
-                                child: DataTable(
-                                  dataTextStyle: const TextStyle(color: Colors.black),
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('Statistics Name'),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    dataTextStyle: const TextStyle(color: Colors.black),
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('Statistics Name'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('User Results'),
+                                      )
+                                    ],
+                                    rows: List.generate(_statistics.length, (index) {
+                                      final statistics = _statistics[index];
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(Text(statistics.getStatisticsName())),
+                                          DataCell(Text(statistics.getScore().toString()))
+                                        ],
+                                        );
+                                      }
                                     ),
-                                    DataColumn(
-                                      label: Text('User Results'),
-                                    )
-                                  ],
-                                  rows: List.generate(_statistics.length, (index) {
-                                    final statistics = _statistics[index];
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(Text(statistics.getStatisticsName())),
-                                        DataCell(Text(statistics.getScore().toString()))
-                                      ],
-                                      );
-                                    }
                                   ),
                                 ),
                               ),
@@ -175,52 +180,56 @@ class _UserPage extends State<UserPage> {
                               ),
                             ),
                             height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width * 0.5,
+                            width: MediaQuery.of(context).size.width * 0.7,
                             child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
                               child: DefaultTextStyle(
                                 style: const TextStyle(color: Colors.black),
-                                child: DataTable(
-                                  dataTextStyle: const TextStyle(color: Colors.black),
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('Num'),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    dataTextStyle: const TextStyle(color: Colors.black),
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('Num'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Category Name'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Category Id'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('User Rank'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Num Answers'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Num Of Correct Answers'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Average Time'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Creation Date'),
+                                      ),
+                                    ],
+                                    rows: List.generate(_history.length, (index) {
+                                      final history = _history[index];
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(Text(history.getCategoryName())),
+                                          DataCell(Text(history.getCategoryId().toString())),
+                                          DataCell(Text(history.getUserRank().toString())), 
+                                          DataCell(Text(history.getTotalAnswers().toString())),
+                                          DataCell(Text(history.getCorrectAnswers().toString())),
+                                          DataCell(Text(history.getAverageTime().toString())),
+                                          DataCell(Text(history.getCreationDate().toString())),
+                                        ],
+                                        );
+                                      }
                                     ),
-                                    DataColumn(
-                                      label: Text('Category Name'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Category Id'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('User Rank'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Num Answers'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Num Of Correct Answers'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Average Time'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Creation Date'),
-                                    ),
-                                  ],
-                                  rows: List.generate(_history.length, (index) {
-                                    final history = _history[index];
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(Text(history.getCategoryName())),
-                                        DataCell(Text(history.getCategoryId().toString())),
-                                        DataCell(Text(history.getUserRank().toString())), 
-                                        DataCell(Text(history.getTotalAnswers().toString())),
-                                        DataCell(Text(history.getCorrectAnswers().toString())),
-                                        DataCell(Text(history.getAverageTime().toString())),
-                                        DataCell(Text(history.getCreationDate().toString())),
-                                      ],
-                                      );
-                                    }
                                   ),
                                 ),
                               ),
@@ -319,7 +328,7 @@ class _UserPage extends State<UserPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join'),
+                          title: Text('Join Room'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [

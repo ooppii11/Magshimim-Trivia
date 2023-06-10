@@ -32,6 +32,11 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     _leaderboardScores = [];
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
+    
+    print("data:");
+    print(receivedMessage.getData());
+    print("code:");
+    print(receivedMessage.getCode());
     if (receivedMessage.getCode() == 5) {
       Map<String, dynamic> UsersScoreMap = receivedMessage.getData()["HighScores"];
       for(String key in UsersScoreMap.keys)
@@ -50,6 +55,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
       setState(() {
         //add a toast here tgat says "updating leaderboard"
         getUsersStatistic();
+        _timer.cancel();
       });
     });
   }

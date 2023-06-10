@@ -12,7 +12,7 @@ import 'package:trivia/message.dart';
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 6;
+int GET_CATEGORIES_CODE = 7;
 int CREATE_ROOM_REQUEST_CODE = 12;
 int ERROR_CODE = 99;
 
@@ -94,6 +94,7 @@ class _HomePage extends State<HomePage> {
             }
             if (value == 1) {
               _openPopUp();
+              
               if(_enteredValue != '')
               {
                 joinRoom();
