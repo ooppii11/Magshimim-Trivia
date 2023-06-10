@@ -4,6 +4,7 @@
 #include "StatisticsManager.h"
 #include "RoomManager.h"
 #include "QuizManager.h"
+#include "HistoryManager.h"
 
 
 #define TOP_FIVE 5
@@ -17,7 +18,7 @@ class RequestHandlerFactory;
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-	MenuRequestHandler(LoggedUser& user, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager);
+	MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager);
 
 	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
@@ -29,6 +30,7 @@ private:
 	RoomManager&  _roomManager;
 	StatisticsManager&  _statisticsManager;
 	RequestHandlerFactory&  _handlerFactory;
+	HistoryManager& _historyManager;
 	QuizManager& _categoriesManager;
 	std::map<int, function> _handleRequestFunctions;
 
@@ -47,5 +49,6 @@ private:
 	RequestResult removeQuestion(RequestInfo requestInfo);
 	RequestResult getPublicCategories(RequestInfo requestInfo);
 	RequestResult getPrivateCategories(RequestInfo requestInfo);
-
+	RequestResult getUserHistory(RequestInfo requestInfo);
+	
 };
