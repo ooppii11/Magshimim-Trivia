@@ -74,7 +74,7 @@ class _RoomsPage extends State<RoomsPage> {
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
                             room.getId().toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            style: const TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
                       ]))))

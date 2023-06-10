@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _LoginPageState(this._socketService);
 
+  @override
   void initState() {
     super.initState();
     fToast = FToast();

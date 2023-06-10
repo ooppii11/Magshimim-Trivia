@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';

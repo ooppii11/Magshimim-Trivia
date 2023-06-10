@@ -328,7 +328,7 @@ class _UserPage extends State<UserPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join Room'),
+                          title: const Text('Join Room'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -337,13 +337,13 @@ class _UserPage extends State<UserPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter a sequence of numbers',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Save'),
+                                child: const Text('Save'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -357,7 +357,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.people),
+                  child: const Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -366,7 +366,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.create),
+                  child: const Icon(Icons.create),
                 ),
               ],
             ),

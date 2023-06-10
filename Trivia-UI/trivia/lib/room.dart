@@ -11,22 +11,22 @@ class Room {
       this.numOfQuestionsInGame, this.timePerQuestion, this.isActive);
 
   int getId() {
-    return this.getId();
+    return getId();
   }
 
   String getName() {
-    return this.name;
+    return name;
   }
 
   int getNumOfQuestionsInGame() {
-    return this.numOfQuestionsInGame;
+    return numOfQuestionsInGame;
   }
 
   int getTimePerQuestion() {
-    return this.timePerQuestion;
+    return timePerQuestion;
   }
 
   bool getIsActive() {
-    return this.isActive;
+    return isActive;
   }
 }

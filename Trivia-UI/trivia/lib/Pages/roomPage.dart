@@ -91,18 +91,18 @@ Widget build(BuildContext context) {
         Container(
           height: MediaQuery.of(context).size.height * 0.25,
           color: Colors.lightBlue,
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Room Name",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 "Room ID: ${roomId.toString()}",
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
@@ -110,7 +110,7 @@ Widget build(BuildContext context) {
         Expanded(
           child: Container(
             color: Colors.blue,
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Wrap(
                 spacing: 16.0,
