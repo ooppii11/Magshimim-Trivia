@@ -60,13 +60,15 @@ class _CategoriesPage extends State<CategoriesPage> {
   }
 
   void create(Category category) async {
-    if (await createRoom(category)) {
+    Message response = await createRoom(category);
+    if (response.getCode() != ERROR_CODE ) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: true,
+            roomId: int.parse(response.getData()["roomId"]),
           ),
         ),
       );
@@ -97,7 +99,7 @@ class _CategoriesPage extends State<CategoriesPage> {
     }
   }
 
-  Future<bool> createRoom(Category category) async {
+  Future<Message> createRoom(Category category) async {
     Map<String, dynamic> data = {
       "categorieId": category.getId(),
       "maxUsers": int.parse(maxNumberOfPlayers.text),
@@ -107,7 +109,8 @@ class _CategoriesPage extends State<CategoriesPage> {
     };
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
-    return response.getCode() != ERROR_CODE;
+    return response;
+    //response.getCode() != ERROR_CODE;
   }
 
   @override

@@ -386,7 +386,7 @@ class _UserPage extends State<UserPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
-            //pass the room id
+            roomId: int.parse(_enteredValue),
           ),
         ),
       );
