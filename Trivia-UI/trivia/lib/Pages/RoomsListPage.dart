@@ -2,6 +2,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
 import 'package:trivia/message.dart';
+import 'dart:convert';
 
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
@@ -25,8 +26,8 @@ class _RoomsPage extends State<RoomsPage> {
   Future<void> getRooms() async {
     _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
     final Message response = await _socketService.receiveMessage();
-
-    List<Map<String, dynamic>> data = response.getData()["Rooms"];
+    List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
+    List<Map<String, dynamic>> data = dynamicList.cast<Map<String, dynamic>>().toList();
     for (var roomData in data) {
       _rooms.add(Room(roomData["Id"], roomData["Name"], roomData["CategorieId"], roomData["MaxPlayers"],
           roomData["NumOfQuestions"], roomData["Time"], roomData["IsActive"]));
