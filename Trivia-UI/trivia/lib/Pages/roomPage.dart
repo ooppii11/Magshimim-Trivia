@@ -53,8 +53,7 @@ class _RoomPage extends State<RoomPage> {
   }
 
 
-  @override
-  @override
+@override
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
