@@ -165,6 +165,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	CreateRoomRequest request;
 	RoomData roomData;
 	CreateRoomResponse response;
+	Room room;
 
 	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
 	roomData.categorieId = request.categorieId;
@@ -174,10 +175,11 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	roomData.timePerQuestion = request.answerTimeout;
 	roomData.isActive = false;
 
-	response.roomId  =this->_roomManager.createRoom(this->_user, roomData);
+	response.roomId  = this->_roomManager.createRoom(this->_user, roomData);
 	response.status = false;
+	room = this->_roomManager.getRoom(response.roomId);
 	
-	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
