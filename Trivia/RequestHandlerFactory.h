@@ -11,11 +11,15 @@
 #include "QuizManager.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
+#include "GameManager.h"
+#include "Game.h"
+
 
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomAdminRequestHandler;
 class RoomMemberRequestHandler;
+class GameRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -29,7 +33,8 @@ public:
 	RoomManager&  getRoomManager();
 	std::shared_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(LoggedUser, Room);
 	std::shared_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(LoggedUser, Room);
-
+	std::shared_ptr<GameRequestHandler> createGameRequestHandler(LoggedUser user, Game game);
+	GameManager&  getGameManager();
 
 private:
 	std::shared_ptr<IDatabase> _database;
@@ -38,4 +43,5 @@ private:
 	StatisticsManager _statisticsManager;
 	QuizManager _quizManager;
 	HistoryManager _historyManager;
+	GameManager _gameManager;
 };
