@@ -19,7 +19,7 @@ class LeaderBoardPage extends StatefulWidget {
 
 class _LeaderBoardPage extends State<LeaderBoardPage> {
   late List<User> _leaderboardScores;
-  late Timer _timer;
+  late Timer? _timer;
   final SocketService _socketService;
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
@@ -48,11 +48,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
 
    void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
-      setState(() {
-        //add a toast here tgat says "updating leaderboard"
-        getUsersStatistic();
-        _timer.cancel();
-      });
+      getUsersStatistic();
     });
   }
   @override
@@ -62,7 +58,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   }
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
   @override

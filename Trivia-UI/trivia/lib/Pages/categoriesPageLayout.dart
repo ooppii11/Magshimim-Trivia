@@ -68,7 +68,7 @@ class _CategoriesPage extends State<CategoriesPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: true,
-            roomId: int.parse(response.getData()["roomId"]),
+            roomId: response.getData()["roomId"],
           ),
         ),
       );
