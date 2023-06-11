@@ -61,7 +61,8 @@ class _CategoriesPage extends State<CategoriesPage> {
 
   void create(Category category) async {
     Message response = await createRoom(category);
-    if (response.getCode() != ERROR_CODE ) {
+    if (response.getCode() != ERROR_CODE) {
+      Navigator.of(context, rootNavigator: true).pop();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
