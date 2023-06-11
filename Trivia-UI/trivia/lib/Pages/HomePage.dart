@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
@@ -241,7 +242,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
         ),
       );
     } else {
-      //toast the error
+      errorToast(response.getData()[0], 2);
     }
   }
 }

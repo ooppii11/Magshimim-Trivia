@@ -1,8 +1,10 @@
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
 import 'package:trivia/message.dart';
 import 'dart:async';
+import 'package:trivia/Pages/roomPage.dart';
 
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
@@ -54,8 +56,23 @@ class _RoomsPage extends State<RoomsPage> {
             }));
   }
 
-  Future<bool> joinRoom(Room room) async {
-    return true;
+  void joinRoom(Room room) async {
+    _socketService.sendMessage(Message(11, {"roomId": room.getId()}));
+    final Message response = await _socketService.receiveMessage();
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      errorToast(response.getData()[0], 2);
+    }
   }
 
   @override
