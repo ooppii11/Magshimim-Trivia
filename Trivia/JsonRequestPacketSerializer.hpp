@@ -25,6 +25,7 @@ public:
 	static Buffer serializeResponse(const RemoveCategorieResponse& response);
 	static Buffer serializeResponse(const AddQuestionResponse& response);
 	static Buffer serializeResponse(const RemoveQuestionResponse& response);
+	static Buffer serializeResponse(const getUserHistory& response);
 	static Buffer serializeResponse(const CloseRoomResponse& response);
 	static Buffer serializeResponse(const StartGameResponse& response);
 	static Buffer serializeResponse(const GetRoomStateResponse& response);

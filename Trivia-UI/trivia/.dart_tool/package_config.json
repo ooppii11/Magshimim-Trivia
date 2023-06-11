@@ -104,6 +104,12 @@
       "languageVersion": "2.13"
     },
     {
+      "name": "material_design_icons_flutter",
+      "rootUri": "file:///C:/Users/test0/AppData/Local/Pub/Cache/hosted/pub.dev/material_design_icons_flutter-6.0.7296",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "meta",
       "rootUri": "file:///C:/Users/test0/AppData/Local/Pub/Cache/hosted/pub.dev/meta-1.9.1",
       "packageUri": "lib/",

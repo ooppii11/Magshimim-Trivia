@@ -1,13 +1,15 @@
 #include "RoomManager.h"
 #include <functional> 
 #include <cmath>
-void RoomManager::createRoom(LoggedUser user, RoomData data)
+#include "messageException.h"
+int RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	Room r;
 	data.id = createRoomId();
 	r.setRoomData(data);
 	r.addUser(user);
 	this->_rooms[data.id] = r;
+	return data.id;
 }
 
 unsigned int RoomManager::createRoomId()
@@ -19,7 +21,7 @@ unsigned int RoomManager::createRoomId()
 	{
 		id = 0;
 		auto hshed = hasher(this->_rooms.size() + i);
-		id = hshed % (unsigned int)std::pow(2, (sizeof(unsigned int) * 8));
+		id = (unsigned int)hshed % ((unsigned int)std::pow(2, (sizeof(unsigned int) * 8)) -1);
 		i++;
 	} while (this->alreadyExists(id));
 	return id;
@@ -59,5 +61,9 @@ std::vector<RoomData> RoomManager::getRooms()
 
 Room& RoomManager::getRoom(roomID id)
 {
-	return this->_rooms[id];
+	if (this->_rooms.find(id) != this->_rooms.end())
+	{
+		return this->_rooms[id];
+	}
+	throw messageException("Invalid Room Id");
 }
