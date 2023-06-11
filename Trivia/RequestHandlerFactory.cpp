@@ -18,6 +18,16 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 	return this->_roomManager;
 }
 
+std::shared_ptr<RoomAdminRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, Room room)
+{	
+	return std::shared_ptr<RoomAdminRequestHandler>(new RoomAdminRequestHandler(room, user, this->_roomManager, *this));
+}
+
+std::shared_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room room)
+{
+	return std::shared_ptr<RoomMemberRequestHandler>(new RoomMemberRequestHandler(room, user, this->_roomManager, *this));
+}
+
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return this->_loginManager;
