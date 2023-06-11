@@ -79,10 +79,14 @@ class _RoomPageState extends State<RoomPage> {
               onPressed: () async {
                 if (_admin) {
                   _socketService.sendMessage(Message(17, {}));
-                  await _socketService.receiveMessage();
+                  final response = await _socketService.receiveMessage();
+                  print("code:");
+                  print(response.getCode());
                 }
                 _socketService.sendMessage(Message(20, {}));
                 final Message response = await _socketService.receiveMessage();
+                print("code:");
+                  print(response.getCode());
                 if (response.getCode() == 19) {
                   Navigator.pushReplacement(
                     context,
