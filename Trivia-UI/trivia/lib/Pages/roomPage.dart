@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
+import 'package:trivia/Pages/GamePage.dart';
 
 class RoomPage extends StatefulWidget {
   final SocketService socketService;
@@ -21,26 +22,30 @@ class _RoomPageState extends State<RoomPage> {
   late Timer _timer;
   final SocketService _socketService;
   final bool _admin;
-  final int roomId;
+  final int _roomId;
 
-  _RoomPageState(this._socketService, this._admin, this.roomId);
+  _RoomPageState(this._socketService, this._admin, this._roomId);
 
   getUsersInRoom() async {
-    /*
-    _socketService.sendMessage(Message(0 /*TODO: set get users in room code*/, {}));
+    _users.clear();
+    _socketService.sendMessage(Message(5 , {}));
     final Message response = await _socketService.receiveMessage();
-    if (response.getCode() == 0 /*TODO: set get users in room code*/) {
-
+    if (response.getCode() == 4 ) {
+      List<String> data = response.getData()["PlayersInRoom"];
+      for (var user in data) {
+        _users.add(User(user, 0));
+      }
+      setState(() {
+        _users;
+      });
+      
+      
     }
-    */
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      setState(() {
-        getUsersInRoom();
-        _timer.cancel();
-      });
+      getUsersInRoom();
     });
   }
 
@@ -72,9 +77,13 @@ class _RoomPageState extends State<RoomPage> {
                 size: 26.0,
               ),
               onPressed: () async {
-                _socketService.sendMessage(Message(0 /*TODO: set leave room code*/, {}));
+                if (_admin) {
+                  _socketService.sendMessage(Message(17, {}));
+                  await _socketService.receiveMessage();
+                }
+                _socketService.sendMessage(Message(20, {}));
                 final Message response = await _socketService.receiveMessage();
-                if (response.getCode() == 0 /*TODO: set leave room code*/) {
+                if (response.getCode() == 19) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -83,6 +92,10 @@ class _RoomPageState extends State<RoomPage> {
                       ),
                     ),
                   );
+                }
+                else
+                {
+                  //toast there was error and close app
                 }
               },
             ),
@@ -115,7 +128,7 @@ class _RoomPageState extends State<RoomPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Room ID: ${roomId.toString()}",
+                      "Room ID: ${_roomId.toString()}",
                       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
                     ),
                   ),
@@ -156,13 +169,26 @@ class _RoomPageState extends State<RoomPage> {
                                   borderRadius: BorderRadius.circular(32.0),
                                 ),
                               ),
-                              onPressed: () {
-                                // Perform admin action here
-                              },
                               child: Text(
                                 "Start Game",
                                 style: TextStyle(fontSize: 20, color: Colors.black),
                               ),
+                              onPressed: () async{
+                                _socketService.sendMessage(Message(18 /*TODO: set start game code*/, {}));
+                                final Message response = await _socketService.receiveMessage();
+                                if (response.getCode() == 17 /*TODO: set start game code*/) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => GamePage(
+                                        socketService: widget.socketService,
+                                        admin: _admin,
+                                        roomId: _roomId,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ),
                         ),
