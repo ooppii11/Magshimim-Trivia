@@ -7,6 +7,6 @@ typedef struct History
 	double avergeTime;
 	int answers;
 	int correctAnswers;
-	time_t creationDate;
+	std::string creationDate;
 	friend std::ostream& operator<<(std::ostream& os, const History& data);
 } History;
