@@ -18,28 +18,52 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> {
-  late List<User> _users = [];
+  late List<User> _users;
   late Timer _timer;
   final SocketService _socketService;
   final bool _admin;
   final int _roomId;
+  bool _hasGameBegun = false;
+  late int _questionTimeout;
+  late int _numOfQuestionsInGame;
 
   _RoomPageState(this._socketService, this._admin, this._roomId);
 
   getUsersInRoom() async {
+    _users = [];
     _users.clear();
-    _socketService.sendMessage(Message(5 , {}));
-    final Message response = await _socketService.receiveMessage();
-    if (response.getCode() == 4 ) {
-      List<String> data = response.getData()["PlayersInRoom"];
-      for (var user in data) {
-        _users.add(User(user, 0));
-      }
-      setState(() {
-        _users;
+    if (_hasGameBegun) {
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => GamePage(
+              socketService: widget.socketService,
+              admin: _admin,
+              roomId: _roomId,
+              questionTimeout: _questionTimeout,
+              numOfQuestionsInGame: _numOfQuestionsInGame,
+            ),
+          ),
+        );
       });
-      
-      
+    }
+    else
+    {
+      _socketService.sendMessage(Message(19 , {}));
+      final Message response = await _socketService.receiveMessage();
+      if (response.getCode() == 18 ) {
+        List<String> data = response.getData()["players"];
+        for (var user in data) {
+          _users.add(User(user, 0));
+        }
+        _numOfQuestionsInGame = response.getData()["questionCount"];
+        _questionTimeout = response.getData()["answerTimeout"];
+        _hasGameBegun = response.getData()["hasGameBegun"];
+        setState(() {
+          _users;
+        });
+      }
     }
   }
 
@@ -86,7 +110,7 @@ class _RoomPageState extends State<RoomPage> {
                 _socketService.sendMessage(Message(20, {}));
                 final Message response = await _socketService.receiveMessage();
                 print("code:");
-                  print(response.getCode());
+                print(response.getCode());
                 if (response.getCode() == 19) {
                   Navigator.pushReplacement(
                     context,
@@ -96,10 +120,6 @@ class _RoomPageState extends State<RoomPage> {
                       ),
                     ),
                   );
-                }
-                else
-                {
-                  //toast there was error and close app
                 }
               },
             ),
@@ -178,9 +198,9 @@ class _RoomPageState extends State<RoomPage> {
                                 style: TextStyle(fontSize: 20, color: Colors.black),
                               ),
                               onPressed: () async{
-                                _socketService.sendMessage(Message(18 /*TODO: set start game code*/, {}));
+                                _socketService.sendMessage(Message(18, {}));
                                 final Message response = await _socketService.receiveMessage();
-                                if (response.getCode() == 17 /*TODO: set start game code*/) {
+                                if (response.getCode() == 17) {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -188,6 +208,8 @@ class _RoomPageState extends State<RoomPage> {
                                         socketService: widget.socketService,
                                         admin: _admin,
                                         roomId: _roomId,
+                                        questionTimeout: _questionTimeout,
+                                        numOfQuestionsInGame: _numOfQuestionsInGame,
                                       ),
                                     ),
                                   );
