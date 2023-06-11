@@ -2,6 +2,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
 import 'package:trivia/message.dart';
+import 'dart:async';
 
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
@@ -18,7 +19,14 @@ class RoomsPage extends StatefulWidget {
 
 class _RoomsPage extends State<RoomsPage> {
   final SocketService _socketService;
-  final List<Room> _rooms = [];
+  late List<Room> _rooms = [];
+  late Timer _timer;
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   _RoomsPage(this._socketService);
 
@@ -38,9 +46,17 @@ class _RoomsPage extends State<RoomsPage> {
     getRooms().then((result) {
       setState(() {});
     });
+
+    _timer = Timer.periodic(
+        Duration(seconds: 20),
+        (_) => getRooms().then((result) {
+              setState(() {});
+            }));
   }
 
-  Future<bool> joinRoom(Room room) async {return true;}
+  Future<bool> joinRoom(Room room) async {
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {

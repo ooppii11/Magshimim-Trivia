@@ -5,10 +5,16 @@ class History {
   final int _correctAnswers;
   final int _totalAnswers;
   final double _averageTime;
-  final DateTime _CreationDate;
+  final String _CreationDate;
 
-
-  History(this._categoryName, this._categoryId, this._userRank, this._correctAnswers, this._totalAnswers, this._averageTime, this._CreationDate);
+  History(
+      this._categoryName,
+      this._categoryId,
+      this._userRank,
+      this._correctAnswers,
+      this._totalAnswers,
+      this._averageTime,
+      this._CreationDate);
 
   String getCategoryName() {
     return _categoryName;
@@ -34,8 +40,7 @@ class History {
     return _averageTime;
   }
 
-  DateTime getCreationDate() {
+  String getCreationDate() {
     return _CreationDate;
   }
-  
 }
