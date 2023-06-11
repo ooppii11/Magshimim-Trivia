@@ -18,7 +18,7 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> {
-  late List<User> _users;
+  late List<User> _users = [];
   late Timer _timer;
   final SocketService _socketService;
   final bool _admin;
@@ -30,7 +30,6 @@ class _RoomPageState extends State<RoomPage> {
   _RoomPageState(this._socketService, this._admin, this._roomId);
 
   getUsersInRoom() async {
-    _users = [];
     _users.clear();
     if (_hasGameBegun) {
       Future.delayed(Duration.zero, () {
@@ -63,12 +62,23 @@ class _RoomPageState extends State<RoomPage> {
         setState(() {
           _users;
         });
+      } else if(response.getCode() == 20)
+      {
+        await _socketService.receiveMessage();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HomePage(
+              socketService: widget.socketService,
+            ),
+          ),
+        );
       }
     }
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 100), (timer) {
       getUsersInRoom();
     });
   }
@@ -101,17 +111,29 @@ class _RoomPageState extends State<RoomPage> {
                 size: 26.0,
               ),
               onPressed: () async {
+                bool error = false;
                 if (_admin) {
                   _socketService.sendMessage(Message(17, {}));
                   final response = await _socketService.receiveMessage();
+                  if(response.getCode() != 16)
+                  {
+                    error = true;
+                  }
                   print("code:");
                   print(response.getCode());
                 }
-                _socketService.sendMessage(Message(20, {}));
-                final Message response = await _socketService.receiveMessage();
-                print("code:");
-                print(response.getCode());
-                if (response.getCode() == 19) {
+                else
+                {
+                  _socketService.sendMessage(Message(20, {}));
+                  final Message response = await _socketService.receiveMessage();
+                  if(response.getCode() != 19)
+                  {
+                    error = true;
+                  }
+                  print("code:");
+                  print(response.getCode());
+                }
+                if (!error) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
