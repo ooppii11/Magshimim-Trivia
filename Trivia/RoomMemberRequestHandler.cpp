@@ -71,7 +71,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 	RoomData roomData = this->_room.getRoomData();
 
 	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
-	response.status = this->_roomManager.getRoomState(roomData.id);
+	//response.status = this->_roomManager.getRoomState(roomData.id);
 	response.players = this->_room.getAllUsers();
 	response.hasGameBegun = roomData.isActive;
 	response.answerTimeout = roomData.timePerQuestion;

@@ -5,6 +5,7 @@ import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
 import 'package:trivia/Pages/GamePage.dart';
+//import 'dart:convert';
 
 class RoomPage extends StatefulWidget {
   final SocketService socketService;
@@ -53,12 +54,12 @@ class _RoomPageState extends State<RoomPage> {
       final Message response = await _socketService.receiveMessage();
       print("code:");
       print(response.getCode());
-      print("data:");
       print(response.getData());
       if (response.getCode() == 18 ) {
-        print("response.getData()[\"players\"]:");
-        print(response.getData()["players"]);
-        List<String> data = response.getData()["players"];
+        List<dynamic> dynamicList = response.getData()["players"];
+        List<String> data = dynamicList.map((element) => element.toString()).toList();
+        print("data:");
+        print(data);
         List<User> updatedUsers = [];
         for (var user in data) {
           updatedUsers.add(User(user, 0));

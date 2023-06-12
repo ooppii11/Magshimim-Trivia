@@ -86,14 +86,14 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo requestInfo)
 	GetRoomStateResponse response;
 	RoomData roomData = this->_room.getRoomData();
 
-	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
-	response.status = this->_roomManager.getRoomState(roomData.id);
+	response.status = GET_ROOM_STATE_RESPONSE_CODE;
+	//response.status = this->_roomManager.getRoomState(roomData.id);
 	response.players = this->_room.getAllUsers();
 	response.hasGameBegun = roomData.isActive;
 	response.answerTimeout = roomData.timePerQuestion;
 	response.questionCount = roomData.numOfQuestionsInGame;
 
-	result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, this->_room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
