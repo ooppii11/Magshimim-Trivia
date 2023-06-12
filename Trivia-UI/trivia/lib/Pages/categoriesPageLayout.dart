@@ -115,7 +115,7 @@ class _CategoriesPage extends State<CategoriesPage> {
     super.dispose();
   }
 
-  Future<bool> createRoom(Category category) async {
+  Future<Message> createRoom(Category category) async {
     Map<String, dynamic> data = {
       "categorieId": category.getId(),
       "maxUsers": int.parse(maxNumberOfPlayers.text),

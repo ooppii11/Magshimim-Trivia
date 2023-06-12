@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
 import 'package:trivia/message.dart';
 import 'dart:convert';
+import 'dart:async';
+import 'package:trivia/Pages/RoomPage.dart';
 
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
@@ -65,6 +67,7 @@ class _RoomsPage extends State<RoomsPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
+            roomId: room.getId(),
             //pass the room id
           ),
         ),
