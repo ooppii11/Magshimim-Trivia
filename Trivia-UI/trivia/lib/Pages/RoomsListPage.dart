@@ -1,3 +1,4 @@
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
@@ -19,7 +20,14 @@ class RoomsPage extends StatefulWidget {
 
 class _RoomsPage extends State<RoomsPage> {
   final SocketService _socketService;
-  final List<Room> _rooms = [];
+  late List<Room> _rooms = [];
+  late Timer _timer;
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   _RoomsPage(this._socketService);
 
@@ -39,9 +47,32 @@ class _RoomsPage extends State<RoomsPage> {
     getRooms().then((result) {
       setState(() {});
     });
+
+    _timer = Timer.periodic(
+        Duration(seconds: 20),
+        (_) => getRooms().then((result) {
+              setState(() {});
+            }));
   }
 
-  Future<bool> joinRoom(Room room) async {return true;}
+  void joinRoom(Room room) async {
+    _socketService.sendMessage(Message(11, {"roomId": room.getId()}));
+    final Message response = await _socketService.receiveMessage();
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      errorToast(response.getData()[0], 2);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
