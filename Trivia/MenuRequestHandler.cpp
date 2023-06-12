@@ -23,8 +23,8 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser& user, HistoryManager& history
 	this->_handleRequestFunctions[REMOVE_CATEGORIE_REQUEST_CODE] = &MenuRequestHandler::deleteCategory;
 	this->_handleRequestFunctions[ADD_QUESTION_REQUEST_CODE] = &MenuRequestHandler::addQuestion;
 	this->_handleRequestFunctions[REMOVE_QUESTION_REQUEST_CODE] = &MenuRequestHandler::removeQuestion;
-	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPrivateCategories;
-	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_RESPONSE_CODE] = &MenuRequestHandler::getPublicCategories;
+	this->_handleRequestFunctions[GET_PRIVATE_CATEGORIES_REQUEST_CODE] = &MenuRequestHandler::getPrivateCategories;
+	this->_handleRequestFunctions[GET_PUBLIC_CATEGORIES_REQUEST_CODE] = &MenuRequestHandler::getPublicCategories;
 }
 
 
@@ -153,7 +153,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 
 	request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
 	this->_roomManager.getRoom(request.roomId).addUser(this->_user);
-	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_roomManager.getRoom(request.roomId)));
 	result.response = Serializer::serializeResponse(JoinRoomResponse());
 	
 	return result;
@@ -165,6 +165,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	CreateRoomRequest request;
 	RoomData roomData;
 	CreateRoomResponse response;
+	Room room;
 
 	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
 	roomData.categorieId = request.categorieId;
@@ -174,10 +175,11 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	roomData.timePerQuestion = request.answerTimeout;
 	roomData.isActive = false;
 
-	response.roomId  =this->_roomManager.createRoom(this->_user, roomData);
+	response.roomId  = this->_roomManager.createRoom(this->_user, roomData);
 	response.status = false;
+	room = this->_roomManager.getRoom(response.roomId);
 	
-	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;

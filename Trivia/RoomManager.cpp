@@ -1,6 +1,7 @@
 #include "RoomManager.h"
 #include <functional> 
 #include <cmath>
+#include "messageException.h"
 int RoomManager::createRoom(LoggedUser user, RoomData data)
 {
 	Room r;
@@ -60,5 +61,9 @@ std::vector<RoomData> RoomManager::getRooms()
 
 Room& RoomManager::getRoom(roomID id)
 {
-	return this->_rooms[id];
+	if (this->_rooms.find(id) != this->_rooms.end())
+	{
+		return this->_rooms[id];
+	}
+	throw messageException("Invalid Room Id");
 }
