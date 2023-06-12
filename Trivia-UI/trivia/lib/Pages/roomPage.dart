@@ -28,7 +28,10 @@ class _RoomPageState extends State<RoomPage> {
   late int _questionTimeout;
   late int _numOfQuestionsInGame;
 
-  _RoomPageState(this._socketService, this._admin, this._roomId);
+  _RoomPageState(this._socketService, this._admin, this._roomId)
+  {
+    getUsersInRoom();
+  }
 
   getUsersInRoom() async {
     _users.clear();
@@ -52,14 +55,9 @@ class _RoomPageState extends State<RoomPage> {
     {
       _socketService.sendMessage(Message(19 , {}));
       final Message response = await _socketService.receiveMessage();
-      print("code:");
-      print(response.getCode());
-      print(response.getData());
       if (response.getCode() == 18 ) {
         List<dynamic> dynamicList = response.getData()["players"];
         List<String> data = dynamicList.map((element) => element.toString()).toList();
-        print("data:");
-        print(data);
         List<User> updatedUsers = [];
         for (var user in data) {
           updatedUsers.add(User(user, 0));
@@ -88,11 +86,6 @@ class _RoomPageState extends State<RoomPage> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      /*
-      setState(() {
-        getUsersInRoom();
-      });
-      */
       getUsersInRoom();
     });
   }
@@ -100,11 +93,6 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     super.initState();
-    /*
-    setState(() {
-      _startTimer();
-    });
-    */
     _startTimer();
   }
 
@@ -208,10 +196,29 @@ class _RoomPageState extends State<RoomPage> {
                 child: Column(
                   children: [
                     SingleChildScrollView(
-                      child: Wrap(
-                        spacing: 16.0,
-                        runSpacing: 16.0,
-                        children: _users.map((user) => Text(user.getUsername(), style: TextStyle(color: Colors.white))).toList(),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Wrap(
+                          spacing: 16.0,
+                          runSpacing: 16.0,
+                          //alignment: WrapAlignment.start,
+                          children: _users.map(
+                            (user) => Container(
+                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 88, 128, 185),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Text(
+                                user.getUsername(),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ).toList(),
+                        ),
                       ),
                     ),
                     if (_admin)
@@ -229,7 +236,7 @@ class _RoomPageState extends State<RoomPage> {
                               style: ElevatedButton.styleFrom(
                                 //foregroundColor:Color(0xFF000000),
                                 minimumSize: Size(90, 64.0),
-                                backgroundColor: Color.fromARGB(255, 196, 255, 249),
+                                backgroundColor: Color.fromARGB(255, 196, 255, 249),//
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(32.0),
                                 ),
