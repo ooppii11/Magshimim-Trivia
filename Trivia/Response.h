@@ -158,7 +158,7 @@ typedef struct GetRoomStateResponse
 	bool hasGameBegun;
 	std::vector<std::string> players;
 	unsigned int questionCount;
-	time_t answerTimeout;
+	unsigned int answerTimeout;
 	GetRoomStateResponse() : status(GET_ROOM_STATE_RESPONSE_CODE) {}
 }GetRoomStateResponse;
 

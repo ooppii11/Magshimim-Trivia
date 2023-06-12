@@ -20,7 +20,7 @@ class LeaderBoardPage extends StatefulWidget {
 
 class _LeaderBoardPage extends State<LeaderBoardPage> {
   late List<User> _leaderboardScores;
-  late Timer _timer;
+  late Timer? _timer;
   final SocketService _socketService;
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
@@ -32,11 +32,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     _leaderboardScores = [];
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
-
-    print("data:");
-    print(receivedMessage.getData());
-    print("code:");
-    print(receivedMessage.getCode());
+    
     if (receivedMessage.getCode() == 5) {
       Map<String, dynamic> UsersScoreMap =
           receivedMessage.getData()["HighScores"];
@@ -52,11 +48,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
-      setState(() {
-        //add a toast here tgat says "updating leaderboard"
-        getUsersStatistic();
-        _timer.cancel();
-      });
+      getUsersStatistic();
     });
   }
 
@@ -68,7 +60,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -253,7 +245,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join'),
+                          title: const Text('Join'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -262,13 +254,13 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter a sequence of numbers',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Save'),
+                                child: const Text('Save'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -282,7 +274,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.people),
+                  child: const Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -291,7 +283,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.create),
+                  child: const Icon(Icons.create),
                 ),
               ],
             ),
@@ -311,7 +303,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
-            //pass the room id
+            roomId: int.parse(_enteredValue),
           ),
         ),
       );

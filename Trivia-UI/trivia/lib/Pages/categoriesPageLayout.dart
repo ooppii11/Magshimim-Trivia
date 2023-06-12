@@ -61,7 +61,8 @@ class _CategoriesPage extends State<CategoriesPage> {
   }
 
   void create(Category category) async {
-    if (await createRoom(category)) {
+    Message response = await createRoom(category);
+    if (response.getCode() != ERROR_CODE) {
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.pushReplacement(
         context,
@@ -69,6 +70,7 @@ class _CategoriesPage extends State<CategoriesPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: true,
+            roomId: response.getData()["roomId"],
           ),
         ),
       );
@@ -123,7 +125,8 @@ class _CategoriesPage extends State<CategoriesPage> {
     };
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
-    return response.getCode() != ERROR_CODE;
+    return response;
+    //response.getCode() != ERROR_CODE;
   }
 
   @override

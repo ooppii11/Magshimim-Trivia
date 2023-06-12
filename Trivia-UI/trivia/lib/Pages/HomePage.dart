@@ -237,7 +237,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
-            //pass the room id
+            roomId: int.parse(_enteredValue),
           ),
         ),
       );
