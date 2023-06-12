@@ -5,7 +5,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/ForgotPasswordPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/message.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:trivia/components/erroToast.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -22,36 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final ValueNotifier<bool> _showPasswordNotifier = ValueNotifier<bool>(false);
-  late FToast fToast;
 
   _LoginPageState(this._socketService);
 
   @override
   void initState() {
     super.initState();
-    fToast = FToast();
-    fToast.init(context);
-  }
-
-  void errorToast(String content, int sconds) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.redAccent,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.error),
-          SizedBox(
-            width: 12.0,
-          ),
-          Text(content),
-        ],
-      ),
-    );
-    fToast.showToast(child: toast, toastDuration: Duration(seconds: sconds));
   }
 
   @override

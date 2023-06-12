@@ -24,10 +24,11 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPage extends State<CategoriesPage> {
   final SocketService _socketService;
-  final List<Category> _categories = [];
+  late List<Category> _categories = [];
   late TextEditingController maxNumberOfPlayers;
   late TextEditingController numberOfQuestions;
   late TextEditingController maxTime;
+  late Timer _timer;
 
   _CategoriesPage(this._socketService);
 
@@ -85,14 +86,22 @@ class _CategoriesPage extends State<CategoriesPage> {
     maxNumberOfPlayers.text = "2";
     numberOfQuestions.text = "1";
     maxTime.text = "1";
+
     getCategories().then((result) {
       setState(() {});
     });
+
+    _timer = Timer.periodic(
+        Duration(seconds: 3),
+        (_) => getCategories().then((result) {
+              setState(() {});
+            }));
   }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
+    this._categories = [];
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
@@ -100,7 +109,13 @@ class _CategoriesPage extends State<CategoriesPage> {
     }
   }
 
-  Future<Message> createRoom(Category category) async {
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  Future<bool> createRoom(Category category) async {
     Map<String, dynamic> data = {
       "categorieId": category.getId(),
       "maxUsers": int.parse(maxNumberOfPlayers.text),

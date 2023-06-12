@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\src\flutter
-FLUTTER_APPLICATION_PATH=C:\src\trivia_aviv_and_itamar_2023\Trivia-UI\trivia
+FLUTTER_ROOT=C:\flutter
+FLUTTER_APPLICATION_PATH=C:\magshimim\cpp\new pull\trivia_aviv_and_itamar_2023\Trivia-UI\trivia
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
