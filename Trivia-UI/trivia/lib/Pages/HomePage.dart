@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
@@ -12,9 +13,6 @@ import 'package:trivia/Pages/roomPage.dart';
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 7;
-int CREATE_ROOM_REQUEST_CODE = 12;
-int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -71,9 +69,8 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                 }
                 if (value == 1) {
                   _openPopUp();
-              
-                  if(_enteredValue != '')
-                  {
+
+                  if (_enteredValue != '') {
                     joinRoom();
                   }
                 }
@@ -147,13 +144,13 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
       ),
     );
   }
-    
+
   void _openPopUp() {
     setState(() {
       _isFloatingScreenOpen = true;
     });
   }
-  
+
   Widget _buildFloatingScreen() {
     return Stack(
       fit: StackFit.expand,
@@ -240,13 +237,12 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
-            //pass the room id
+            roomId: int.parse(_enteredValue),
           ),
         ),
       );
     } else {
-      //toast the error
+      errorToast(response.getData()[0], 2);
     }
   }
-
 }

@@ -9,7 +9,7 @@ import 'package:trivia/message.dart';
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 6;
+int GET_CATEGORIES_CODE = 7;
 int CREATE_ROOM_REQUEST_CODE = 12;
 int ERROR_CODE = 99;
 
@@ -24,10 +24,11 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPage extends State<CategoriesPage> {
   final SocketService _socketService;
-  final List<Category> _categories = [];
+  late List<Category> _categories = [];
   late TextEditingController maxNumberOfPlayers;
   late TextEditingController numberOfQuestions;
   late TextEditingController maxTime;
+  late Timer _timer;
 
   _CategoriesPage(this._socketService);
 
@@ -60,13 +61,16 @@ class _CategoriesPage extends State<CategoriesPage> {
   }
 
   void create(Category category) async {
-    if (await createRoom(category)) {
+    Message response = await createRoom(category);
+    if (response.getCode() != ERROR_CODE) {
+      Navigator.of(context, rootNavigator: true).pop();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: true,
+            roomId: response.getData()["roomId"],
           ),
         ),
       );
@@ -82,19 +86,33 @@ class _CategoriesPage extends State<CategoriesPage> {
     maxNumberOfPlayers.text = "2";
     numberOfQuestions.text = "1";
     maxTime.text = "1";
+
     getCategories().then((result) {
       setState(() {});
     });
+
+    _timer = Timer.periodic(
+        Duration(seconds: 3),
+        (_) => getCategories().then((result) {
+              setState(() {});
+            }));
   }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
+    this._categories = [];
 
     Map<String, dynamic> data = response.getData();
     for (var categoryString in data["publicCategories"]) {
       _categories.add(Category(categoryString[1], categoryString[0], true));
     }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<bool> createRoom(Category category) async {
@@ -107,7 +125,8 @@ class _CategoriesPage extends State<CategoriesPage> {
     };
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
-    return response.getCode() != ERROR_CODE;
+    return response;
+    //response.getCode() != ERROR_CODE;
   }
 
   @override

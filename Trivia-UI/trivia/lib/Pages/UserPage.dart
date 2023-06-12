@@ -7,6 +7,7 @@ import 'package:trivia/message.dart';
 import 'package:trivia/history.dart';
 import 'package:trivia/statistics.dart';
 import 'package:trivia/Pages/roomPage.dart';
+import 'package:trivia/components/erroToast.dart';
 
 class UserPage extends StatefulWidget {
   final SocketService socketService;
@@ -24,8 +25,7 @@ class _UserPage extends State<UserPage> {
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
 
-  _UserPage(this._socketService)
-  {
+  _UserPage(this._socketService) {
     getHistory();
     getStatistics();
   }
@@ -35,14 +35,21 @@ class _UserPage extends State<UserPage> {
     _socketService.sendMessage(Message(10, {}));
     final receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 9) {
-      List<Map<String, dynamic>> historyList = receivedMessage.getData()["History"];
+      List<Map<String, dynamic>> historyList =
+          receivedMessage.getData()["History"];
       for (var element in historyList) {
-        _history.add(History(element["CategoryName"], element["CategoryId"], element["UserRank"], element["CorrectAnswers"], element["TotalAnswers"], element["AvergeTime"], element["CreationDate"]));
+        _history.add(History(
+            element["CategoryName"],
+            element["CategoryId"],
+            element["UserRank"],
+            element["CorrectAnswers"],
+            element["TotalAnswers"],
+            element["AvergeTime"],
+            element["CreationDate"]));
       }
     }
-    
   }
-  
+
   void getStatistics() async {
     _statistics = [];
     _socketService.sendMessage(Message(9, {}));
@@ -55,241 +62,255 @@ class _UserPage extends State<UserPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: IconButton(
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Colors.black,
-                    size: 26.0,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: IconButton(
+                    icon: const Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                      size: 26.0,
+                    ),
+                    onPressed: () async {
+                      _socketService.sendMessage(Message(3, {}));
+                      final Message response =
+                          await _socketService.receiveMessage();
+                      if (response.getCode() == 2) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => LoginPage(
+                                      socketService: widget.socketService,
+                                    )));
+                      }
+                    }),
+              ),
+            ]),
+        body: Stack(children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'STATS',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 5,
+                            ),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue.shade200,
+                                Colors.green.shade50,
+                                Colors.cyan.shade300
+                              ],
+                            ),
+                          ),
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(color: Colors.black),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  dataTextStyle:
+                                      const TextStyle(color: Colors.black),
+                                  columns: const [
+                                    DataColumn(
+                                      label: Text('Statistics Name'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('User Results'),
+                                    )
+                                  ],
+                                  rows: List.generate(_statistics.length,
+                                      (index) {
+                                    final statistics = _statistics[index];
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(Text(
+                                            statistics.getStatisticsName())),
+                                        DataCell(Text(
+                                            statistics.getScore().toString()))
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  onPressed: () async{
-                    _socketService.sendMessage(Message(3, {}));
-                    final Message response = await _socketService.receiveMessage();
-                    if(response.getCode() == 2)
-                    {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => LoginPage(
-                                  socketService: widget.socketService,
-                                )));
-                    }
-                  }),
-            ),
-          ]),
-        body: Stack(
-          children: [ 
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Center(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'STATS',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 5,
-                              ),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.blue.shade200,
-                                  Colors.green.shade50,
-                                  Colors.cyan.shade300
-                                ],
-                              ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'HISTORY',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 5,
                             ),
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: DefaultTextStyle(
-                                style: const TextStyle(color: Colors.black),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: DataTable(
-                                    dataTextStyle: const TextStyle(color: Colors.black),
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('Statistics Name'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('User Results'),
-                                      )
-                                    ],
-                                    rows: List.generate(_statistics.length, (index) {
-                                      final statistics = _statistics[index];
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(Text(statistics.getStatisticsName())),
-                                          DataCell(Text(statistics.getScore().toString()))
-                                        ],
-                                        );
-                                      }
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue.shade200,
+                                Colors.green.shade50,
+                                Colors.cyan.shade300
+                              ],
+                            ),
+                          ),
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(color: Colors.black),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  dataTextStyle:
+                                      const TextStyle(color: Colors.black),
+                                  columns: const [
+                                    DataColumn(
+                                      label: Text('Num'),
                                     ),
-                                  ),
+                                    DataColumn(
+                                      label: Text('Category Name'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Category Id'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('User Rank'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Num Answers'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Num Of Correct Answers'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Average Time'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('Creation Date'),
+                                    ),
+                                  ],
+                                  rows: List.generate(_history.length, (index) {
+                                    final history = _history[index];
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                            Text(history.getCategoryName())),
+                                        DataCell(Text(history
+                                            .getCategoryId()
+                                            .toString())),
+                                        DataCell(Text(
+                                            history.getUserRank().toString())),
+                                        DataCell(Text(history
+                                            .getTotalAnswers()
+                                            .toString())),
+                                        DataCell(Text(history
+                                            .getCorrectAnswers()
+                                            .toString())),
+                                        DataCell(Text(history
+                                            .getAverageTime()
+                                            .toString())),
+                                        DataCell(Text(history
+                                            .getCreationDate()
+                                            .toString())),
+                                      ],
+                                    );
+                                  }),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'HISTORY',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 5,
-                              ),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.blue.shade200,
-                                  Colors.green.shade50,
-                                  Colors.cyan.shade300
-                                ],
-                              ),
-                            ),
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: DefaultTextStyle(
-                                style: const TextStyle(color: Colors.black),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: DataTable(
-                                    dataTextStyle: const TextStyle(color: Colors.black),
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('Num'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Category Name'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Category Id'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('User Rank'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Num Answers'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Num Of Correct Answers'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Average Time'),
-                                      ),
-                                      DataColumn(
-                                        label: Text('Creation Date'),
-                                      ),
-                                    ],
-                                    rows: List.generate(_history.length, (index) {
-                                      final history = _history[index];
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(Text(history.getCategoryName())),
-                                          DataCell(Text(history.getCategoryId().toString())),
-                                          DataCell(Text(history.getUserRank().toString())), 
-                                          DataCell(Text(history.getTotalAnswers().toString())),
-                                          DataCell(Text(history.getCorrectAnswers().toString())),
-                                          DataCell(Text(history.getAverageTime().toString())),
-                                          DataCell(Text(history.getCreationDate().toString())),
-                                        ],
-                                        );
-                                      }
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            if (_isFloatingScreenOpen) _buildFloatingScreen(),
-          ]
-        ),
-         backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: [
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.blue,
-                ),
-                label: ''),
-            const BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.leaderboard_rounded), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.grey[600]), label: ''),
-          ],
-          onTap: (value) {
-            if(value == 1)
-            {
-              _openPopUp();
-              if(_enteredValue != '')
-              {
-                joinRoom();
+          ),
+          if (_isFloatingScreenOpen) _buildFloatingScreen(),
+        ]),
+        backgroundColor: Colors.white,
+        bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            items: [
+              const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.blue,
+                  ),
+                  label: ''),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.add_box), label: ''),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.leaderboard_rounded), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home, color: Colors.grey[600]), label: ''),
+            ],
+            onTap: (value) {
+              if (value == 1) {
+                _openPopUp();
+                if (_enteredValue != '') {
+                  joinRoom();
+                }
               }
-            }
-            if (value == 2) {
-              Navigator.pushReplacement(
+              if (value == 2) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => LeaderBoardPage(
+                        socketService: widget.socketService,
+                      ),
+                    ));
+              }
+              if (value == 3) {
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => LeaderBoardPage(
+                    builder: (_) => HomePage(
                       socketService: widget.socketService,
                     ),
-                  ));
-            }
-            if (value == 3) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => HomePage(
-                    socketService: widget.socketService,
                   ),
-                ),
-              );
-            }
-          }),
+                );
+              }
+            }),
       ),
     );
   }
@@ -328,7 +349,7 @@ class _UserPage extends State<UserPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join Room'),
+                          title: const Text('Join Room'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -337,13 +358,13 @@ class _UserPage extends State<UserPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter a sequence of numbers',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Save'),
+                                child: const Text('Save'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -357,7 +378,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.people),
+                  child: const Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -366,7 +387,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.create),
+                  child: const Icon(Icons.create),
                 ),
               ],
             ),
@@ -386,12 +407,12 @@ class _UserPage extends State<UserPage> {
           builder: (_) => RoomPage(
             socketService: widget.socketService,
             admin: false,
-            //pass the room id
+            roomId: int.parse(_enteredValue),
           ),
         ),
       );
     } else {
-      //toast the error
+      errorToast(response.getData()[0], 2);
     }
   }
 }
