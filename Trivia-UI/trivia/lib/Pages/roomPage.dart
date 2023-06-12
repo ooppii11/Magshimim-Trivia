@@ -51,19 +51,26 @@ class _RoomPageState extends State<RoomPage> {
     {
       _socketService.sendMessage(Message(19 , {}));
       final Message response = await _socketService.receiveMessage();
+      print("code:");
+      print(response.getCode());
+      print("data:");
+      print(response.getData());
       if (response.getCode() == 18 ) {
+        print("response.getData()[\"players\"]:");
+        print(response.getData()["players"]);
         List<String> data = response.getData()["players"];
+        List<User> updatedUsers = [];
         for (var user in data) {
-          _users.add(User(user, 0));
+          updatedUsers.add(User(user, 0));
         }
-        _numOfQuestionsInGame = response.getData()["questionCount"];
-        _questionTimeout = response.getData()["answerTimeout"];
-        _hasGameBegun = response.getData()["hasGameBegun"];
         setState(() {
-          _users;
+          _users = updatedUsers;
+          _numOfQuestionsInGame = response.getData()["questionCount"];
+          _questionTimeout = response.getData()["answerTimeout"];
+          _hasGameBegun = response.getData()["hasGameBegun"];
         });
-      } else if(response.getCode() == 20)
-      {
+        
+      } else if(response.getCode() == 20) {
         await _socketService.receiveMessage();
         Navigator.pushReplacement(
           context,
@@ -74,11 +81,17 @@ class _RoomPageState extends State<RoomPage> {
           ),
         );
       }
+      
     }
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 100), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      /*
+      setState(() {
+        getUsersInRoom();
+      });
+      */
       getUsersInRoom();
     });
   }
@@ -86,6 +99,11 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     super.initState();
+    /*
+    setState(() {
+      _startTimer();
+    });
+    */
     _startTimer();
   }
 
