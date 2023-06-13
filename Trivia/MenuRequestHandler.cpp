@@ -126,7 +126,6 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo requestInfo)
 	getPersonalStatsResponse response;
 
 	response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
-	response.status = PERSONAL_STATS_RESPONSE_CODE;
 	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
