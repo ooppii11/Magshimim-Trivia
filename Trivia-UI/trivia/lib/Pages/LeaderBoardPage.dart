@@ -63,6 +63,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
+    
   }
 
   @override
