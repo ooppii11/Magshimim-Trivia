@@ -26,3 +26,8 @@ void Game::removePlayer(LoggedUser user)
 		this->_players.erase(it);
 	}
 }
+
+int Game::getGameId() const
+{
+	return this->_gameId;
+}
