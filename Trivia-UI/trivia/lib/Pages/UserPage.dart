@@ -8,6 +8,7 @@ import 'package:trivia/history.dart';
 import 'package:trivia/statistics.dart';
 import 'package:trivia/Pages/roomPage.dart';
 import 'package:trivia/components/erroToast.dart';
+import 'dart:convert';
 
 class UserPage extends StatefulWidget {
   final SocketService socketService;
@@ -26,17 +27,19 @@ class _UserPage extends State<UserPage> {
   String _enteredValue = '';
 
   _UserPage(this._socketService) {
-    getHistory();
-    getStatistics();
+    getInfo();
   }
 //fix this
-  void getHistory() async {
+
+  void getInfo() async{
     _history = [];
+    _statistics = [];
     _socketService.sendMessage(Message(10, {}));
-    final receivedMessage = await _socketService.receiveMessage();
+    var receivedMessage = await _socketService.receiveMessage();
+    print("history code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 9) {
-      List<Map<String, dynamic>> historyList =
-          receivedMessage.getData()["History"];
+      List<dynamic> dynamicList = jsonDecode(receivedMessage.getData()["History"]);
+      List<Map<String, dynamic>> historyList = dynamicList.cast<Map<String, dynamic>>().toList();
       for (var element in historyList) {
         _history.add(History(
             element["CategoryName"],
@@ -47,15 +50,15 @@ class _UserPage extends State<UserPage> {
             element["AvergeTime"],
             element["CreationDate"]));
       }
+      print("history[0] id: ${_history[0].getCategoryId()}");
     }
-  }
-
-  void getStatistics() async {
-    _statistics = [];
+    
     _socketService.sendMessage(Message(9, {}));
-    final receivedMessage = await _socketService.receiveMessage();
+    receivedMessage = await _socketService.receiveMessage();
+    print("statistics code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 8) {
-      Map<String, dynamic> statisticsMap = receivedMessage.getData();
+      print("data: ${receivedMessage.getData()}");
+      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
       statisticsMap.forEach((key, value) {
         _statistics.add(Statistic(key, value));
       });

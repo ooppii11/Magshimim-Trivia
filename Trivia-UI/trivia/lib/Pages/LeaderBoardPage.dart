@@ -48,6 +48,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
+      //throw toast that says "updating leaderboard"
       getUsersStatistic();
     });
   }
@@ -308,7 +309,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
         ),
       );
     } else {
-      errorToast(response.getData()[0], 2);
+      errorToast(response.getData()["Error"], 2);
     }
   }
 }

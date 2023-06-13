@@ -1,6 +1,6 @@
 #include "HistoryManager.h"
 
-HistoryManager::HistoryManager(std::shared_ptr<IDatabase> db)
+HistoryManager::HistoryManager(std::shared_ptr<IDatabase> db) : _database(db)
 {
 }
 
