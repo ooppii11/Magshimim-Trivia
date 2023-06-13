@@ -35,7 +35,7 @@ class _UserPage extends State<UserPage> {
     _history = [];
     _statistics = [];
     _socketService.sendMessage(Message(10, {}));
-    var receivedMessage = await _socketService.receiveMessage();
+    Message receivedMessage = await _socketService.receiveMessage();
     print("history code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 9) {
       List<dynamic> dynamicList = jsonDecode(receivedMessage.getData()["History"]);

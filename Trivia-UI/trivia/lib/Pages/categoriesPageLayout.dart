@@ -96,16 +96,18 @@ class _CategoriesPage extends State<CategoriesPage> {
         (_) => getCategories().then((result) {
               setState(() {});
             }));
+    super.initState();
   }
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
     this._categories = [];
-
     Map<String, dynamic> data = response.getData();
-    for (var categoryString in data["publicCategories"]) {
-      _categories.add(Category(categoryString[1], categoryString[0], true));
+    if (response.getCode() != ERROR_CODE) {
+      for (var categoryString in data["publicCategories"]) {
+        _categories.add(Category(categoryString[1], categoryString[0], true));
+      }
     }
   }
 
