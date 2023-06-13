@@ -21,24 +21,34 @@ class UserPage extends StatefulWidget {
 
 class _UserPage extends State<UserPage> {
   final SocketService _socketService;
-  late List<History> _history;
-  late List<Statistic> _statistics;
+  late List<History> _history = [];
+  late List<Statistic> _statistics = [];
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
 
-  _UserPage(this._socketService);
+  _UserPage(this._socketService)
+  {
+    getInfo();
+  }
 
+<<<<<<< HEAD
   void getInfo() async {
     _history = [];
     _statistics = [];
 
+=======
+  void getInfo() async{
+>>>>>>> 425c2522a6a8f25f9682f389f084cecd1aedcd42
     _socketService.sendMessage(Message(9, {}));
     Message receivedMessage = await _socketService.receiveMessage();
-    print("statistics code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 8) {
+<<<<<<< HEAD
       print("data: ${receivedMessage.getData()}");
       Map<String, dynamic> statisticsMap =
           receivedMessage.getData()["statistics"];
+=======
+      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
+>>>>>>> 425c2522a6a8f25f9682f389f084cecd1aedcd42
       statisticsMap.forEach((key, value) {
         _statistics.add(Statistic(key, value));
       });
@@ -46,7 +56,6 @@ class _UserPage extends State<UserPage> {
 
     _socketService.sendMessage(Message(10, {}));
     receivedMessage = await _socketService.receiveMessage();
-    print("history code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 9) {
       List<dynamic> dynamicList =
           jsonDecode(receivedMessage.getData()["History"]);
@@ -62,13 +71,16 @@ class _UserPage extends State<UserPage> {
             element["AvergeTime"],
             element["CreationDate"]));
       }
-      print("history[0] id: ${_history[0].getCategoryId()}");
     }
+<<<<<<< HEAD
+=======
+    
+    setState(() {});
+>>>>>>> 425c2522a6a8f25f9682f389f084cecd1aedcd42
   }
 
   @override
   Widget build(BuildContext context) {
-    getInfo();
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -139,6 +151,7 @@ class _UserPage extends State<UserPage> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
+                                  horizontalMargin: MediaQuery.of(context).size.width * 0.125,
                                   dataTextStyle:
                                       const TextStyle(color: Colors.black),
                                   columns: const [
@@ -147,15 +160,18 @@ class _UserPage extends State<UserPage> {
                                     ),
                                     DataColumn(
                                       label: Text('User Results'),
+                                      numeric: true,
                                     )
                                   ],
                                   rows: List.generate(_statistics.length,
                                       (index) {
                                     final statistics = _statistics[index];
                                     return DataRow(
+                                      selected: true,
                                       cells: [
-                                        DataCell(Text(
-                                            statistics.getStatisticsName())),
+                                        DataCell(Text(statistics.getStatisticsName())
+                                        
+                                            ),
                                         DataCell(Text(
                                             statistics.getScore().toString()))
                                       ],
@@ -209,24 +225,30 @@ class _UserPage extends State<UserPage> {
                                   columns: const [
                                     DataColumn(
                                       label: Text('Num'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('Category Name'),
                                     ),
                                     DataColumn(
                                       label: Text('Category Id'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('User Rank'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('Num Answers'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('Num Of Correct Answers'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('Average Time'),
+                                      numeric: true,
                                     ),
                                     DataColumn(
                                       label: Text('Creation Date'),
@@ -236,6 +258,7 @@ class _UserPage extends State<UserPage> {
                                     final history = _history[index];
                                     return DataRow(
                                       cells: [
+                                        DataCell(Text((index + 1).toString())),
                                         DataCell(
                                             Text(history.getCategoryName())),
                                         DataCell(Text(history
