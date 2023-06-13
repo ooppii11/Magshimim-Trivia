@@ -34,8 +34,20 @@ class _UserPage extends State<UserPage> {
   void getInfo() async{
     _history = [];
     _statistics = [];
+
+    _socketService.sendMessage(Message(9, {}));
+    Message receivedMessage = await _socketService.receiveMessage();
+    print("statistics code: ${receivedMessage.getCode()}");
+    if (receivedMessage.getCode() == 8) {
+      print("data: ${receivedMessage.getData()}");
+      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
+      statisticsMap.forEach((key, value) {
+        _statistics.add(Statistic(key, value));
+      });
+    }
+
     _socketService.sendMessage(Message(10, {}));
-    var receivedMessage = await _socketService.receiveMessage();
+    receivedMessage = await _socketService.receiveMessage();
     print("history code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 9) {
       List<dynamic> dynamicList = jsonDecode(receivedMessage.getData()["History"]);
@@ -53,16 +65,7 @@ class _UserPage extends State<UserPage> {
       print("history[0] id: ${_history[0].getCategoryId()}");
     }
     
-    _socketService.sendMessage(Message(9, {}));
-    receivedMessage = await _socketService.receiveMessage();
-    print("statistics code: ${receivedMessage.getCode()}");
-    if (receivedMessage.getCode() == 8) {
-      print("data: ${receivedMessage.getData()}");
-      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
-      statisticsMap.forEach((key, value) {
-        _statistics.add(Statistic(key, value));
-      });
-    }
+    
   }
 
   @override
