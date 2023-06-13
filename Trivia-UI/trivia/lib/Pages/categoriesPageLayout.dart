@@ -35,9 +35,7 @@ class _CategoriesPage extends State<CategoriesPage> {
   final SocketService _socketService;
   final List<Category> _categories;
 
-  _CategoriesPage(this._socketService, this._categories) {
-    print(widget.categories.length);
-  }
+  _CategoriesPage(this._socketService, this._categories);
 
   Future openDialg(Category category) => showDialog(
       context: context,
@@ -75,7 +73,7 @@ class _CategoriesPage extends State<CategoriesPage> {
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
-            socketService: widget.socketService,
+            socketService: _socketService,
             admin: true,
             roomId: response.getData()["roomId"],
           ),
@@ -105,8 +103,8 @@ class _CategoriesPage extends State<CategoriesPage> {
       "answerTimeout": int.parse(maxTime.text),
       "roomName": ""
     };
-    widget.socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
-    final Message response = await widget.socketService.receiveMessage();
+    _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
+    final Message response = await _socketService.receiveMessage();
     return response;
   }
 
