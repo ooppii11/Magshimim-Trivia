@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/Pages/categoriesPageLayout.dart';
 import 'package:trivia/Pages/roomPage.dart';
+import 'package:trivia/room.dart';
+import 'dart:convert';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -29,13 +31,16 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   String _enteredValue = '';
   bool _isFloatingScreenOpen = false;
   late Timer _timer;
+  Key _categoriesPageKey = UniqueKey();
+  Key _roomsPageKey = UniqueKey();
   late List<Category> _categories = [];
+  late List<Room> _rooms = [];
 
   _HomePage(this._socketService);
 
   @override
   void initState() {
-    getCategories().then((result) {});
+    getCategories();
     startTimer();
     super.initState();
   }
@@ -49,7 +54,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   void startTimer() {
     const duration = Duration(seconds: 3);
     _timer = Timer.periodic(duration, (timer) {
-      getCategories().then((result) {});
+      getCategories();
     });
   }
 
@@ -59,7 +64,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
 
   Future<void> getCategories() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message response = await widget.socketService.receiveMessage();
+    final Message response = await _socketService.receiveMessage();
     List<Category> categories = [];
     Map<String, dynamic> data = response.getData();
     if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
@@ -68,7 +73,33 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
       }
     }
     setState(() {
+      _categoriesPageKey = UniqueKey();
+
       _categories = categories;
+    });
+  }
+
+  Future<void> getRooms() async {
+    _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
+    List<Room> rooms = [];
+    final Message response = await _socketService.receiveMessage();
+    List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
+    List<Map<String, dynamic>> data =
+        dynamicList.cast<Map<String, dynamic>>().toList();
+    for (var roomData in data) {
+      rooms.add(Room(
+          roomData["Id"],
+          roomData["Name"],
+          roomData["CategorieId"],
+          roomData["MaxPlayers"],
+          roomData["NumOfQuestions"],
+          roomData["Time"],
+          roomData["IsActive"]));
+    }
+
+    setState(() {
+      _roomsPageKey = UniqueKey();
+      _rooms = rooms;
     });
   }
 
@@ -101,7 +132,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                     context,
                     MaterialPageRoute(
                       builder: (_) => UserPage(
-                        socketService: widget.socketService,
+                        socketService: _socketService,
                       ),
                     ),
                   );
@@ -118,7 +149,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                         builder: (_) => LeaderBoardPage(
-                          socketService: widget.socketService,
+                          socketService: _socketService,
                         ),
                       ));
                 }
@@ -162,7 +193,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => LoginPage(
-                                        socketService: widget.socketService,
+                                        socketService: _socketService,
                                       )));
                         }
                       }),
@@ -173,10 +204,15 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
               TabBarView(
                 children: [
                   CategoriesPage(
-                    socketService: widget.socketService,
+                    key: _categoriesPageKey, // Assign the key
+                    socketService: _socketService,
                     categories: _categories,
                   ),
-                  RoomsPage(socketService: widget.socketService)
+                  RoomsPage(
+                    key: _roomsPageKey,
+                    socketService: _socketService,
+                    rooms: _rooms,
+                  )
                 ],
               ),
               if (_isFloatingScreenOpen) _buildFloatingScreen(),
@@ -277,7 +313,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
-            socketService: widget.socketService,
+            socketService: _socketService,
             admin: false,
             roomId: int.parse(_enteredValue),
           ),
