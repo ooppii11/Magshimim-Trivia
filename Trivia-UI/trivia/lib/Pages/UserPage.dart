@@ -26,9 +26,7 @@ class _UserPage extends State<UserPage> {
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
 
-  _UserPage(this._socketService) {
-    getInfo();
-  }
+  _UserPage(this._socketService);
 
   void getInfo() async{
     _history = [];
@@ -69,6 +67,7 @@ class _UserPage extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    getInfo();
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
