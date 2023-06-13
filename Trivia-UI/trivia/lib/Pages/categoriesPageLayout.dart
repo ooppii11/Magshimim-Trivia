@@ -16,23 +16,28 @@ int GET_CATEGORIES_RESPONSE_CODE = 6;
 
 class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
-  bool _shouldCancelGetCategories = false;
+  final List<Category> categories;
 
-  CategoriesPage({super.key, required this.socketService});
+  CategoriesPage({
+    Key? key,
+    required this.socketService,
+    required this.categories,
+  }) : super(key: key);
 
   @override
-  _CategoriesPage createState() => _CategoriesPage(socketService);
+  _CategoriesPage createState() => _CategoriesPage(socketService, categories);
 }
 
 class _CategoriesPage extends State<CategoriesPage> {
-  final SocketService _socketService;
-  late List<Category> _categories = [];
   late TextEditingController maxNumberOfPlayers;
   late TextEditingController numberOfQuestions;
   late TextEditingController maxTime;
-  late Timer _timer;
+  final SocketService _socketService;
+  final List<Category> _categories;
 
-  _CategoriesPage(this._socketService);
+  _CategoriesPage(this._socketService, this._categories) {
+    print(widget.categories.length);
+  }
 
   Future openDialg(Category category) => showDialog(
       context: context,
@@ -89,48 +94,7 @@ class _CategoriesPage extends State<CategoriesPage> {
     numberOfQuestions.text = "1";
     maxTime.text = "1";
 
-    fetchCategoriesAndUpdateState();
-
-    _timer = Timer.periodic(
-      Duration(seconds: 3),
-      (_) => fetchCategoriesAndUpdateState(),
-    );
     super.initState();
-  }
-
-  Future<void> fetchCategoriesAndUpdateState() async {
-    Completer<void> completer = Completer<void>();
-
-    widget._shouldCancelGetCategories = false;
-
-    getCategories().then((result) {
-      if (!widget._shouldCancelGetCategories) {
-        setState(() {});
-        completer.complete();
-      }
-    });
-
-    await completer.future;
-  }
-
-  Future<void> getCategories() async {
-    if (widget._shouldCancelGetCategories) return;
-    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message response = await _socketService.receiveMessage();
-    this._categories = [];
-    Map<String, dynamic> data = response.getData();
-    if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
-      for (var categoryString in data["publicCategories"]) {
-        _categories.add(Category(categoryString[1], categoryString[0], true));
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    widget._shouldCancelGetCategories = true;
-    _timer?.cancel();
-    super.dispose();
   }
 
   Future<Message> createRoom(Category category) async {
@@ -141,8 +105,8 @@ class _CategoriesPage extends State<CategoriesPage> {
       "answerTimeout": int.parse(maxTime.text),
       "roomName": ""
     };
-    _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
-    final Message response = await _socketService.receiveMessage();
+    widget.socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
+    final Message response = await widget.socketService.receiveMessage();
     return response;
   }
 

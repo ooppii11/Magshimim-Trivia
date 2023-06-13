@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:trivia/category.dart';
 import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
@@ -27,11 +28,48 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   final SocketService _socketService;
   String _enteredValue = '';
   bool _isFloatingScreenOpen = false;
+  late Timer _timer;
+  late List<Category> _categories = [];
+
   _HomePage(this._socketService);
 
   @override
   void initState() {
+    getCategories().then((result) {});
+    startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cancelTimer();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const duration = Duration(seconds: 3);
+    _timer = Timer.periodic(duration, (timer) {
+      getCategories().then((result) {});
+    });
+  }
+
+  void cancelTimer() {
+    _timer.cancel();
+  }
+
+  Future<void> getCategories() async {
+    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
+    final Message response = await widget.socketService.receiveMessage();
+    List<Category> categories = [];
+    Map<String, dynamic> data = response.getData();
+    if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
+      for (var categoryString in data["publicCategories"]) {
+        categories.add(Category(categoryString[1], categoryString[0], true));
+      }
+    }
+    setState(() {
+      _categories = categories;
+    });
   }
 
   @override
@@ -57,6 +95,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                     label: ''),
               ],
               onTap: (value) {
+                _timer.cancel();
                 if (value == 0) {
                   Navigator.pushReplacement(
                     context,
@@ -133,8 +172,11 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
             children: [
               TabBarView(
                 children: [
-                  CategoriesPage(socketService: _socketService),
-                  RoomsPage(socketService: _socketService)
+                  CategoriesPage(
+                    socketService: widget.socketService,
+                    categories: _categories,
+                  ),
+                  RoomsPage(socketService: widget.socketService)
                 ],
               ),
               if (_isFloatingScreenOpen) _buildFloatingScreen(),
