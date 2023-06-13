@@ -16,8 +16,9 @@ int GET_CATEGORIES_RESPONSE_CODE = 6;
 
 class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
+  bool _shouldCancelGetCategories = false;
 
-  const CategoriesPage({super.key, required this.socketService});
+  CategoriesPage({super.key, required this.socketService});
 
   @override
   _CategoriesPage createState() => _CategoriesPage(socketService);
@@ -88,19 +89,32 @@ class _CategoriesPage extends State<CategoriesPage> {
     numberOfQuestions.text = "1";
     maxTime.text = "1";
 
-    getCategories().then((result) {
-      setState(() {});
-    });
+    fetchCategoriesAndUpdateState();
 
     _timer = Timer.periodic(
-        Duration(seconds: 3),
-        (_) => getCategories().then((result) {
-              setState(() {});
-            }));
+      Duration(seconds: 3),
+      (_) => fetchCategoriesAndUpdateState(),
+    );
     super.initState();
   }
 
+  Future<void> fetchCategoriesAndUpdateState() async {
+    Completer<void> completer = Completer<void>();
+
+    widget._shouldCancelGetCategories = false;
+
+    getCategories().then((result) {
+      if (!widget._shouldCancelGetCategories) {
+        setState(() {});
+        completer.complete();
+      }
+    });
+
+    await completer.future;
+  }
+
   Future<void> getCategories() async {
+    if (widget._shouldCancelGetCategories) return;
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     final Message response = await _socketService.receiveMessage();
     this._categories = [];
@@ -114,7 +128,8 @@ class _CategoriesPage extends State<CategoriesPage> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    widget._shouldCancelGetCategories = true;
+    _timer?.cancel();
     super.dispose();
   }
 
