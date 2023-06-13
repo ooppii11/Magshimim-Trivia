@@ -116,7 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       );
                     } else {
-                      errorToast("Sigunp error", 2);
+                      errorToast(context, "Sigunp error", 2);
                     }
                   },
                   child: const Text(

@@ -28,7 +28,7 @@ class _UserPage extends State<UserPage> {
 
   _UserPage(this._socketService);
 
-  void getInfo() async{
+  void getInfo() async {
     _history = [];
     _statistics = [];
 
@@ -37,7 +37,8 @@ class _UserPage extends State<UserPage> {
     print("statistics code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 8) {
       print("data: ${receivedMessage.getData()}");
-      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
+      Map<String, dynamic> statisticsMap =
+          receivedMessage.getData()["statistics"];
       statisticsMap.forEach((key, value) {
         _statistics.add(Statistic(key, value));
       });
@@ -47,8 +48,10 @@ class _UserPage extends State<UserPage> {
     receivedMessage = await _socketService.receiveMessage();
     print("history code: ${receivedMessage.getCode()}");
     if (receivedMessage.getCode() == 9) {
-      List<dynamic> dynamicList = jsonDecode(receivedMessage.getData()["History"]);
-      List<Map<String, dynamic>> historyList = dynamicList.cast<Map<String, dynamic>>().toList();
+      List<dynamic> dynamicList =
+          jsonDecode(receivedMessage.getData()["History"]);
+      List<Map<String, dynamic>> historyList =
+          dynamicList.cast<Map<String, dynamic>>().toList();
       for (var element in historyList) {
         _history.add(History(
             element["CategoryName"],
@@ -61,8 +64,6 @@ class _UserPage extends State<UserPage> {
       }
       print("history[0] id: ${_history[0].getCategoryId()}");
     }
-    
-    
   }
 
   @override
@@ -416,7 +417,7 @@ class _UserPage extends State<UserPage> {
         ),
       );
     } else {
-      errorToast(response.getData()[0], 2);
+      errorToast(context, response.getData()[0], 2);
     }
   }
 }

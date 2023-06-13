@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     } else {
-                      errorToast("Login error", 2);
+                      errorToast(context, "Login error", 2);
                     }
                   },
                   child: Text(
