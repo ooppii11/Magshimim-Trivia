@@ -12,6 +12,7 @@ import 'package:trivia/message.dart';
 int GET_CATEGORIES_CODE = 7;
 int CREATE_ROOM_REQUEST_CODE = 12;
 int ERROR_CODE = 99;
+int GET_CATEGORIES_RESPONSE_CODE = 6;
 
 class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
@@ -104,7 +105,7 @@ class _CategoriesPage extends State<CategoriesPage> {
     final Message response = await _socketService.receiveMessage();
     this._categories = [];
     Map<String, dynamic> data = response.getData();
-    if (response.getCode() != ERROR_CODE) {
+    if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
       for (var categoryString in data["publicCategories"]) {
         _categories.add(Category(categoryString[1], categoryString[0], true));
       }
@@ -128,7 +129,6 @@ class _CategoriesPage extends State<CategoriesPage> {
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
     return response;
-    //response.getCode() != ERROR_CODE;
   }
 
   @override
