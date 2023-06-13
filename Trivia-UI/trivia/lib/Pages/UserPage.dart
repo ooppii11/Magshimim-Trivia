@@ -29,7 +29,6 @@ class _UserPage extends State<UserPage> {
   _UserPage(this._socketService) {
     getInfo();
   }
-//fix this
 
   void getInfo() async{
     _history = [];
