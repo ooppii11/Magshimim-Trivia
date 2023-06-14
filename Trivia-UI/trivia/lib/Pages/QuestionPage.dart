@@ -2,26 +2,56 @@ import 'package:trivia/Question.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
+import 'package:trivia/room.dart';
+import 'dart:async';
 
 int SUBMIT_ANSWER_REQUEST_CODE = 0;
 int GET_QUESTION_REQUEST_CODE = 0;
 
 class QuestionPage extends StatefulWidget {
   final SocketService socketService;
+  final Room room;
 
-  const QuestionPage({super.key, required this.socketService});
+  const QuestionPage(
+      {super.key, required this.socketService, required this.room});
 
   @override
-  _QuestionPage createState() => _QuestionPage(socketService);
+  _QuestionPage createState() => _QuestionPage(socketService, room);
 }
 
 class _QuestionPage extends State<QuestionPage> {
   final SocketService _socketService;
+  final Room room;
+  late Timer _countdownTimer;
   late Question _question;
+  late Duration _countdownDuration;
 
-  _QuestionPage(this._socketService);
+  _QuestionPage(this._socketService, this.room) {
+    this._countdownDuration = Duration(seconds: room.getTimePerQuestion());
+  }
 
-  @override
+  void startTimer() {
+    _countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void stopTimer() {
+    setState(() => _countdownTimer!.cancel());
+  }
+
+  void setCountDown() {
+    final reduceSecondsBy = 1;
+    setState(() {
+      final seconds = _countdownDuration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        _countdownTimer!.cancel();
+        getQuetion();
+      } else {
+        _countdownDuration = Duration(seconds: seconds);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
