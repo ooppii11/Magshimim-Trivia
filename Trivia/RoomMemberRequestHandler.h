@@ -31,5 +31,5 @@ private:
 	RequestResult leaveRoom(RequestInfo requestInfo);
 	RequestResult getRoomState(RequestInfo requestInfo);
 
-	void logout(RequestInfo requestInfo);
+	RequestResult logout(RequestInfo requestInfo);
 };

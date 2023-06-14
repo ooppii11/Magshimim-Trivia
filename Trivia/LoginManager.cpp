@@ -13,7 +13,7 @@ void LoginManager::signup(std::string username, std::string password, std::strin
 	}
 	catch (...)
 	{
-		throw messageException("The user already exsists");
+		throw messageException("The user already exist");
 	}
 }
 

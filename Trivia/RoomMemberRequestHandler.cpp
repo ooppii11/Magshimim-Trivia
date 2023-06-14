@@ -9,6 +9,7 @@
 RoomMemberRequestHandler::RoomMemberRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory):
 	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
+	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &RoomMemberRequestHandler::logout;
 	this->_handleRequestFunctions[LEAVE_ROOM_REQUEST_CODE] = &RoomMemberRequestHandler::leaveRoom;
 	this->_handleRequestFunctions[GET_ROOM_STATE_REQUEST_CODE] = &RoomMemberRequestHandler::getRoomState;
 }
@@ -90,7 +91,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 	return result;
 }
 
-void RoomMemberRequestHandler::logout(RequestInfo requestInfo)
+RequestResult RoomMemberRequestHandler::logout(RequestInfo requestInfo)
 {
 	this->_loginManager.logout(this->_user.getUsername());
+	this->_room.removeUser(this->_user);
+	return RequestResult();
 }
