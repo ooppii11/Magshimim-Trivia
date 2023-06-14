@@ -6,8 +6,8 @@
 #include "messageException.h"
 #include "IDatabase.h"
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory):
-	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory):
+	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[LEAVE_ROOM_REQUEST_CODE] = &RoomMemberRequestHandler::leaveRoom;
 	this->_handleRequestFunctions[GET_ROOM_STATE_REQUEST_CODE] = &RoomMemberRequestHandler::getRoomState;
@@ -81,4 +81,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
+}
+
+void RoomMemberRequestHandler::logout(RequestInfo requestInfo)
+{
+	this->_loginManager.logout(this->_user.getUsername());
 }

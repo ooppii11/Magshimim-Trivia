@@ -6,8 +6,8 @@
 #include "messageException.h"
 
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory):
-	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
+	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[CLOSE_ROOM_REQUEST_CODE] = &RoomAdminRequestHandler::closeRoom;
 	this->_handleRequestFunctions[START_GAME_REQUEST_CODE] = &RoomAdminRequestHandler::startGame;
@@ -97,4 +97,9 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo requestInfo)
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
+}
+
+void RoomAdminRequestHandler::logout(RequestInfo requestInfo)
+{
+	this->_loginManager.logout(this->_user.getUsername());
 }
