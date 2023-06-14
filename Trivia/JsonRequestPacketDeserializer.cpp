@@ -163,3 +163,18 @@ removeQuestionRequest Deserializer::removeQuestionFromUserCategorie(const Buffer
 		throw messageException("Error: Invalid massege");
 	}
 }
+
+SubmitAnswerRequest Deserializer::deserializeSubminAnswerRequest(const Buffer& buffer)
+{
+	try
+	{
+		json data = json::parse(buffer.message);
+		SubmitAnswerRequest temp;
+		temp.answerIndex = data["answerIndex"];
+		return temp;
+	}
+	catch (json::exception& e)
+	{
+		throw messageException("Error: Invalid massege");
+	}
+}

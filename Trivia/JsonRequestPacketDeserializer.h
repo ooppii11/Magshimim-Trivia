@@ -15,4 +15,7 @@ public:
 	static RemoveCategorieRequest removeCategorieFromUser(const Buffer& buffer);
 	static AddQuestionRequest addQuestionToUserCategorie(const Buffer& buffer);
 	static RemoveQuestionRequest removeQuestionFromUserCategorie(const Buffer& buffer);
+
+	static SubmitAnswerRequest deserializeSubminAnswerRequest(const Buffer& buffer);
+
 };
