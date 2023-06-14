@@ -1,8 +1,9 @@
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/room.dart';
 import 'package:trivia/message.dart';
-import 'dart:convert';
+import 'package:trivia/Pages/RoomPage.dart';
 
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
@@ -10,38 +11,43 @@ int ERROR_CODE = 99;
 
 class RoomsPage extends StatefulWidget {
   final SocketService socketService;
+  final List<Room> rooms;
 
-  const RoomsPage({super.key, required this.socketService});
+  const RoomsPage({
+    Key? key,
+    required this.socketService,
+    required this.rooms,
+  }) : super(key: key);
 
   @override
-  _RoomsPage createState() => _RoomsPage(socketService);
+  _RoomsPage createState() => _RoomsPage(socketService, rooms);
 }
 
 class _RoomsPage extends State<RoomsPage> {
   final SocketService _socketService;
-  final List<Room> _rooms = [];
+  final List<Room> _rooms;
 
-  _RoomsPage(this._socketService);
+  _RoomsPage(this._socketService, this._rooms);
 
-  Future<void> getRooms() async {
-    _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
+  void joinRoom(Room room) async {
+    _socketService.sendMessage(Message(11, {"roomId": room.getId()}));
     final Message response = await _socketService.receiveMessage();
-    List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
-    List<Map<String, dynamic>> data = dynamicList.cast<Map<String, dynamic>>().toList();
-    for (var roomData in data) {
-      _rooms.add(Room(roomData["Id"], roomData["Name"], roomData["CategorieId"], roomData["MaxPlayers"],
-          roomData["NumOfQuestions"], roomData["Time"], roomData["IsActive"]));
+    if (response.getCode() == 10) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RoomPage(
+            socketService: widget.socketService,
+            admin: false,
+            roomId: room.getId(),
+            //pass the room id
+          ),
+        ),
+      );
+    } else {
+      errorToast(context, response.getData()[0], 2);
     }
   }
-
-  @override
-  void initState() {
-    getRooms().then((result) {
-      setState(() {});
-    });
-  }
-
-  Future<bool> joinRoom(Room room) async {return true;}
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +80,8 @@ class _RoomsPage extends State<RoomsPage> {
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
                             room.getId().toString(),
-                            style: const TextStyle(color: Colors.white, fontSize: 25),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 25),
                           ),
                         ),
                       ]))))

@@ -5,6 +5,7 @@ import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
 import 'package:trivia/Pages/GamePage.dart';
+//import 'dart:convert';
 
 class RoomPage extends StatefulWidget {
   final SocketService socketService;
@@ -23,22 +24,62 @@ class _RoomPageState extends State<RoomPage> {
   final SocketService _socketService;
   final bool _admin;
   final int _roomId;
+  bool _hasGameBegun = false;
+  late int _questionTimeout;
+  late int _numOfQuestionsInGame;
 
-  _RoomPageState(this._socketService, this._admin, this._roomId);
+  _RoomPageState(this._socketService, this._admin, this._roomId)
+  {
+    getUsersInRoom();
+  }
 
   getUsersInRoom() async {
     _users.clear();
-    _socketService.sendMessage(Message(5 , {}));
-    final Message response = await _socketService.receiveMessage();
-    if (response.getCode() == 4 ) {
-      List<String> data = response.getData()["PlayersInRoom"];
-      for (var user in data) {
-        _users.add(User(user, 0));
-      }
-      setState(() {
-        _users;
+    if (_hasGameBegun) {
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => GamePage(
+              socketService: widget.socketService,
+              admin: _admin,
+              roomId: _roomId,
+              questionTimeout: _questionTimeout,
+              numOfQuestionsInGame: _numOfQuestionsInGame,
+            ),
+          ),
+        );
       });
-      
+    }
+    else
+    {
+      _socketService.sendMessage(Message(19 , {}));
+      final Message response = await _socketService.receiveMessage();
+      if (response.getCode() == 18 ) {
+        List<dynamic> dynamicList = response.getData()["players"];
+        List<String> data = dynamicList.map((element) => element.toString()).toList();
+        List<User> updatedUsers = [];
+        for (var user in data) {
+          updatedUsers.add(User(user, 0));
+        }
+        setState(() {
+          _users = updatedUsers;
+          _numOfQuestionsInGame = response.getData()["questionCount"];
+          _questionTimeout = response.getData()["answerTimeout"];
+          _hasGameBegun = response.getData()["hasGameBegun"];
+        });
+        
+      } else if(response.getCode() == 20) {
+        await _socketService.receiveMessage();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HomePage(
+              socketService: widget.socketService,
+            ),
+          ),
+        );
+      }
       
     }
   }
@@ -77,17 +118,29 @@ class _RoomPageState extends State<RoomPage> {
                 size: 26.0,
               ),
               onPressed: () async {
+                bool error = false;
                 if (_admin) {
                   _socketService.sendMessage(Message(17, {}));
                   final response = await _socketService.receiveMessage();
+                  if(response.getCode() != 16)
+                  {
+                    error = true;
+                  }
                   print("code:");
                   print(response.getCode());
                 }
-                _socketService.sendMessage(Message(20, {}));
-                final Message response = await _socketService.receiveMessage();
-                print("code:");
+                else
+                {
+                  _socketService.sendMessage(Message(20, {}));
+                  final Message response = await _socketService.receiveMessage();
+                  if(response.getCode() != 19)
+                  {
+                    error = true;
+                  }
+                  print("code:");
                   print(response.getCode());
-                if (response.getCode() == 19) {
+                }
+                if (!error) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -96,10 +149,6 @@ class _RoomPageState extends State<RoomPage> {
                       ),
                     ),
                   );
-                }
-                else
-                {
-                  //toast there was error and close app
                 }
               },
             ),
@@ -147,10 +196,29 @@ class _RoomPageState extends State<RoomPage> {
                 child: Column(
                   children: [
                     SingleChildScrollView(
-                      child: Wrap(
-                        spacing: 16.0,
-                        runSpacing: 16.0,
-                        children: _users.map((user) => Text(user.getUsername(), style: TextStyle(color: Colors.white))).toList(),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Wrap(
+                          spacing: 16.0,
+                          runSpacing: 16.0,
+                          //alignment: WrapAlignment.start,
+                          children: _users.map(
+                            (user) => Container(
+                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 88, 128, 185),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Text(
+                                user.getUsername(),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ).toList(),
+                        ),
                       ),
                     ),
                     if (_admin)
@@ -168,7 +236,7 @@ class _RoomPageState extends State<RoomPage> {
                               style: ElevatedButton.styleFrom(
                                 //foregroundColor:Color(0xFF000000),
                                 minimumSize: Size(90, 64.0),
-                                backgroundColor: Color.fromARGB(255, 196, 255, 249),
+                                backgroundColor: Color.fromARGB(255, 196, 255, 249),//
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(32.0),
                                 ),
@@ -178,9 +246,9 @@ class _RoomPageState extends State<RoomPage> {
                                 style: TextStyle(fontSize: 20, color: Colors.black),
                               ),
                               onPressed: () async{
-                                _socketService.sendMessage(Message(18 /*TODO: set start game code*/, {}));
+                                _socketService.sendMessage(Message(18, {}));
                                 final Message response = await _socketService.receiveMessage();
-                                if (response.getCode() == 17 /*TODO: set start game code*/) {
+                                if (response.getCode() == 17) {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -188,6 +256,8 @@ class _RoomPageState extends State<RoomPage> {
                                         socketService: widget.socketService,
                                         admin: _admin,
                                         roomId: _roomId,
+                                        questionTimeout: _questionTimeout,
+                                        numOfQuestionsInGame: _numOfQuestionsInGame,
                                       ),
                                     ),
                                   );

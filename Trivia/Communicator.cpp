@@ -1,6 +1,7 @@
 #include "Communicator.h"
 #include <iostream>
 #include <thread>
+#include "Request.h"
 
 Communicator::Communicator(RequestHandlerFactory& handlerFactory):
 	_handlerFactory(handlerFactory)
@@ -96,11 +97,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			}
 			else { errorFlag = true; }
 		}
+		RequestInfo logout;
+		logout.id = LOGOUT_REQUEST_CODE;
+		this->_clients[clientSocket]->handleRequest(logout);
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
 	catch (const std::exception& e)
 	{
+		RequestInfo logout;
+		logout.id = LOGOUT_REQUEST_CODE;
+		this->_clients[clientSocket]->handleRequest(logout);
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}

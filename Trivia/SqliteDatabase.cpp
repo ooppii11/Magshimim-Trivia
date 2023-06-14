@@ -282,7 +282,7 @@ std::vector<History> SqliteDatabase::getUserLastFiveHistory(const std::string& u
 	std::string query = "";
 
 	userId = this->getUserId(username);
-	query = "SELECT * "
+	query = "SELECT CATEGORY_ID, RANK, AVERAGE_TIME, NUMBER_OF_ANSWERS, NUMBER_OF_CORRECT_ANSWERS, CREATION_DATE "
 			"FROM HISTORY "
 			"WHERE USER_ID = " + std::to_string(userId) + " LIMIT 5;";
 
@@ -297,7 +297,7 @@ std::vector<History> SqliteDatabase::getCategoryHistory(int categoryId) const
 	SqliteCommand command;
 	std::string query = "";
 
-	query = "SELECT * "
+	query = "SELECT CATEGORY_ID, RANK, AVERAGE_TIME, NUMBER_OF_ANSWERS, NUMBER_OF_CORRECT_ANSWERS, CREATION_DATE "
 			"FROM HISTORY "
 			"WHERE CATEGORY_ID = " + std::to_string(categoryId) + ";";
 
@@ -479,6 +479,8 @@ int SqliteDatabase::questionsCollback(void* data, int argc, char** argv, char** 
 	return 0;
 }
 
+#include <iostream>
+
 int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** azColName)
 {
 	int i = 0;
@@ -491,7 +493,7 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 		else if (std::string(azColName[i]) == AVERAGE_TIME) { history.avergeTime = atoi(argv[i]); }
 		else if (std::string(azColName[i]) == NUMBER_OF_ANSWERS) { history.answers = atoi(argv[i]); }
 		else if (std::string(azColName[i]) == NUMBER_OF_CORRECT_ANSWERS) { history.correctAnswers = atoi(argv[i]); }
-		else if (std::string(azColName[i]) == CREATION_DATE) { history.creationDate = (time_t)atoll(argv[i]); }	
+		else if (std::string(azColName[i]) == CREATION_DATE) {  history.creationDate = std::string(argv[i]); }
 	}
 	(*(std::vector<History> *)data).push_back(history);
 	return 0;
@@ -499,16 +501,9 @@ int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::scoreCollback(void* data, int argc, char** argv, char** azColName)
 {
-//<<<<<<< HEAD
 	if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
 	{
 		(*(std::map<std::string, int>*)data)[std::string(argv[1])] = atoi(argv[0]);
-/*=======
-		if (argc == 2 && std::string(azColName[0]) == SCORE && std::string(azColName[1]) == USERNAME)
-		{
-			(*(std::map<std::string, int> *)data)[std::string(argv[1])] = atoi(argv[0]);
-			>>>>>> > e80edccf159432fb8c5c12404b802e57becab917
-	*/
 	}
 	return 0;
 }

@@ -18,7 +18,7 @@ class RequestHandlerFactory;
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-	MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager);
+	MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager, LoginManager& loginManager);
 
 	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
@@ -27,6 +27,7 @@ private:
 	typedef RequestResult(MenuRequestHandler::*function)(RequestInfo);
 
 	LoggedUser _user;
+	LoginManager& _loginManager;
 	RoomManager&  _roomManager;
 	StatisticsManager&  _statisticsManager;
 	RequestHandlerFactory&  _handlerFactory;
@@ -36,7 +37,7 @@ private:
 
 	RequestResult wrapperHandleRequest(function function, RequestInfo requestInfo);
 
-	RequestResult signout(RequestInfo requestInfo);
+	RequestResult logout(RequestInfo requestInfo);
 	RequestResult getRooms(RequestInfo requestInfo);
 	RequestResult getPlayersInRoom(RequestInfo requestInfo);
 	RequestResult getPersonalStats(RequestInfo requestInfo);

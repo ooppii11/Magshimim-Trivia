@@ -6,8 +6,10 @@ class GamePage extends StatefulWidget {
   final SocketService socketService;
   final bool admin;
   final int roomId;
+  final int questionTimeout;
+  final int numOfQuestionsInGame;
 
-  const GamePage({Key? key, required this.socketService, required this.admin, required this.roomId}) : super(key: key);
+  const GamePage({Key? key, required this.socketService, required this.admin, required this.roomId, required this.numOfQuestionsInGame, required this.questionTimeout}) : super(key: key);
 
   @override
   _GamePageState createState() => _GamePageState(socketService, admin, roomId);

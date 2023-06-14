@@ -8,11 +8,11 @@
 #include "Request.h"
 #include "Response.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager):
-	_user(user), _historyManager(historyManager), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory), _categoriesManager(categoriesManager)
+MenuRequestHandler::MenuRequestHandler(LoggedUser& user, HistoryManager& historyManager, RoomManager& roomManager, StatisticsManager& statisticsManager, RequestHandlerFactory& handlerFactory, QuizManager& categoriesManager, LoginManager& loginManager):
+	_user(user), _historyManager(historyManager), _roomManager(roomManager), _statisticsManager(statisticsManager), _handlerFactory(handlerFactory), _categoriesManager(categoriesManager), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[GET_USER_HISTORY_REQUEST_CODE] = &MenuRequestHandler::getUserHistory;
-	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &MenuRequestHandler::signout;
+	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &MenuRequestHandler::logout;
 	this->_handleRequestFunctions[GET_ROOMS_REQUEST_CODE] = &MenuRequestHandler::getRooms;
 	this->_handleRequestFunctions[GET_PLAYERS_IN_ROOM_REQUEST_CODE] = &MenuRequestHandler::getPlayersInRoom;
 	this->_handleRequestFunctions[HIGH_SCORE_REQUEST_CODE] = &MenuRequestHandler::getHighScore;
@@ -80,10 +80,10 @@ RequestResult MenuRequestHandler::wrapperHandleRequest(function function, Reques
 	return result;
 }
 
-RequestResult MenuRequestHandler::signout(RequestInfo requestInfo)
+RequestResult MenuRequestHandler::logout(RequestInfo requestInfo)
 {
 	RequestResult result;
-
+	this->_loginManager.logout(this->_user.getUsername());
 	result.newHandler = std::shared_ptr<MenuRequestHandler>(nullptr);
 	result.response = Serializer::serializeResponse(LogoutResponse());
 	
@@ -126,7 +126,6 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo requestInfo)
 	getPersonalStatsResponse response;
 
 	response.statistics = this->_statisticsManager.getUserStatistics(this->_user.getUsername());
-	response.status = PERSONAL_STATS_RESPONSE_CODE;
 	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(response);
 	
@@ -169,6 +168,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	CreateRoomRequest request;
 	RoomData roomData;
 	CreateRoomResponse response;
+	Room room;
 
 	request = Deserializer::deserializeCreateRoomRequest(requestInfo.buffer);
 	roomData.categorieId = request.categorieId;
@@ -178,10 +178,11 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 	roomData.timePerQuestion = request.answerTimeout;
 	roomData.isActive = false;
 
-	response.roomId  =this->_roomManager.createRoom(this->_user, roomData);
+	response.roomId  = this->_roomManager.createRoom(this->_user, roomData);
 	response.status = false;
+	room = this->_roomManager.getRoom(response.roomId);
 	
-	result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;

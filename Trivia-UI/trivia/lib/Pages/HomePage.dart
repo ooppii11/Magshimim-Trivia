@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:trivia/category.dart';
+import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/Pages/RoomsListPage.dart';
 import 'package:trivia/Pages/UserPage.dart';
 import 'package:trivia/Pages/loginPage.dart';
@@ -7,13 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/Pages/categoriesPageLayout.dart';
 import 'package:trivia/Pages/roomPage.dart';
+import 'package:trivia/room.dart';
+import 'dart:convert';
 
 // ignore_for_file: prefer_const_constructors
 
 // ignore: must_be_immutable
-int GET_CATEGORIES_CODE = 7;
-int CREATE_ROOM_REQUEST_CODE = 12;
-int ERROR_CODE = 99;
 
 class HomePage extends StatefulWidget {
   final SocketService socketService;
@@ -28,11 +30,71 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   final SocketService _socketService;
   String _enteredValue = '';
   bool _isFloatingScreenOpen = false;
+  late Timer _timer;
+  Key _categoriesPageKey = UniqueKey();
+  Key _roomsPageKey = UniqueKey();
+  late List<Category> _categories = [];
+  late List<Room> _rooms = [];
+
   _HomePage(this._socketService);
 
   @override
   void initState() {
+    getCategoriesAndRooms();
+    startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cancelTimer();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const duration = Duration(seconds: 3);
+    _timer = Timer.periodic(duration, (timer) {
+      getCategoriesAndRooms();
+    });
+  }
+
+  void cancelTimer() {
+    _timer.cancel();
+  }
+
+  Future<void> getCategoriesAndRooms() async {
+    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
+    Message response = await _socketService.receiveMessage();
+    List<Category> categories = [];
+    Map<String, dynamic> catgoris_data = response.getData();
+    if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
+      for (var categoryString in catgoris_data["publicCategories"]) {
+        categories.add(Category(categoryString[1], categoryString[0], true));
+      }
+    }
+
+    _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
+    List<Room> rooms = [];
+    response = await _socketService.receiveMessage();
+    List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
+    List<Map<String, dynamic>> rooms_data =
+        dynamicList.cast<Map<String, dynamic>>().toList();
+    for (var roomData in rooms_data) {
+      rooms.add(Room(
+          roomData["Id"],
+          roomData["Name"],
+          roomData["CategorieId"],
+          roomData["MaxPlayers"],
+          roomData["NumOfQuestions"],
+          roomData["Time"],
+          (roomData["IsActive"] == 1) ? true : false));
+    }
+    setState(() {
+      _roomsPageKey = UniqueKey();
+      _rooms = rooms;
+      _categoriesPageKey = UniqueKey();
+      _categories = categories;
+    });
   }
 
   @override
@@ -58,21 +120,21 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                     label: ''),
               ],
               onTap: (value) {
+                _timer.cancel();
                 if (value == 0) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (_) => UserPage(
-                        socketService: widget.socketService,
+                        socketService: _socketService,
                       ),
                     ),
                   );
                 }
                 if (value == 1) {
                   _openPopUp();
-              
-                  if(_enteredValue != '')
-                  {
+
+                  if (_enteredValue != '') {
                     joinRoom();
                   }
                 }
@@ -81,7 +143,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                         builder: (_) => LeaderBoardPage(
-                          socketService: widget.socketService,
+                          socketService: _socketService,
                         ),
                       ));
                 }
@@ -125,7 +187,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => LoginPage(
-                                        socketService: widget.socketService,
+                                        socketService: _socketService,
                                       )));
                         }
                       }),
@@ -135,8 +197,16 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
             children: [
               TabBarView(
                 children: [
-                  CategoriesPage(socketService: _socketService),
-                  RoomsPage(socketService: _socketService)
+                  CategoriesPage(
+                    key: _categoriesPageKey, // Assign the key
+                    socketService: _socketService,
+                    categories: _categories,
+                  ),
+                  RoomsPage(
+                    key: _roomsPageKey,
+                    socketService: _socketService,
+                    rooms: _rooms,
+                  )
                 ],
               ),
               if (_isFloatingScreenOpen) _buildFloatingScreen(),
@@ -146,13 +216,13 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
       ),
     );
   }
-    
+
   void _openPopUp() {
     setState(() {
       _isFloatingScreenOpen = true;
     });
   }
-  
+
   Widget _buildFloatingScreen() {
     return Stack(
       fit: StackFit.expand,
@@ -191,12 +261,12 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  hintText: 'Enter a sequence of numbers',
+                                  hintText: 'Enter Room ID',
                                 ),
                               ),
                               SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Save'),
+                                child: Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -237,15 +307,14 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
-            socketService: widget.socketService,
+            socketService: _socketService,
             admin: false,
             roomId: int.parse(_enteredValue),
           ),
         ),
       );
     } else {
-      //toast the error
+      errorToast(context, response.getData()[0], 2);
     }
   }
-
 }

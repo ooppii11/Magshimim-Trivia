@@ -41,11 +41,11 @@ void Room::setRoomData(const RoomData& data)
 std::ostream& operator<<(std::ostream& os, const RoomData& data)
 {
 	return os << "{" 
-		<< "Id: " << data.id << ", "
-		<< "Name: " << data.name << ", "
-		<< "CategorieId: " << data.categorieId << ", "
-		<< "IsActive: " << data.isActive << ", "
-		<< "Time:" << data.timePerQuestion << ", "
-		<< "NumOfQuestions: " << data.numOfQuestionsInGame << ", "
-		<< "MaxPlayers: " << data.maxPlayers << "}";
+		<< "\"Id\": " << data.id << ", "
+		<< "\"Name\": " << "\"" + data.name + "\"" << ", "
+		<< "\"CategorieId\": " << data.categorieId << ", "
+		<< "\"IsActive\": " << data.isActive << ", "
+		<< "\"Time\": " << data.timePerQuestion << ", "
+		<< "\"NumOfQuestions\": " << data.numOfQuestionsInGame << ", "
+		<< "\"MaxPlayers\": " << data.maxPlayers << "}";
 }
