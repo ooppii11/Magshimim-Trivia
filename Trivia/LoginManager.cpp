@@ -7,8 +7,14 @@ LoginManager::LoginManager(std::shared_ptr<IDatabase> db) : _database(db)
 
 void LoginManager::signup(std::string username, std::string password, std::string email)
 {
-	this->_database->addNewUser(username, password, email);
-	this->_loggedUsers.push_back(LoggedUser(username));
+	try {
+		this->_database->addNewUser(username, password, email);
+		this->_loggedUsers.push_back(LoggedUser(username));
+	}
+	catch (...)
+	{
+		throw messageException("The user already exsists");
+	}
 }
 
 void LoginManager::login(std::string username, std::string password)
