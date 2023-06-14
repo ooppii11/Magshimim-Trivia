@@ -173,6 +173,42 @@ Buffer Serializer::serializeResponse(const LeaveRoomResponse& response)
 	return Serializer::setStatus(response);
 }
 
+Buffer Serializer::serializeResponse(const GetGameResultsResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["Results"] = Serializer::vectorToString(response.results);
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const SubmitAnswerResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["correctAnswerIndex"] = response.correctAnswerIndex;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const GetQuestionResponse& response)
+{
+	Buffer temp;
+	json data;
+	data["Answers"] = response.answers;
+	data["Question"] = response.question;
+	temp.header = response.status;
+	temp.message = data.dump();
+	return temp;
+}
+
+Buffer Serializer::serializeResponse(const LeaveGameResponse& response)
+{
+	return Serializer::setStatus(response);
+}
+
 Buffer Serializer::setStatus(const OnlyStatus& response)
 {
 	Buffer temp;

@@ -30,6 +30,10 @@ public:
 	static Buffer serializeResponse(const StartGameResponse& response);
 	static Buffer serializeResponse(const GetRoomStateResponse& response);
 	static Buffer serializeResponse(const LeaveRoomResponse& response);
+	static Buffer serializeResponse(const GetGameResultsResponse& response);
+	static Buffer serializeResponse(const SubmitAnswerResponse& response);
+	static Buffer serializeResponse(const GetQuestionResponse& response);
+	static Buffer serializeResponse(const LeaveGameResponse& response);
 
 private:
 	template <typename T>
