@@ -267,12 +267,12 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  hintText: 'Enter a sequence of numbers',
+                                  hintText: 'Enter Room ID',
                                 ),
                               ),
                               SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Save'),
+                                child: Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },

@@ -370,12 +370,12 @@ class _UserPage extends State<UserPage> {
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
-                                  hintText: 'Enter a sequence of numbers',
+                                  hintText: 'Enter Room ID',
                                 ),
                               ),
                               const SizedBox(height: 10),
                               ElevatedButton(
-                                child: const Text('Save'),
+                                child: const Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
