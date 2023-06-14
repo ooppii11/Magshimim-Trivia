@@ -45,6 +45,7 @@ class _QuestionPage extends State<QuestionPage> {
       final seconds = _countdownDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
         _countdownTimer!.cancel();
+        // navigate to worng page
         getQuetion();
       } else {
         _countdownDuration = Duration(seconds: seconds);
@@ -66,10 +67,10 @@ class _QuestionPage extends State<QuestionPage> {
   }
 
   Future<void> submitAnswer(int answerId) async {
+    stopTimer();
     _socketService.sendMessage(
         Message(SUBMIT_ANSWER_REQUEST_CODE, {"answerId": answerId}));
     Message response = await _socketService.receiveMessage();
-
     if (response.getData()[0] == answerId) {
       // navigate to right page
     } else {
@@ -79,12 +80,19 @@ class _QuestionPage extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final seconds = _countdownDuration.inSeconds;
     return Scaffold(
         body: Stack(children: [
       SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
               child: Column(children: [
+            Container(
+              margin: EdgeInsets.all(100.0),
+              decoration:
+                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              child: Text("$seconds"),
+            ),
             Text(_question.getQuestion()),
             Column(children: [
               for (MapEntry<int, String> answer
