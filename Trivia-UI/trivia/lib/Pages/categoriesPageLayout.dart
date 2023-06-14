@@ -17,12 +17,14 @@ int GET_CATEGORIES_RESPONSE_CODE = 6;
 class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
   final List<Category> categories;
+  final Function disposeCallback;
 
-  CategoriesPage({
-    Key? key,
-    required this.socketService,
-    required this.categories,
-  }) : super(key: key);
+  CategoriesPage(
+      {Key? key,
+      required this.socketService,
+      required this.categories,
+      required this.disposeCallback})
+      : super(key: key);
 
   @override
   _CategoriesPage createState() => _CategoriesPage(socketService, categories);
@@ -65,10 +67,11 @@ class _CategoriesPage extends State<CategoriesPage> {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  void create(Category category) async {
+  Future create(Category category) async {
     Message response = await createRoom(category);
     if (response.getCode() != ERROR_CODE) {
       Navigator.of(context, rootNavigator: true).pop();
+      widget.disposeCallback();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
