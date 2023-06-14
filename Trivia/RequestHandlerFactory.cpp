@@ -35,5 +35,5 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 
 std::shared_ptr<MenuRequestHandler> RequestHandlerFactory::createMenuRequestHandler(LoggedUser user)
 {
-	return std::shared_ptr<MenuRequestHandler>(new MenuRequestHandler(user, this->_roomManager, this->_statisticsManager, *this, this->_quizManager));
+	return std::shared_ptr<MenuRequestHandler>(new MenuRequestHandler(user, this->_historyManager,this->_roomManager, this->_statisticsManager, *this, this->_quizManager));
 }
