@@ -6,7 +6,7 @@
 #include "messageException.h"
 #include "IDatabase.h"
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory):
+RoomMemberRequestHandler::RoomMemberRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory):
 	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[LEAVE_ROOM_REQUEST_CODE] = &RoomMemberRequestHandler::leaveRoom;
@@ -67,19 +67,26 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo requestInfo)
 RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 {
 	RequestResult result;
-	GetRoomStateResponse response;
-	RoomData roomData = this->_room.getRoomData();
+	try
+	{
+		GetRoomStateResponse response;
+		RoomData roomData = this->_room.getRoomData();
+		response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
+		response.players = this->_room.getAllUsers();
+		response.hasGameBegun = roomData.isActive;
+		response.answerTimeout = roomData.timePerQuestion;
+		response.questionCount = roomData.numOfQuestionsInGame;
 
-	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
-	//response.status = this->_roomManager.getRoomState(roomData.id);
-	response.players = this->_room.getAllUsers();
-	response.hasGameBegun = roomData.isActive;
-	response.answerTimeout = roomData.timePerQuestion;
-	response.questionCount = roomData.numOfQuestionsInGame;
-
-	result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
-	result.response = Serializer::serializeResponse(response);
-
+		result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
+		result.response = Serializer::serializeResponse(response);
+	}
+	catch (...) 
+	{
+		result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+		result.response = Serializer::serializeResponse(ErrorResponse("Room is close"));
+	}
+	
+	
 	return result;
 }
 
