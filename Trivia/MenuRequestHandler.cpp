@@ -152,6 +152,10 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 	RequestResult result;	
 
 	request = Deserializer::deserializeJoinRoomRequest(requestInfo.buffer);
+	if (this->_roomManager.getRoomState(request.roomId) == true)
+	{
+		throw messageException("Room is already active");
+	}
 	this->_roomManager.getRoom(request.roomId).addUser(this->_user);
 	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_roomManager.getRoom(request.roomId)));
 	result.response = Serializer::serializeResponse(JoinRoomResponse());
