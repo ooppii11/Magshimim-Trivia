@@ -1,4 +1,5 @@
 import 'package:trivia/SocketService.dart';
+import 'package:trivia/components/loadingToast.dart';
 import 'package:trivia/user.dart';
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/loginPage.dart';
@@ -32,7 +33,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     _leaderboardScores = [];
     _socketService.sendMessage(Message(6, {}));
     final receivedMessage = await _socketService.receiveMessage();
-    
+
     if (receivedMessage.getCode() == 5) {
       Map<String, dynamic> UsersScoreMap =
           receivedMessage.getData()["HighScores"];
@@ -50,6 +51,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       //throw toast that says "updating leaderboard"
       getUsersStatistic();
+      loadingToast(context, 2);
     });
   }
 
@@ -63,7 +65,6 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
-    
   }
 
   @override
@@ -310,7 +311,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
         ),
       );
     } else {
-      errorToast(response.getData()["Error"], 2);
+      errorToast(context, response.getData()["Error"], 2);
     }
   }
 }

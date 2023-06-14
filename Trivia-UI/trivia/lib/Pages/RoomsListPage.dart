@@ -45,7 +45,7 @@ class _RoomsPage extends State<RoomsPage> {
         ),
       );
     } else {
-      errorToast(response.getData()[0], 2);
+      errorToast(context, response.getData()[0], 2);
     }
   }
 

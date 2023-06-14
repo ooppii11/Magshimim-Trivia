@@ -44,8 +44,10 @@ class _UserPage extends State<UserPage> {
     _socketService.sendMessage(Message(10, {}));
     receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 9) {
-      List<dynamic> dynamicList = jsonDecode(receivedMessage.getData()["History"]);
-      List<Map<String, dynamic>> historyList = dynamicList.cast<Map<String, dynamic>>().toList();
+      List<dynamic> dynamicList =
+          jsonDecode(receivedMessage.getData()["History"]);
+      List<Map<String, dynamic>> historyList =
+          dynamicList.cast<Map<String, dynamic>>().toList();
       for (var element in historyList) {
         _history.add(History(
             element["CategoryName"],
@@ -57,7 +59,6 @@ class _UserPage extends State<UserPage> {
             element["CreationDate"]));
       }
     }
-    
     setState(() {});
   }
 
@@ -422,7 +423,7 @@ class _UserPage extends State<UserPage> {
         ),
       );
     } else {
-      errorToast(response.getData()[0], 2);
+      errorToast(context, response.getData()[0], 2);
     }
   }
 }
