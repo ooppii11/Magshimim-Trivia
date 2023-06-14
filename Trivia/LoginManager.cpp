@@ -16,7 +16,7 @@ void LoginManager::login(std::string username, std::string password)
 	{
 		this->_loggedUsers.push_back(LoggedUser(username));
 	}
-	else { throw std::exception("Passwrord not match"); }
+	else { throw std::exception("Password not match"); }
 }
 
 void LoginManager::logout(std::string username)
