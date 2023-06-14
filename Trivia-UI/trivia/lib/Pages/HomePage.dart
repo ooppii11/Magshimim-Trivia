@@ -40,7 +40,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    getCategories();
+    getCategoriesAndRooms();
     startTimer();
     super.initState();
   }
@@ -54,7 +54,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   void startTimer() {
     const duration = Duration(seconds: 3);
     _timer = Timer.periodic(duration, (timer) {
-      getCategories();
+      getCategoriesAndRooms();
     });
   }
 
@@ -62,31 +62,24 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
     _timer.cancel();
   }
 
-  Future<void> getCategories() async {
+  Future<void> getCategoriesAndRooms() async {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message response = await _socketService.receiveMessage();
+    Message response = await _socketService.receiveMessage();
     List<Category> categories = [];
-    Map<String, dynamic> data = response.getData();
+    Map<String, dynamic> catgoris_data = response.getData();
     if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
-      for (var categoryString in data["publicCategories"]) {
+      for (var categoryString in catgoris_data["publicCategories"]) {
         categories.add(Category(categoryString[1], categoryString[0], true));
       }
     }
-    setState(() {
-      _categoriesPageKey = UniqueKey();
 
-      _categories = categories;
-    });
-  }
-
-  Future<void> getRooms() async {
     _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
     List<Room> rooms = [];
-    final Message response = await _socketService.receiveMessage();
+    response = await _socketService.receiveMessage();
     List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
-    List<Map<String, dynamic>> data =
+    List<Map<String, dynamic>> rooms_data =
         dynamicList.cast<Map<String, dynamic>>().toList();
-    for (var roomData in data) {
+    for (var roomData in rooms_data) {
       rooms.add(Room(
           roomData["Id"],
           roomData["Name"],
@@ -94,12 +87,13 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
           roomData["MaxPlayers"],
           roomData["NumOfQuestions"],
           roomData["Time"],
-          roomData["IsActive"]));
+          (roomData["IsActive"] == 1) ? true : false));
     }
-
     setState(() {
       _roomsPageKey = UniqueKey();
       _rooms = rooms;
+      _categoriesPageKey = UniqueKey();
+      _categories = categories;
     });
   }
 
