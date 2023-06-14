@@ -27,6 +27,10 @@ enum ResponseCodes {
 	START_GAME_RESPONSE_CODE,
 	GET_ROOM_STATE_RESPONSE_CODE,
 	LEAVE_ROOM_RESPONSE_CODE,
+	LEAVE_GAME_RESPONSE_CODE,
+	GET_QUESTION_RESPONSE_CODE,
+	SUBMIT_ANSWER_RESPONSE_CODE,
+	GET_GAME_RESULTS_RESPONSE_CODE,
 
 	ERROR_RESPONSE_CODE = 99
 };
@@ -166,3 +170,39 @@ typedef struct LeaveRoomResponse : OnlyStatus
 {
 	LeaveRoomResponse() : OnlyStatus(LEAVE_ROOM_RESPONSE_CODE) {}
 }LeaveRoomResponse;
+
+typedef struct LeaveGameResponse : OnlyStatus
+{
+	LeaveGameResponse() : OnlyStatus(LEAVE_GAME_RESPONSE_CODE) {}
+}LeaveGameResponse;
+
+typedef struct GetQuestionResponse
+{
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, std::string> answers;
+	GetQuestionResponse() : status(GET_QUESTION_RESPONSE_CODE) {}
+}GetQuestionResponse;
+
+typedef struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerIndex;
+	SubmitAnswerResponse() : status(SUBMIT_ANSWER_RESPONSE_CODE) {}
+}SubmitAnswerResponse;
+
+typedef struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+	GetGameResultsResponse() : status(GET_GAME_RESULTS_RESPONSE_CODE) {}
+}GetGameResultsResponse;
+
+typedef struct PlayerResults
+{
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+	friend std::ostream& operator<<(std::ostream& os, const PlayerResults& data);
+}PlayerResults;
