@@ -147,6 +147,9 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="Response.cpp">
+      <Filter>Resource Files\Messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">

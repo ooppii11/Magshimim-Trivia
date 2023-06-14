@@ -33,6 +33,7 @@
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="messageException.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Response.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
