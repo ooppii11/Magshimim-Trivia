@@ -66,28 +66,32 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
     _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
     Message response = await _socketService.receiveMessage();
     List<Category> categories = [];
-    Map<String, dynamic> catgoris_data = response.getData();
     if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
-      for (var categoryString in catgoris_data["publicCategories"]) {
-        categories.add(Category(categoryString[1], categoryString[0], true));
+      Map<String, dynamic> catgoris_data = response.getData();
+      if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
+        for (var categoryString in catgoris_data["publicCategories"]) {
+          categories.add(Category(categoryString[1], categoryString[0], true));
+        }
       }
     }
 
     _socketService.sendMessage(Message(GET_ROOMS_CODE, {}));
     List<Room> rooms = [];
     response = await _socketService.receiveMessage();
-    List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
-    List<Map<String, dynamic>> rooms_data =
-        dynamicList.cast<Map<String, dynamic>>().toList();
-    for (var roomData in rooms_data) {
-      rooms.add(Room(
-          roomData["Id"],
-          roomData["Name"],
-          roomData["CategorieId"],
-          roomData["MaxPlayers"],
-          roomData["NumOfQuestions"],
-          roomData["Time"],
-          (roomData["IsActive"] == 1) ? true : false));
+    if (response.getCode() == GET_ROOMS_RESPONSE_CODE) {
+      List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
+      List<Map<String, dynamic>> rooms_data =
+          dynamicList.cast<Map<String, dynamic>>().toList();
+      for (var roomData in rooms_data) {
+        rooms.add(Room(
+            roomData["Id"],
+            roomData["Name"],
+            roomData["CategorieId"],
+            roomData["MaxPlayers"],
+            roomData["NumOfQuestions"],
+            roomData["Time"],
+            (roomData["IsActive"] == 1) ? true : false));
+      }
     }
     setState(() {
       _roomsPageKey = UniqueKey();
@@ -201,11 +205,13 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                     key: _categoriesPageKey, // Assign the key
                     socketService: _socketService,
                     categories: _categories,
+                    disposeCallback: dispose,
                   ),
                   RoomsPage(
                     key: _roomsPageKey,
                     socketService: _socketService,
                     rooms: _rooms,
+                    disposeCallback: dispose,
                   )
                 ],
               ),
