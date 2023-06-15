@@ -99,9 +99,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				messagesLock.unlock();
 
 			}
+			else if (clientRequest.id == 0)
+			{
+				break;
+			}
 			else
 			{ 
-				response.response = Serializer::serializeResponse(ErrorResponse("Unvalid meaage code"));;
+				response.response = Serializer::serializeResponse(ErrorResponse("Unvalid message code"));;
 			}
 			this->sendMessage(clientSocket, response.response);
 		}
