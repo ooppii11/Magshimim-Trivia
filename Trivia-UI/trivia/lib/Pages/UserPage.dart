@@ -423,7 +423,7 @@ class _UserPage extends State<UserPage> {
         ),
       );
     } else {
-      errorToast(context, response.getData()[0], 2);
+      errorToast(context, response.getData()["Error"], 2);
     }
   }
 }
