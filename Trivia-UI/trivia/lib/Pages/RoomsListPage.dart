@@ -8,16 +8,19 @@ import 'package:trivia/Pages/RoomPage.dart';
 int GET_ROOMS_CODE = 4;
 int JOIN_ROOM_REQUEST_CODE = 11;
 int ERROR_CODE = 99;
+int GET_ROOMS_RESPONSE_CODE = 3;
 
 class RoomsPage extends StatefulWidget {
   final SocketService socketService;
   final List<Room> rooms;
+  final Function disposeCallback;
 
-  const RoomsPage({
-    Key? key,
-    required this.socketService,
-    required this.rooms,
-  }) : super(key: key);
+  const RoomsPage(
+      {Key? key,
+      required this.socketService,
+      required this.rooms,
+      required this.disposeCallback})
+      : super(key: key);
 
   @override
   _RoomsPage createState() => _RoomsPage(socketService, rooms);
@@ -33,6 +36,7 @@ class _RoomsPage extends State<RoomsPage> {
     _socketService.sendMessage(Message(11, {"roomId": room.getId()}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
+      widget.disposeCallback();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
