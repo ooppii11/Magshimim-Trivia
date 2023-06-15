@@ -18,12 +18,14 @@ class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
   final List<Category> categories;
   final Function disposeCallback;
+  Function setIsDialogOpen;
 
   CategoriesPage(
       {Key? key,
       required this.socketService,
       required this.categories,
-      required this.disposeCallback})
+      required this.disposeCallback,
+      required this.setIsDialogOpen})
       : super(key: key);
 
   @override
@@ -39,32 +41,37 @@ class _CategoriesPage extends State<CategoriesPage> {
 
   _CategoriesPage(this._socketService, this._categories);
 
-  Future openDialg(Category category) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text(category.getName()),
-            content: Column(children: [
-              Text("Max number of players: "),
-              IncrementDecrementButton(
-                  controller: maxNumberOfPlayers, minValue: 2),
-              Text("Number of Questions: "),
-              IncrementDecrementButton(
-                  controller: numberOfQuestions, minValue: 1),
-              Text("Max timr per Questions: "),
-              IncrementDecrementButton(controller: maxTime, minValue: 1),
-            ]),
-            actions: [
-              TextButton(
-                  onPressed: (() {
-                    create(category);
-                  }),
-                  child: Text("CREATE")),
-              TextButton(onPressed: cancel, child: Text("CANCEL")),
-            ],
-          ));
+  void openDialg(Category category) {
+    widget.setIsDialogOpen(true);
+
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(category.getName()),
+              content: Column(children: [
+                Text("Max number of players: "),
+                IncrementDecrementButton(
+                    controller: maxNumberOfPlayers, minValue: 2),
+                Text("Number of Questions: "),
+                IncrementDecrementButton(
+                    controller: numberOfQuestions, minValue: 1),
+                Text("Max timr per Questions: "),
+                IncrementDecrementButton(controller: maxTime, minValue: 1),
+              ]),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      create(category);
+                    }),
+                    child: Text("CREATE")),
+                TextButton(onPressed: cancel, child: Text("CANCEL")),
+              ],
+            ));
+  }
 
   void cancel() {
     Navigator.of(context, rootNavigator: true).pop();
+    widget.setIsDialogOpen(false);
   }
 
   Future create(Category category) async {
