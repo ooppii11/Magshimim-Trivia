@@ -13,7 +13,12 @@ class RoomPage extends StatefulWidget {
   final bool admin;
   final int roomId;
 
-  const RoomPage({Key? key, required this.socketService, required this.admin, required this.roomId}) : super(key: key);
+  const RoomPage(
+      {Key? key,
+      required this.socketService,
+      required this.admin,
+      required this.roomId})
+      : super(key: key);
 
   @override
   _RoomPageState createState() => _RoomPageState(socketService, admin, roomId);
@@ -29,8 +34,7 @@ class _RoomPageState extends State<RoomPage> {
   late int _questionTimeout;
   late int _numOfQuestionsInGame;
 
-  _RoomPageState(this._socketService, this._admin, this._roomId)
-  {
+  _RoomPageState(this._socketService, this._admin, this._roomId) {
     getUsersInRoom();
   }
 
@@ -51,14 +55,13 @@ class _RoomPageState extends State<RoomPage> {
           ),
         );
       });
-    }
-    else
-    {
-      _socketService.sendMessage(Message(19 , {}));
+    } else {
+      _socketService.sendMessage(Message(19, {}));
       final Message response = await _socketService.receiveMessage();
-      if (response.getCode() == 18 ) {
+      if (response.getCode() == 18) {
         List<dynamic> dynamicList = response.getData()["players"];
-        List<String> data = dynamicList.map((element) => element.toString()).toList();
+        List<String> data =
+            dynamicList.map((element) => element.toString()).toList();
         List<User> updatedUsers = [];
         for (var user in data) {
           updatedUsers.add(User(user, 0));
@@ -82,7 +85,6 @@ class _RoomPageState extends State<RoomPage> {
           ),
         );
       }
-      
     }
   }
 
@@ -124,19 +126,16 @@ class _RoomPageState extends State<RoomPage> {
                 if (_admin) {
                   _socketService.sendMessage(Message(17, {}));
                   final response = await _socketService.receiveMessage();
-                  if(response.getCode() != 16)
-                  {
+                  if (response.getCode() != 16) {
                     error = true;
                   }
                   print("code:");
                   print(response.getCode());
-                }
-                else
-                {
+                } else {
                   _socketService.sendMessage(Message(20, {}));
-                  final Message response = await _socketService.receiveMessage();
-                  if(response.getCode() != 19)
-                  {
+                  final Message response =
+                      await _socketService.receiveMessage();
+                  if (response.getCode() != 19) {
                     error = true;
                   }
                   print("code:");
@@ -184,7 +183,10 @@ class _RoomPageState extends State<RoomPage> {
                     alignment: Alignment.center,
                     child: Text(
                       "Room ID: ${_roomId.toString()}",
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
                   ),
                 ],
@@ -204,22 +206,25 @@ class _RoomPageState extends State<RoomPage> {
                           spacing: 16.0,
                           runSpacing: 16.0,
                           //alignment: WrapAlignment.start,
-                          children: _users.map(
-                            (user) => Container(
-                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 88, 128, 185),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Text(
-                                user.getUsername(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
+                          children: _users
+                              .map(
+                                (user) => Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 4.0, horizontal: 8.0),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 88, 128, 185),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Text(
+                                    user.getUsername(),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ).toList(),
+                              )
+                              .toList(),
                         ),
                       ),
                     ),
@@ -238,18 +243,21 @@ class _RoomPageState extends State<RoomPage> {
                               style: ElevatedButton.styleFrom(
                                 //foregroundColor:Color(0xFF000000),
                                 minimumSize: Size(90, 64.0),
-                                backgroundColor: Color.fromARGB(255, 196, 255, 249),//
+                                backgroundColor:
+                                    Color.fromARGB(255, 196, 255, 249), //
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(32.0),
                                 ),
                               ),
                               child: Text(
                                 "Start Game",
-                                style: TextStyle(fontSize: 20, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black),
                               ),
-                              onPressed: () async{
+                              onPressed: () async {
                                 _socketService.sendMessage(Message(18, {}));
-                                final Message response = await _socketService.receiveMessage();
+                                final Message response =
+                                    await _socketService.receiveMessage();
                                 if (response.getCode() == 17) {
                                   Navigator.pushReplacement(
                                     context,
@@ -259,7 +267,8 @@ class _RoomPageState extends State<RoomPage> {
                                         admin: _admin,
                                         roomId: _roomId,
                                         questionTimeout: _questionTimeout,
-                                        numOfQuestionsInGame: _numOfQuestionsInGame,
+                                        numOfQuestionsInGame:
+                                            _numOfQuestionsInGame,
                                       ),
                                     ),
                                   );
