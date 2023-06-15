@@ -31,6 +31,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   String _enteredValue = '';
   bool _isFloatingScreenOpen = false;
   late Timer _timer;
+  bool _isDialogOpen = false;
   Key _categoriesPageKey = UniqueKey();
   Key _roomsPageKey = UniqueKey();
   late List<Category> _categories = [];
@@ -54,7 +55,9 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   void startTimer() {
     const duration = Duration(seconds: 3);
     _timer = Timer.periodic(duration, (timer) {
-      getCategoriesAndRooms();
+      if (!_isDialogOpen) {
+        getCategoriesAndRooms();
+      }
     });
   }
 
@@ -202,6 +205,11 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                     socketService: _socketService,
                     categories: _categories,
                     disposeCallback: dispose,
+                    setIsDialogOpen: (bool isOpen) {
+                      setState(() {
+                        _isDialogOpen = isOpen;
+                      });
+                    },
                   ),
                   RoomsPage(
                     key: _roomsPageKey,
