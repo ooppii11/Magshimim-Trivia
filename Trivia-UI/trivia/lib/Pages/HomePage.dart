@@ -320,7 +320,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
         ),
       );
     } else {
-      errorToast(context, response.getData()[0], 2);
+      errorToast(context, response.getData()["Error"], 2);
     }
   }
 }

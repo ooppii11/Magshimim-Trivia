@@ -5,6 +5,7 @@ import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
 import 'package:trivia/Pages/GamePage.dart';
+import 'package:trivia/components/erroToast.dart';
 //import 'dart:convert';
 
 class RoomPage extends StatefulWidget {
@@ -71,8 +72,10 @@ class _RoomPageState extends State<RoomPage> {
           _questionTimeout = response.getData()["answerTimeout"];
           _hasGameBegun = response.getData()["hasGameBegun"];
         });
-      } else if (response.getCode() == 20) {
-        await _socketService.receiveMessage();
+        
+      } else if(response.getCode() == 99) {
+        //await _socketService.receiveMessage();
+        errorToast(context, response.getData()["Error"], 2);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
