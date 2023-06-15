@@ -101,17 +101,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			}
 			else if (clientRequest.id == 0)
 			{
+				RequestInfo logout;
+				logout.id = LOGOUT_REQUEST_CODE;
+				this->_clients[clientSocket]->handleRequest(logout);
 				break;
 			}
 			else
 			{ 
-				response.response = Serializer::serializeResponse(ErrorResponse("Unvalid message code"));;
+				response.response = Serializer::serializeResponse(ErrorResponse("Invalid message code"));;
 			}
 			this->sendMessage(clientSocket, response.response);
 		}
-		RequestInfo logout;
-		logout.id = LOGOUT_REQUEST_CODE;
-		this->_clients[clientSocket]->handleRequest(logout);
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}

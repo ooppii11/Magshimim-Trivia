@@ -137,10 +137,6 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                 }
                 if (value == 1) {
                   _openPopUp();
-
-                  if (_enteredValue != '') {
-                    joinRoom();
-                  }
                 }
                 if (value == 2) {
                   Navigator.pushReplacement(
@@ -275,6 +271,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                                 child: Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
+                                  joinRoom();
                                 },
                               ),
                             ],
@@ -306,7 +303,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   }
 
   void joinRoom() async {
-    _socketService.sendMessage(Message(11, {"roomId": _enteredValue}));
+    _socketService.sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
       Navigator.pushReplacement(

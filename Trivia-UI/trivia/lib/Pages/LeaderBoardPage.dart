@@ -101,9 +101,6 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
             }
             if (value == 1) {
               _openPopUp();
-              if (_enteredValue != '') {
-                joinRoom();
-              }
             }
             if (value == 3) {
               Navigator.pushReplacement(
@@ -220,7 +217,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     });
   }
 
-  Widget _buildFloatingScreen() {
+   Widget _buildFloatingScreen() {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -248,7 +245,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Join'),
+                          title: Text('Join'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -257,15 +254,16 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: 'Enter Room ID',
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: 10),
                               ElevatedButton(
-                                child: const Text('Join'),
+                                child: Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
+                                  joinRoom();
                                 },
                               ),
                             ],
@@ -277,7 +275,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: const Icon(Icons.people),
+                  child: Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -286,8 +284,8 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: const Icon(Icons.create),
-                ),
+                  child: Icon(Icons.create),
+                )
               ],
             ),
           ),
@@ -297,14 +295,14 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   }
 
   void joinRoom() async {
-    _socketService.sendMessage(Message(11, {"roomId": _enteredValue}));
+    _socketService.sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
-            socketService: widget.socketService,
+            socketService: _socketService,
             admin: false,
             roomId: int.parse(_enteredValue),
           ),
