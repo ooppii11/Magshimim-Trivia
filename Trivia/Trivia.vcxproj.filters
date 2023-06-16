@@ -150,6 +150,9 @@
     <ClCompile Include="Response.cpp">
       <Filter>Resource Files\Messages</Filter>
     </ClCompile>
+    <ClCompile Include="GameRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -246,6 +249,9 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="RoomMemberRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRequestHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>

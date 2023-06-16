@@ -65,13 +65,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 	SubmitAnswerRequest request;
 	SubmitAnswerResponse response;
 
-	request = Deserializer::deserializeSubmitAnswerRequest(requestInfo.buffer);
+	request = Deserializer::deserializeSubminAnswerRequest(requestInfo.buffer);
 	
-	this->_game.submitAnswer(this->_user, request.answerId);
-	response.correctAnswerId = this->_game.getQuestionForUser(this->_user).getCorrectAnswerId();
+	this->_game.submitAnswer(this->_user, request.answerIndex);
+	response.correctAnswerIndex = this->_game.getQuestionForUser(this->_user).getCorrectAnswerId();
 
 	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game));
-	result.response = Serializer::serializeResponse(response());
+	result.response = Serializer::serializeResponse(response);
 
 	return result;
 }

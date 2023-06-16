@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferDeserializer.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="HistoryManager.cpp" />
     <ClCompile Include="QuizManager.cpp" />
@@ -49,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferDeserializer.hpp" />
+    <ClInclude Include="GameRequestHandler.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="HistoryManager.h" />
     <ClInclude Include="QuizManager.h" />
