@@ -6,7 +6,7 @@
 #include "messageException.h"
 
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
 	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &RoomAdminRequestHandler::logout;

@@ -123,6 +123,14 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
+	catch (...)
+	{
+		RequestInfo logout;
+		logout.id = LOGOUT_REQUEST_CODE;
+		this->_clients[clientSocket]->handleRequest(logout);
+		this->_clients.erase(clientSocket);
+		closesocket(clientSocket);
+	}
 }
 
 bool Communicator::validPort(int port)

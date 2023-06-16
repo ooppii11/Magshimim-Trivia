@@ -72,7 +72,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 	{
 		GetRoomStateResponse response;
 		RoomData roomData = this->_room.getRoomData();
-		response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
+		response.status = GET_ROOM_STATE_RESPONSE_CODE;
 		response.players = this->_room.getAllUsers();
 		response.hasGameBegun = roomData.isActive;
 		response.answerTimeout = roomData.timePerQuestion;
@@ -84,7 +84,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 	catch (...) 
 	{
 		result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
-		result.response = Serializer::serializeResponse(ErrorResponse("Room is close"));
+		result.response = Serializer::serializeResponse(ErrorResponse("Admin closed the Room"));
 	}
 	
 	

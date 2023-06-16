@@ -96,12 +96,14 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
             (roomData["IsActive"] == 1) ? true : false));
       }
     }
-    setState(() {
-      _roomsPageKey = UniqueKey();
-      _rooms = rooms;
-      _categoriesPageKey = UniqueKey();
-      _categories = categories;
-    });
+    if (mounted) {
+      setState(() {
+        _roomsPageKey = UniqueKey();
+        _rooms = rooms;
+        _categoriesPageKey = UniqueKey();
+        _categories = categories;
+      });
+    }
   }
 
   @override

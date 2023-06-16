@@ -12,14 +12,14 @@ class RequestHandlerFactory;
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public: 
-	RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory);
+	RoomAdminRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory);
 
 	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
 
 private:
 	typedef RequestResult(RoomAdminRequestHandler::* function)(RequestInfo);
-	Room _room;
+	Room& _room;
 	LoggedUser _user;
 	LoginManager& _loginManager;
 	RoomManager& _roomManager;

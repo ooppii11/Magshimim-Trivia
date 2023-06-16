@@ -58,7 +58,9 @@ class _RoomPageState extends State<RoomPage> {
     } else {
       _socketService.sendMessage(Message(19, {}));
       final Message response = await _socketService.receiveMessage();
+      print("response code: ${response.getCode()}");
       if (response.getCode() == 18) {
+        print("response data: ${response.getData()}");
         List<dynamic> dynamicList = response.getData()["players"];
         List<String> data =
             dynamicList.map((element) => element.toString()).toList();
@@ -75,7 +77,10 @@ class _RoomPageState extends State<RoomPage> {
         
       } else if(response.getCode() == 99) {
         //await _socketService.receiveMessage();
-        errorToast(context, response.getData()["Error"], 2);
+        if(response.getData()["Error"].toString().contains("Admin closed the Room"))
+        {
+          errorToast(context, response.getData()["Error"], 2);
+        }
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

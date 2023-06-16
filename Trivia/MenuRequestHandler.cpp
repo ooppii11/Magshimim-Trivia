@@ -180,9 +180,8 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo)
 
 	response.roomId  = this->_roomManager.createRoom(this->_user, roomData);
 	response.status = false;
-	room = this->_roomManager.getRoom(response.roomId);
 	
-	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, room));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, this->_roomManager.getRoom(response.roomId)));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;

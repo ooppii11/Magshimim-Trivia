@@ -27,8 +27,8 @@ public:
 	std::shared_ptr<LoginRequestHandler> createLoginRequestHandler();
 	StatisticsManager&  getStatisticsManager();
 	RoomManager&  getRoomManager();
-	std::shared_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(LoggedUser, Room);
-	std::shared_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(LoggedUser, Room);
+	std::shared_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(LoggedUser, Room&);
+	std::shared_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(LoggedUser, Room&);
 
 
 private:
