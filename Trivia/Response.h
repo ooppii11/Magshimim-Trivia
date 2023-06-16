@@ -191,13 +191,6 @@ typedef struct SubmitAnswerResponse
 	SubmitAnswerResponse() : status(SUBMIT_ANSWER_RESPONSE_CODE) {}
 }SubmitAnswerResponse;
 
-typedef struct GetGameResultsResponse
-{
-	unsigned int status;
-	std::vector<PlayerResults> results;
-	GetGameResultsResponse() : status(GET_GAME_RESULTS_RESPONSE_CODE) {}
-}GetGameResultsResponse;
-
 typedef struct PlayerResults
 {
 	std::string username;
@@ -206,3 +199,11 @@ typedef struct PlayerResults
 	unsigned int averageAnswerTime;
 	friend std::ostream& operator<<(std::ostream& os, const PlayerResults& data);
 }PlayerResults;
+
+typedef struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+	GetGameResultsResponse() : status(GET_GAME_RESULTS_RESPONSE_CODE) {}
+}GetGameResultsResponse;
+

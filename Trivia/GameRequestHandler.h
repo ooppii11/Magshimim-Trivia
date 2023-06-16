@@ -2,6 +2,7 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "LoggedUser.h"
+/*
 #include "GameManager.h"
 #include "Game.h"
 
@@ -32,3 +33,4 @@ private:
 	RequestResult getGameResults(RequestInfo requestInfo);
 	RequestResult leaveGame(RequestInfo requestInfo);
 }
+*/
