@@ -61,6 +61,9 @@
     <Filter Include="Resource Files\exceptions">
       <UniqueIdentifier>{344e9ac0-e191-48b9-9a40-73a5f8915e90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Messages">
+      <UniqueIdentifier>{f8b344ab-1743-4993-8d8b-e34969c2fdf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Response.cpp">
+      <Filter>Resource Files\Messages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

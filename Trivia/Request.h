@@ -24,6 +24,7 @@ enum RequestCodes
 	START_GAME_REQUEST_CODE,
 	GET_ROOM_STATE_REQUEST_CODE,
 	LEAVE_ROOM_REQUEST_CODE,
+	SUBMIT_ANSWER_REQUEST_CODE,
 };
 
 #define NUM_OF_ANSWERS 4
@@ -88,3 +89,8 @@ typedef struct RemoveQuestionRequest
 	unsigned int categorieId;
 	std::string questionName;
 }removeQuestionRequest;
+
+typedef struct SubmitAnswerRequest
+{
+	unsigned int answerIndex;
+}SubmitAnswerRequest;

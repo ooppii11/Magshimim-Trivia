@@ -11,11 +11,15 @@
 #include "QuizManager.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
+#include "GameManager.h"
+#include "Game.h"
+
 
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomAdminRequestHandler;
 class RoomMemberRequestHandler;
+class GameRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -38,4 +42,5 @@ private:
 	StatisticsManager _statisticsManager;
 	QuizManager _quizManager;
 	HistoryManager _historyManager;
+	GameManager _gameManager;
 };
