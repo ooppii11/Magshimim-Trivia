@@ -2,7 +2,7 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "LoggedUser.h"
-/*
+
 #include "GameManager.h"
 #include "Game.h"
 
@@ -23,7 +23,7 @@ private:
 	Game& _game;
 	LoggedUser _user;
 	GameManager& _gameManager;
-	RequestHandlerFactory& _handlerFactory;	   
+	RequestHandlerFactory& _handlerFactory;
 	std::map<int, function> _handleRequestFunctions;
 
 	RequestResult wrapperHandleRequest(function function, RequestInfo requestInfo);
@@ -32,5 +32,4 @@ private:
 	RequestResult submitAnswer(RequestInfo requestInfo);
 	RequestResult getGameResults(RequestInfo requestInfo);
 	RequestResult leaveGame(RequestInfo requestInfo);
-}
-*/
+};

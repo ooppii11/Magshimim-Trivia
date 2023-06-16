@@ -54,7 +54,7 @@
   <ItemGroup>
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameManger.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="HistoryManager.h" />

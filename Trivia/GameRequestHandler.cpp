@@ -6,7 +6,7 @@
 #include "Request.h"
 #include "Response.h"
 
-/*
+
 GameRequestHandler::GameRequestHandler(LoggedUser user, Game& game, GameManager& gameManager, RequestHandlerFactory& handlerFacroty) :
 	_user(user), _game(game), _gameManager(gameManager), _handlerFactory(handlerFacroty) {}
 
@@ -87,4 +87,4 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 
 	return result;
 }
-*/
+

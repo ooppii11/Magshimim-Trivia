@@ -1,4 +1,4 @@
-#include "GameManger.h"
+#include "GameManager.h"
 
 GameManager::GameManager(std::shared_ptr<IDatabase> db) :
 	_database(db) {}
