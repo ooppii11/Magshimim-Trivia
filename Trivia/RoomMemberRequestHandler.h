@@ -12,7 +12,7 @@ class RequestHandlerFactory;
 class RoomMemberRequestHandler : public IRequestHandler
 {
 public:
-	RoomMemberRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory);
+	RoomMemberRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory);
 
 	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
@@ -20,8 +20,9 @@ public:
 
 private:
 	typedef RequestResult(RoomMemberRequestHandler::* function)(RequestInfo);
-	Room _room;
+	Room& _room;
 	LoggedUser _user;
+	LoginManager& _loginManager;
 	RoomManager& _roomManager;
 	RequestHandlerFactory&  _handlerFactory;
 	std::map<int, function> _handleRequestFunctions;
@@ -29,4 +30,6 @@ private:
 	RequestResult wrapperHandleRequest(function function, RequestInfo requestInfo);
 	RequestResult leaveRoom(RequestInfo requestInfo);
 	RequestResult getRoomState(RequestInfo requestInfo);
+
+	RequestResult logout(RequestInfo requestInfo);
 };

@@ -11,7 +11,7 @@ class Room {
       this.numOfQuestionsInGame, this.timePerQuestion, this.isActive);
 
   int getId() {
-    return getId();
+    return this.id;
   }
 
   String getName() {

@@ -6,9 +6,10 @@
 #include "messageException.h"
 
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory):
-	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
+	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
 {
+	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &RoomAdminRequestHandler::logout;
 	this->_handleRequestFunctions[CLOSE_ROOM_REQUEST_CODE] = &RoomAdminRequestHandler::closeRoom;
 	this->_handleRequestFunctions[START_GAME_REQUEST_CODE] = &RoomAdminRequestHandler::startGame;
 	this->_handleRequestFunctions[GET_ROOM_STATE_REQUEST_CODE] = &RoomAdminRequestHandler::getRoomState;
@@ -86,15 +87,22 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo requestInfo)
 	GetRoomStateResponse response;
 	RoomData roomData = this->_room.getRoomData();
 
-	response.status = GET_PLAYERS_IN_ROOM_RESPONSE_CODE;
-	response.status = this->_roomManager.getRoomState(roomData.id);
+	response.status = GET_ROOM_STATE_RESPONSE_CODE;
+	//response.status = this->_roomManager.getRoomState(roomData.id);
 	response.players = this->_room.getAllUsers();
 	response.hasGameBegun = roomData.isActive;
 	response.answerTimeout = roomData.timePerQuestion;
 	response.questionCount = roomData.numOfQuestionsInGame;
 
-	result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
+	result.newHandler = std::shared_ptr<RoomAdminRequestHandler>(this->_handlerFactory.createRoomAdminRequestHandler(this->_user, this->_room));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
+}
+
+RequestResult RoomAdminRequestHandler::logout(RequestInfo requestInfo)
+{
+	this->_loginManager.logout(this->_user.getUsername());
+	this->_roomManager.deleteRoom(this->_room.getRoomData().id);
+	return RequestResult();
 }

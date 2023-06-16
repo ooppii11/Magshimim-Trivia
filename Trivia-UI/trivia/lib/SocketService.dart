@@ -29,6 +29,10 @@ class SocketService {
     });
   }
 
+  void resetStreamController() {
+    _streamController = StreamController<Message>.broadcast();
+  }
+
   void sendMessage(Message message) {
     _socket?.add(message.encode());
   }

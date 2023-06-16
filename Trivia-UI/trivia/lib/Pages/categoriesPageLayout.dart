@@ -12,61 +12,78 @@ import 'package:trivia/message.dart';
 int GET_CATEGORIES_CODE = 7;
 int CREATE_ROOM_REQUEST_CODE = 12;
 int ERROR_CODE = 99;
+int GET_CATEGORIES_RESPONSE_CODE = 6;
 
 class CategoriesPage extends StatefulWidget {
   final SocketService socketService;
+  final List<Category> categories;
+  final Function disposeCallback;
+  Function setIsDialogOpen;
 
-  const CategoriesPage({super.key, required this.socketService});
+  CategoriesPage(
+      {Key? key,
+      required this.socketService,
+      required this.categories,
+      required this.disposeCallback,
+      required this.setIsDialogOpen})
+      : super(key: key);
 
   @override
-  _CategoriesPage createState() => _CategoriesPage(socketService);
+  _CategoriesPage createState() => _CategoriesPage(socketService, categories);
 }
 
 class _CategoriesPage extends State<CategoriesPage> {
-  final SocketService _socketService;
-  final List<Category> _categories = [];
   late TextEditingController maxNumberOfPlayers;
   late TextEditingController numberOfQuestions;
   late TextEditingController maxTime;
+  final SocketService _socketService;
+  final List<Category> _categories;
 
-  _CategoriesPage(this._socketService);
+  _CategoriesPage(this._socketService, this._categories);
 
-  Future openDialg(Category category) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text(category.getName()),
-            content: Column(children: [
-              Text("Max number of players: "),
-              IncrementDecrementButton(
-                  controller: maxNumberOfPlayers, minValue: 2),
-              Text("Number of Questions: "),
-              IncrementDecrementButton(
-                  controller: numberOfQuestions, minValue: 1),
-              Text("Max timr per Questions: "),
-              IncrementDecrementButton(controller: maxTime, minValue: 1),
-            ]),
-            actions: [
-              TextButton(
-                  onPressed: (() {
-                    create(category);
-                  }),
-                  child: Text("CREATE")),
-              TextButton(onPressed: cancel, child: Text("CANCEL")),
-            ],
-          ));
+  void openDialg(Category category) {
+    widget.setIsDialogOpen(true);
+
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(category.getName()),
+              content: Column(children: [
+                Text("Max number of players: "),
+                IncrementDecrementButton(
+                    controller: maxNumberOfPlayers, minValue: 2),
+                Text("Number of Questions: "),
+                IncrementDecrementButton(
+                    controller: numberOfQuestions, minValue: 1),
+                Text("Max timr per Questions: "),
+                IncrementDecrementButton(controller: maxTime, minValue: 1),
+              ]),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      create(category);
+                    }),
+                    child: Text("CREATE")),
+                TextButton(onPressed: cancel, child: Text("CANCEL")),
+              ],
+            ));
+  }
 
   void cancel() {
     Navigator.of(context, rootNavigator: true).pop();
+    widget.setIsDialogOpen(false);
   }
 
-  void create(Category category) async {
+  Future create(Category category) async {
     Message response = await createRoom(category);
-    if (response.getCode() != ERROR_CODE ) {
+    if (response.getCode() != ERROR_CODE) {
+      Navigator.of(context, rootNavigator: true).pop();
+      widget.disposeCallback();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => RoomPage(
-            socketService: widget.socketService,
+            socketService: _socketService,
             admin: true,
             roomId: response.getData()["roomId"],
           ),
@@ -84,19 +101,8 @@ class _CategoriesPage extends State<CategoriesPage> {
     maxNumberOfPlayers.text = "2";
     numberOfQuestions.text = "1";
     maxTime.text = "1";
-    getCategories().then((result) {
-      setState(() {});
-    });
-  }
 
-  Future<void> getCategories() async {
-    _socketService.sendMessage(Message(GET_CATEGORIES_CODE, {}));
-    final Message response = await _socketService.receiveMessage();
-
-    Map<String, dynamic> data = response.getData();
-    for (var categoryString in data["publicCategories"]) {
-      _categories.add(Category(categoryString[1], categoryString[0], true));
-    }
+    super.initState();
   }
 
   Future<Message> createRoom(Category category) async {
@@ -110,7 +116,6 @@ class _CategoriesPage extends State<CategoriesPage> {
     _socketService.sendMessage(Message(CREATE_ROOM_REQUEST_CODE, data));
     final Message response = await _socketService.receiveMessage();
     return response;
-    //response.getCode() != ERROR_CODE;
   }
 
   @override

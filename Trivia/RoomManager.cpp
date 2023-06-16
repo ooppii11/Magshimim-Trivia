@@ -46,7 +46,11 @@ void RoomManager::deleteRoom(roomID id)
 
 unsigned int RoomManager::getRoomState(roomID id)
 {
-	return this->_rooms[id].getRoomData().isActive;
+	if (this->_rooms.find(id) != this->_rooms.end())
+	{
+		return this->_rooms[id].getRoomData().isActive;
+	}
+	throw messageException("Room doesn't exist");
 }
 
 std::vector<RoomData> RoomManager::getRooms()

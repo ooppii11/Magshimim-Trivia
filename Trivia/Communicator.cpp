@@ -1,6 +1,9 @@
 #include "Communicator.h"
 #include <iostream>
 #include <thread>
+#include "Request.h"
+#include "JsonRequestPacketSerializer.hpp"
+#include "Response.h"
 
 Communicator::Communicator(RequestHandlerFactory& handlerFactory):
 	_handlerFactory(handlerFactory)
@@ -80,27 +83,51 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	RequestInfo clientRequest = { 0 };
 	RequestResult response = { 0 };
-	bool errorFlag = false;
 
 	try
 	{
-		while (!errorFlag && this->_clients[clientSocket].get() != nullptr)
+		while (this->_clients[clientSocket].get() != nullptr)
 		{
-			std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
+			//std::lock_guard<std::mutex> mutex(this->_handlerFactoryMutex);
 			clientRequest = this->recvMessage(clientSocket);
 			if (this->_clients[clientSocket].get()->isRequestRelevant(clientRequest))
 			{
+				std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
+
 				response = this->_clients[clientSocket].get()->handleRequest(clientRequest);
 				this->_clients[clientSocket] = response.newHandler;
-				this->sendMessage(clientSocket, response.response);
+				messagesLock.unlock();
+
 			}
-			else { errorFlag = true; }
+			else if (clientRequest.id == 0)
+			{
+				RequestInfo logout;
+				logout.id = LOGOUT_REQUEST_CODE;
+				this->_clients[clientSocket]->handleRequest(logout);
+				break;
+			}
+			else
+			{ 
+				response.response = Serializer::serializeResponse(ErrorResponse("Invalid message code"));;
+			}
+			this->sendMessage(clientSocket, response.response);
 		}
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
 	catch (const std::exception& e)
 	{
+		RequestInfo logout;
+		logout.id = LOGOUT_REQUEST_CODE;
+		this->_clients[clientSocket]->handleRequest(logout);
+		this->_clients.erase(clientSocket);
+		closesocket(clientSocket);
+	}
+	catch (...)
+	{
+		RequestInfo logout;
+		logout.id = LOGOUT_REQUEST_CODE;
+		this->_clients[clientSocket]->handleRequest(logout);
 		this->_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
