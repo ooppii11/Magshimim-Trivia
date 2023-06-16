@@ -1,7 +1,14 @@
 #include "Game.h"
+#include "LoggedUser.h"
 
-Game::Game(int gameId, std::map<LoggedUser, GameData> players, std::vector<Question> questions) :
-	_gameId(gameId), _players(players), _questions(questions) {}
+Game::Game(int gameId, std::vector<std::string> players, std::vector<Question> questions) :
+	_gameId(gameId), _questions(questions) 
+{
+	for (int i = 0; i < players.size(); i++)
+	{
+		this->_players[LoggedUser(players[i])] = GameData(this->_questions[0]);
+	}
+}
 
 
 Question Game::getQuestionForUser(LoggedUser user)

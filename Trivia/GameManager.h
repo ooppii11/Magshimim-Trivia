@@ -10,7 +10,7 @@ class GameManager
 public:
 	GameManager(std::shared_ptr<IDatabase> database);
 
-	Game createGame(Room room);
+	Game createGame(Room room, LoggedUser admin);
 	void deleteGame(int gameId);
 
 private:

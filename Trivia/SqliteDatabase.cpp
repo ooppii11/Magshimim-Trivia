@@ -168,7 +168,7 @@ void SqliteDatabase::deleteCategory(int categoryId, const std::string& username)
 	SqliteUtilities::executeCommand(command);
 }
 
-void SqliteDatabase::addNewQuestion(int categoryId, std::string username, Question question)
+void SqliteDatabase::addNewQuestion(int categoryId, std::string username, QuestionStruct question)
 {
 	SqliteCommand command;
 	std::string query = "";
@@ -464,7 +464,7 @@ int SqliteDatabase::idCollback(void* data, int argc, char** argv, char** azColNa
 int SqliteDatabase::questionsCollback(void* data, int argc, char** argv, char** azColName)
 {
 	int i = 0;
-	Question question;
+	QuestionStruct question;
 	question.correctAnswerIndex = 0;
 
 	for (i = 0; i < argc; i++)
@@ -475,7 +475,7 @@ int SqliteDatabase::questionsCollback(void* data, int argc, char** argv, char** 
 		else if(std::string(azColName[i]) == THIRD_ANSWER) { question.thirdAnswer = std::string(argv[i]); }
 		else if(std::string(azColName[i]) == FOURTH_ANSWER) { question.fourthAnswer = std::string(argv[i]); }
 	}
-	(*(std::vector<Question> *)data).push_back(question);
+	(*(std::vector<Question> *)data).push_back(Question(question));
 	return 0;
 }
 

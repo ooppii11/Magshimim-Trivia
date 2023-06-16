@@ -1,10 +1,13 @@
 #include "Question.h"
 
-Question::Question(std::string question, std::vector<std::string> possibleAnswers, int correcteAnswerIndex)
+Question::Question(QuestionStruct question)
 {
-	this->_question = question;
-	this->_correcteAnswerIndex = correcteAnswerIndex;
-	this->_possibleAnswers;
+	this->_question = question.question;
+	this->_correcteAnswerIndex = question.correctAnswerIndex;
+	this->_possibleAnswers.push_back(question.firstAnswer);
+	this->_possibleAnswers.push_back(question.secondAnswer);
+	this->_possibleAnswers.push_back(question.thirdAnswer);
+	this->_possibleAnswers.push_back(question.fourthAnswer);
 }
 
 std::string Question::getQuestion()
@@ -21,3 +24,5 @@ int Question::getCorrectAnswerId()
 {
 	return this->_correcteAnswerIndex;
 }
+
+

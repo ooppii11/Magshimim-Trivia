@@ -1,12 +1,25 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "IDatabase.h"
+
+typedef struct QuestionStruct
+{
+	std::string question;
+	int correctAnswerIndex;
+	std::string firstAnswer;
+	std::string secondAnswer;
+	std::string thirdAnswer;
+	std::string fourthAnswer;
+
+
+} QuestionStruct;
 
 
 class Question 
 {
 public:
-	Question(std::string question, std::vector<std::string> possibleAnswers, int correcteAnswerIndex);
+	Question(QuestionStruct question);
 
 	std::string getQuestion();
 	std::vector<std::string>  getPossibleAnswers();

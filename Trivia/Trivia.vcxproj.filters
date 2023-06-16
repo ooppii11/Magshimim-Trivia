@@ -144,6 +144,15 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -241,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="RoomMemberRequestHandler.h">
       <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,23 +4,15 @@
 #include <ctime>
 #include <map>
 #include "History.h"
+#include "Question.h"
 
 
 #define PUBLIC true 
 #define PRIVATE false
 
-typedef struct Question
-{
-	std::string question;
-	int correctAnswerIndex;
-	std::string firstAnswer;
-	std::string secondAnswer;
-	std::string thirdAnswer;
-	std::string fourthAnswer;
-} Question;
 
-
-
+const struct QuestionStruct;
+class Question;
 
 typedef struct Category
 {
@@ -49,7 +41,7 @@ public:
 
 	
 	// Questions:
-	virtual void addNewQuestion(int categorieId, std::string  username, Question question) = 0;
+	virtual void addNewQuestion(int categorieId, std::string  username, QuestionStruct question) = 0;
 	virtual std::vector<Question> getCategoryQuestions(int categoryId, const std::string& username) const = 0;
 	virtual void deleteQuestion(int categoryId, const std::string& username, const std::string& question) = 0;
 	

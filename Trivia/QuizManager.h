@@ -14,7 +14,7 @@ public:
 	std::vector<Question> getCategoryQuestions(const unsigned int categorieId, const std::string& username) const;
 
 	void addNewCategory(Category category, const std::string& username);
-	void addNewQuestion(const unsigned int categorieId, std::string  username, Question question);
+	void addNewQuestion(const unsigned int categorieId, std::string  username, QuestionStruct question);
 
 	void deleteCategory(int categoryId, const std::string& username);
 	void deleteQuestion(int categoryId, const std::string& username, const std::string& question);
