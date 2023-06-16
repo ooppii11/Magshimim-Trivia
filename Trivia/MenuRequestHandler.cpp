@@ -223,7 +223,7 @@ RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
 {
 	RequestResult result;
 	AddQuestionRequest request;
-	Question question;
+	QuestionStruct question;
 
 	request = Deserializer::addQuestionToUserCategorie(requestInfo.buffer);
 	if (request.answers.size() != FOUR) { throw std::exception("Answers are missing"); }

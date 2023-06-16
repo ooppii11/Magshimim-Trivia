@@ -47,7 +47,7 @@ public:
 	void deleteCategory(int categoryId, const std::string& username);
 
 	// Questions:
-	void addNewQuestion(int categorieId, std::string username, Question question);
+	void addNewQuestion(int categorieId, std::string username, QuestionStruct question);
 	std::vector<Question> getCategoryQuestions(int categoryId, const std::string& username) const;
 	void deleteQuestion(int categoryId, const std::string& username, const std::string& question);
 

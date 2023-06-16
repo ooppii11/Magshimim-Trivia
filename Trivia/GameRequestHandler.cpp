@@ -51,7 +51,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 	Question question = this->_game.getQuestionForUser(this->_user);
 
 	response.question = question.getQuestion();
-	response.answers = question.getPossibleAnswers();
+	//response.answers = question.getPossibleAnswers();
 
 	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game));
 	result.response = Serializer::serializeResponse(response);

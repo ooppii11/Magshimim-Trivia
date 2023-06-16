@@ -13,3 +13,8 @@ bool LoggedUser::operator==(const LoggedUser& user)
 {
 	return  this->_username == user._username;
 }
+
+bool LoggedUser::operator<(const LoggedUser& user)
+{
+	return this->_username < user._username;
+}

@@ -29,6 +29,6 @@ public:
 
 private:
 	std::vector<Question> _questions;
-	std::map<LoggedUser, GameData>  _players;
+	//std::map<LoggedUser, GameData>  _players;
 	int _gameId;
 };

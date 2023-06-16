@@ -19,7 +19,7 @@ void QuizManager::addNewCategory(Category category, const std::string& username)
 	this->_database->addNewCategory(category, username);
 }
 
-void QuizManager::addNewQuestion(const unsigned int categorieId, std::string username, Question question)
+void QuizManager::addNewQuestion(const unsigned int categorieId, std::string username, QuestionStruct question)
 {
 	this->_database->addNewQuestion(categorieId, username, question);
 }
