@@ -7,13 +7,11 @@
 
 typedef struct GameData
 {
-	Question currentQuestion;
+
+	Question* currentQuestion;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	float averangeAnswerTime;
-
-
-	GameData(Question current) : correctAnswerCount(0), wrongAnswerCount(0), averangeAnswerTime(0), currentQuestion(current) {}
 } GameData;
 
 class Game
@@ -29,6 +27,6 @@ public:
 
 private:
 	std::vector<Question> _questions;
-	//std::map<LoggedUser, GameData>  _players;
+	std::map<LoggedUser, GameData>  _players;
 	int _gameId;
 };

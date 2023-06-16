@@ -22,7 +22,7 @@ public:
 	Question(QuestionStruct question);
 
 	std::string getQuestion();
-	std::vector<std::string>  getPossibleAnswers();
+	std::map<unsigned int, std::string> getPossibleAnswers();
 	int getCorrectAnswerId();
 
 private:
