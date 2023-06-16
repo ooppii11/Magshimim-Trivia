@@ -159,6 +159,9 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
@@ -264,6 +267,9 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="GameManger.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
