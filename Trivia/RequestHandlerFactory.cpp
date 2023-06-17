@@ -32,7 +32,8 @@ std::shared_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMembe
 
 std::shared_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, unsigned int gameId)
 {
-	return std::shared_ptr<GameRequestHandler>(new GameRequestHandler(user, gameId, this->_gameManager, *this));
+	return std::shared_ptr<GameRequestHandler>(new GameRequestHandler(user, gameId, this->_gameManager, this->_roomManager, this->_historyManager, this->_loginManager, *this));
+	
 }
 
 GameManager& RequestHandlerFactory::getGameManager()

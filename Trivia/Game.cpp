@@ -2,7 +2,7 @@
 #include "LoggedUser.h"
 
 Game::Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions) :
-	_gameId(gameId), _questions(questions)
+	_gameId(gameId), _questions(questions), _numOfPlayers(players.size())
 {
 	for (int i = 0; i < players.size(); i++)
 	{
@@ -44,14 +44,36 @@ void Game::submitAnswer(LoggedUser user, int answerId)
 
 void Game::removePlayer(LoggedUser user)
 {
-	auto it = this->_players.find(user.getUsername());
-	if (it != this->_players.end()) {
-		this->_players.erase(it);
-	}
+	this->_numOfPlayers--;
+}
+
+int Game::getNumberOfPslyers() const
+{
+	return this->_numOfPlayers;
 }
 
 int Game::getGameId() const
 {
 	return this->_gameId;
+}
+
+std::vector<PlayerResults> Game::getPalyersResults()
+{
+	std::vector<PlayerResults> results;
+
+	for (auto it : this->_players)
+	{
+		PlayerResults playerResults;
+
+		playerResults.username = it.first;
+		playerResults.averageAnswerTime = it.second.averageAnswerTime;
+		playerResults.correctAnswerCount = it.second.correctAnswerCount;
+		playerResults.wrongAnswerCount = it.second.wrongAnswerCount;
+
+		results.push_back(playerResults);
+	}
+	std::sort(results.begin(), results.end(), PlayerResultsComparator());
+
+	return results;
 }
 

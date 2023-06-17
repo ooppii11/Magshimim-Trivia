@@ -7,11 +7,10 @@
 #include "Response.h"
 
 
-GameRequestHandler::GameRequestHandler(LoggedUser user, unsigned int gameId, GameManager& gameManager, RequestHandlerFactory& handlerFacroty) :
-	_user(user), _gameManager(gameManager), _handlerFactory(handlerFacroty), _game(gameManager.getGameById(gameId)) {
-
-	
-
+GameRequestHandler::GameRequestHandler(LoggedUser user, unsigned int gameId, GameManager& gameManager, RoomManager& roomManager,  HistoryManager& historyManager, LoginManager& loginManager, RequestHandlerFactory& handlerFacroty) :
+	_user(user), _roomManager(roomManager), _gameManager(gameManager), _handlerFactory(handlerFacroty), _game(gameManager.getGameById(gameId)), _loginManager(loginManager), _historyManager(historyManager)
+{
+	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &GameRequestHandler::logout;
 	this->_handleRequestFunctions[LEAVE_GAME_REQUEST_CODE] = &GameRequestHandler::leaveGame;
 	this->_handleRequestFunctions[GET_QUESTION_REQUEST_CODE] = &GameRequestHandler::getQuestion;
 	this->_handleRequestFunctions[SUBMIT_ANSWER_REQUEST_CODE] = &GameRequestHandler::submitAnswer;
@@ -94,7 +93,53 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 {
+	RequestResult result;
+	GetGameResultsResponse response;
+
+	std::vector<PlayerResults> gameResults = this->_game.getPalyersResults();
+	int rank = 0;
+	for(rank = 0; rank < gameResults.size(); rank ++)
+	{
+		if (gameResults[rank].username == this->_user.getUsername())
+		{
+			this->updateUserHistoryAndStatistics(rank + 1, gameResults[rank]);
+
+		}
+	}
+
+	response.results = gameResults;
+	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
+	result.response = Serializer::serializeResponse(response);
+
+	this->_game.removePlayer(this->_user);
+	if (this->_game.getNumberOfPslyers() == 0)
+	{
+		this->_gameManager.deleteGame(this->_game.getGameId());
+		this->_roomManager.deleteRoom(this->_game.getGameId());
+	}
+
+	return result;
+}
+
+RequestResult GameRequestHandler::logout(RequestInfo requestInfo)
+{
+	this->_loginManager.logout(this->_user.getUsername());
 	return RequestResult();
+}
+
+void GameRequestHandler::updateUserHistoryAndStatistics(int rank, PlayerResults userResult)
+{
+	History userHistory;
+
+	RoomData roomData = this->_roomManager.getRoom(this->_game.getGameId()).getRoomData();
+
+	userHistory.answers = userResult.correctAnswerCount + userResult.wrongAnswerCount;
+	userHistory.avergeTime = userResult.averageAnswerTime;
+	userHistory.correctAnswers = userResult.correctAnswerCount;
+	userHistory.categoryId = roomData.categorieId;
+	userHistory.rank = rank;
+
+	this->_historyManager.addNewHistory(this->_user.getUsername(), userHistory);
 }
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
@@ -102,6 +147,11 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 	RequestResult result;
 	
 	this->_game.removePlayer(this->_user);
+	if (this->_game.getNumberOfPslyers() == 0)
+	{
+		this->_gameManager.deleteGame(this->_game.getGameId());
+		this->_roomManager.deleteRoom(this->_game.getGameId());
+	}
 	
 	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	result.response = Serializer::serializeResponse(LeaveGameResponse());

@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include "LoggedUser.h"
+#include "Response.h"
 
 
 struct GameData
@@ -18,6 +19,18 @@ struct GameData
     float averageAnswerTime;
 };
 
+struct PlayerResultsComparator
+{
+	bool operator()(const  PlayerResults& a, const  PlayerResults& b)
+	{
+		if (a.correctAnswerCount == b.correctAnswerCount)
+		{
+			return a.averageAnswerTime < b.averageAnswerTime;
+		}
+		return a.correctAnswerCount > b.correctAnswerCount;
+	}
+};
+
 
 class Game
 {
@@ -28,10 +41,15 @@ public:
 	void submitAnswer(LoggedUser user, int answerId);
 	void removePlayer(LoggedUser user);
 
+	int getNumberOfPslyers() const;
 	int getGameId() const;
+
+	std::vector <PlayerResults> getPalyersResults();
 
 private:
 	std::vector<Question> _questions;
 	std::map<std::string, GameData>  _players;
 	unsigned int _gameId;
+	int _numOfPlayers;
+
 };

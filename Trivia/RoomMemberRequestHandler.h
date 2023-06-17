@@ -22,8 +22,8 @@ private:
 	typedef RequestResult(RoomMemberRequestHandler::* function)(RequestInfo);
 	Room& _room;
 	LoggedUser _user;
-	LoginManager& _loginManager;
 	RoomManager& _roomManager;
+	LoginManager& _loginManager;
 	RequestHandlerFactory&  _handlerFactory;
 	std::map<int, function> _handleRequestFunctions;
 
