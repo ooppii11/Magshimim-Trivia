@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/QuestionPage.dart';
+import 'package:trivia/Pages/HomePage.dart';
+import 'package:trivia/message.dart';
 
 class RightWorngPage extends StatefulWidget {
   final SocketService socketService;
@@ -24,13 +26,13 @@ class RightWorngPage extends StatefulWidget {
 }
 
 class _RightWorngPage extends State<RightWorngPage> {
-  final SocketService socketService;
+  final SocketService _socketService;
   final bool _isRight;
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
   final double _timeOut;
 
-  _RightWorngPage(this.socketService, this._isRight,
+  _RightWorngPage(this._socketService, this._isRight,
       this._currenQuestionNumber, this._numberOfQuestion, this._timeOut);
 
   Future delay() async {
@@ -40,7 +42,7 @@ class _RightWorngPage extends State<RightWorngPage> {
           context,
           MaterialPageRoute(
               builder: (_) => QuestionPage(
-                  socketService: socketService,
+                  socketService: _socketService,
                   currenQuestionNumber: _currenQuestionNumber,
                   numberOfQuestion: _numberOfQuestion,
                   timeOut: _timeOut)),
@@ -58,9 +60,44 @@ class _RightWorngPage extends State<RightWorngPage> {
     });
   }
 
+  Future<void> leaveGame() async {
+    _socketService.sendMessage(Message(22, {}));
+    Message response = await _socketService.receiveMessage();
+    if (response != 99) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(socketService: _socketService)));
+    }
+  }
+  
   Widget correct() {
     return Scaffold(
-      body: SingleChildScrollView(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(
+                      12.5,
+                    ),
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      "Leave game",
+                      style: TextStyle(fontSize: 25, color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      await leaveGame();
+                    },
+                  )))
+            ]),
+        body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
               child: Column(children: [

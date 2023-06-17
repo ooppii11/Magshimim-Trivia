@@ -106,20 +106,25 @@ class _WaitingPageState extends State<WaitingPage> {
         elevation: 0,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.black,
-                size: 26.0,
-              ),
-              onPressed: () async {
-                //send exit game message to server
-              },
-            ),
-          ),
-        ],
-      ),
+              padding: const EdgeInsets.only(top: 15),
+              child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(
+                      12.5,
+                    ),
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      "Leave game",
+                      style: TextStyle(fontSize: 25, color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      await leaveGame();
+                    },
+                  )))
+            ]),
       body: Container(
         color: Colors.lightBlue,
         child: Column(
