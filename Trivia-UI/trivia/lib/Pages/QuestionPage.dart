@@ -65,52 +65,74 @@ class _QuestionPage extends State<QuestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(children: [
-      SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Center(
-              child: Column(children: [
-            Container(
-              margin: EdgeInsets.all(100.0),
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-            ),
-            Text(_question.getQuestion()),
-            Column(children: [
-              for (MapEntry<int, String> answer
-                  in _question.getAnswers().entries)
-                Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15.0,
-                      right: 15.0,
-                      top: 15,
-                      bottom: 0,
-                    ),
-                    child: Container(
-                        height: 50,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(
-                            25.0,
-                          ),
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(
+                          12.5,
                         ),
-                        child: TextButton(
-                            onPressed: () {
-                              submitAnswer(answer.key);
-                            },
-                            child: Column(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Text(
-                                  answer.value,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 25),
-                                ),
+                      ),
+                      child: TextButton(
+                        child: Text(
+                          "Leave game",
+                          style: TextStyle(fontSize: 25, color: Colors.white),
+                        ),
+                        onPressed: () {},
+                      )))
+            ]),
+        body: Stack(children: [
+          SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Center(
+                  child: Column(children: [
+                Container(
+                  margin: EdgeInsets.all(100.0),
+                  decoration:
+                      BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                ),
+                Text(_question.getQuestion()),
+                Column(children: [
+                  for (MapEntry<int, String> answer
+                      in _question.getAnswers().entries)
+                    Padding(
+                        padding: const EdgeInsets.only(
+                          left: 15.0,
+                          right: 15.0,
+                          top: 15,
+                          bottom: 0,
+                        ),
+                        child: Container(
+                            height: 50,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(
+                                25.0,
                               ),
-                            ]))))
-            ])
-          ])))
-    ]));
+                            ),
+                            child: TextButton(
+                                onPressed: () {
+                                  submitAnswer(answer.key);
+                                },
+                                child: Column(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: Text(
+                                      answer.value,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 25),
+                                    ),
+                                  ),
+                                ]))))
+                ])
+              ])))
+        ]));
   }
 }
