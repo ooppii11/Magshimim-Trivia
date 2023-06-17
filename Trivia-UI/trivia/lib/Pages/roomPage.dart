@@ -133,8 +133,6 @@ class _RoomPageState extends State<RoomPage> {
                   if (response.getCode() != 16) {
                     error = true;
                   }
-                  print("code:");
-                  print(response.getCode());
                 } else {
                   _socketService.sendMessage(Message(20, {}));
                   final Message response =
@@ -142,8 +140,6 @@ class _RoomPageState extends State<RoomPage> {
                   if (response.getCode() != 19) {
                     error = true;
                   }
-                  print("code:");
-                  print(response.getCode());
                 }
                 if (!error) {
                   Navigator.pushReplacement(
@@ -268,9 +264,8 @@ class _RoomPageState extends State<RoomPage> {
                                     MaterialPageRoute(
                                         builder: (_) => QuestionPage(
                                             socketService: _socketService,
-                                            isAdmin: _admin,
                                             currenQuestionNumber: 1,
-                                            numberOfQuestion: 1)),
+                                            numberOfQuestion: _numOfQuestionsInGame)),
                                   );
                                 }
                               },

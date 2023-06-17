@@ -3,13 +3,17 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:trivia/SocketService.dart';
+import 'package:trivia/Pages/RightWorng.dart';
 
 class WaitingPage extends StatefulWidget {
   final SocketService socketService;
   final int time;
-  const WaitingPage({super.key, required this.socketService, required this.time});
+  final bool isRight;
+  final int numberOfQuestion;
+  final int currenQuestionNumber;
+  const WaitingPage({super.key, required this.socketService, required this.time, required this.isRight, required this.numberOfQuestion, required this.currenQuestionNumber});
   @override
-  _WaitingPageState createState() => _WaitingPageState(socketService, time);
+  _WaitingPageState createState() => _WaitingPageState(socketService, time, isRight, numberOfQuestion, currenQuestionNumber);
 }
 
 class _WaitingPageState extends State<WaitingPage> {
@@ -18,8 +22,11 @@ class _WaitingPageState extends State<WaitingPage> {
   late Timer _apiTimer;
   final int _time;
   final SocketService _socketService;
+  final bool _isRight;
+  final int _numberOfQuestion;
+  final int _currenQuestionNumber;
 
-  _WaitingPageState(this._socketService, this._time);
+  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber);
 
   Future<void> getFunFacts() async {
     _funFacts.clear();
@@ -47,17 +54,17 @@ class _WaitingPageState extends State<WaitingPage> {
     });
     Future.delayed(Duration(seconds: _time), () {
       _moveToNextPage = true;
-      print("next page");
-      /*
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => UserPage(
+          builder: (_) => RightWorngPage(
             socketService: widget.socketService,
+            isRight: _isRight,
+            numberOfQuestion: _numberOfQuestion,
+            currenQuestionNumber: _currenQuestionNumber,
           ),
         ),
       );
-      */
     });
   }
 

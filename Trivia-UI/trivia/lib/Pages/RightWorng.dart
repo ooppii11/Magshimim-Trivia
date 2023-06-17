@@ -7,12 +7,10 @@ class RightWorngPage extends StatefulWidget {
   final bool isRight;
   final int numberOfQuestion;
   final int currenQuestionNumber;
-  final bool isAdmin;
 
   const RightWorngPage({
     super.key,
     required this.socketService,
-    required this.isAdmin,
     required this.isRight,
     required this.numberOfQuestion,
     required this.currenQuestionNumber,
@@ -20,17 +18,16 @@ class RightWorngPage extends StatefulWidget {
 
   @override
   _RightWorngPage createState() => _RightWorngPage(
-      socketService, isAdmin, isRight, currenQuestionNumber, numberOfQuestion);
+      socketService, isRight, currenQuestionNumber, numberOfQuestion);
 }
 
 class _RightWorngPage extends State<RightWorngPage> {
   final SocketService socketService;
   final bool _isRight;
-  final bool _isAdmin;
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
 
-  _RightWorngPage(this.socketService, this._isAdmin, this._isRight,
+  _RightWorngPage(this.socketService, this._isRight,
       this._currenQuestionNumber, this._numberOfQuestion);
 
   Future delay() async {
@@ -41,7 +38,6 @@ class _RightWorngPage extends State<RightWorngPage> {
           MaterialPageRoute(
               builder: (_) => QuestionPage(
                   socketService: socketService,
-                  isAdmin: _isAdmin,
                   currenQuestionNumber: _currenQuestionNumber,
                   numberOfQuestion: _numberOfQuestion)),
         );
