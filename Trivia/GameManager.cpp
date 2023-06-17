@@ -34,6 +34,7 @@ void GameManager::deleteGame(int gameId)
 		if (it->getGameId() == gameId)
 		{
 			this->_games.erase(it);
+			return;
 		}
 	}
 }

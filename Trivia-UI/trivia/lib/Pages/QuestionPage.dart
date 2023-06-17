@@ -91,8 +91,6 @@ class _QuestionPage extends State<QuestionPage> {
       setState(() {
         _question = question;
       });
-    } else {
-      print("");
     }
   }
 
