@@ -49,7 +49,7 @@ class _RoomPageState extends State<RoomPage> {
                 builder: (_) => QuestionPage(
                     socketService: _socketService,
                     maxTimePerQuestion: _questionTimeout,
-                    currentQuestionNumber: 1,
+                    currentQuestionNumber: 0,
                     numberOfQuestion: _numOfQuestionsInGame)));
       });
     } else {
@@ -242,54 +242,55 @@ class _RoomPageState extends State<RoomPage> {
             ),
             if (_admin)
               //Expanded(
-                  //child: Container(
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    width: MediaQuery.of(context).size.width,
-                    color: Color.fromARGB(255, 29, 45, 68),
+              //child: Container(
+              Container(
+                height: MediaQuery.of(context).size.height * 0.15,
+                width: MediaQuery.of(context).size.width,
+                color: Color.fromARGB(255, 29, 45, 68),
+                padding: const EdgeInsets.all(16.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
                     padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 50, 101, 172),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 50, 101, 172),
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(90, 64.0),
+                        backgroundColor: Color.fromARGB(255, 196, 255, 249),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
                         ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(90, 64.0),
-                          backgroundColor: Color.fromARGB(255, 196, 255, 249),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Start Game",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
-                        ),
-                        onPressed: () async {
-                          _socketService.sendMessage(Message(18, {}));
-                          final Message response =
-                              await _socketService.receiveMessage();
-                          if (response.getCode() == 17) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => QuestionPage(
-                                  socketService: _socketService,
-                                  maxTimePerQuestion: _questionTimeout,
-                                  currentQuestionNumber: 1,
-                                  numberOfQuestion: _numOfQuestionsInGame,
-                                ),
+                      ),
+                      child: Text(
+                        "Start Game",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      onPressed: () async {
+                        _timer.cancel();
+                        _socketService.sendMessage(Message(18, {}));
+                        final Message response =
+                            await _socketService.receiveMessage();
+                        if (response.getCode() == 17) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => QuestionPage(
+                                socketService: _socketService,
+                                maxTimePerQuestion: _questionTimeout,
+                                currentQuestionNumber: 0,
+                                numberOfQuestion: _numOfQuestionsInGame,
                               ),
-                            );
-                          }
-                        },
-                      ),
-                      ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
+                ),
+              ),
           ],
         ),
       ),

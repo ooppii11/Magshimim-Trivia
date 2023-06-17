@@ -11,7 +11,7 @@ Game GameManager::createGame(Room room, LoggedUser admin)
 	{
 		questions.push_back(Question(it));
 	}
-	Game game(roomData.id, room.getAllUsers(), questions, 3.5);
+	Game game(roomData.id, room.getAllUsers(), questions, roomData.timePerQuestion);
 	this->_games.push_back(game);
 	return game;
 }
@@ -34,6 +34,7 @@ void GameManager::deleteGame(int gameId)
 		if (it->getGameId() == gameId)
 		{
 			this->_games.erase(it);
+			return;
 		}
 	}
 }

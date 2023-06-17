@@ -26,6 +26,7 @@
 #define USERNAME "USERNAME"
 #define PERMISSION "PERMISSION"
 #define USERNAME "USERNAME"
+#define CORRECT_ANSWER_INDEX "CORRECT_ANSWER_INDEX"
 
 
 class SqliteDatabase : public IDatabase

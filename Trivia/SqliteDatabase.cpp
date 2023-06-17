@@ -476,6 +476,7 @@ int SqliteDatabase::questionsCollback(void* data, int argc, char** argv, char** 
 	for (i = 0; i < argc; i++)
 	{
 		if(std::string(azColName[i]) == QUESTION) { question.question = std::string(argv[i]); }
+		else if (std::string(azColName[i]) == CORRECT_ANSWER_INDEX) { question.correctAnswerIndex = atoi(argv[i]); }
 		else if(std::string(azColName[i]) == FIRST_ANSWER) { question.firstAnswer = std::string(argv[i]); }
 		else if(std::string(azColName[i]) == SECOND_ANSWER) { question.secondAnswer = std::string(argv[i]); }
 		else if(std::string(azColName[i]) == THIRD_ANSWER) { question.thirdAnswer = std::string(argv[i]); }
@@ -484,8 +485,6 @@ int SqliteDatabase::questionsCollback(void* data, int argc, char** argv, char** 
 	(*(std::vector<Question> *)data).push_back(Question(question));
 	return 0;
 }
-
-#include <iostream>
 
 int SqliteDatabase::historiesCollback(void* data, int argc, char** argv, char** azColName)
 {
