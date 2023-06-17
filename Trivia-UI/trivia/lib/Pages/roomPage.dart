@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
-import 'package:trivia/Pages/GamePage.dart';
+import 'package:trivia/room.dart';
 import 'package:trivia/components/erroToast.dart';
+import 'package:trivia/Pages/QuestionPage.dart';
 //import 'dart:convert';
 
 class RoomPage extends StatefulWidget {
@@ -45,14 +46,11 @@ class _RoomPageState extends State<RoomPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => GamePage(
-              socketService: widget.socketService,
-              admin: _admin,
-              roomId: _roomId,
-              questionTimeout: _questionTimeout,
-              numOfQuestionsInGame: _numOfQuestionsInGame,
-            ),
-          ),
+              builder: (_) => QuestionPage(
+                  socketService: _socketService,
+                  isAdmin: _admin,
+                  currenQuestionNumber: 1,
+                  numberOfQuestion: _numOfQuestionsInGame)),
         );
       });
     } else {
@@ -74,11 +72,12 @@ class _RoomPageState extends State<RoomPage> {
           _questionTimeout = response.getData()["answerTimeout"];
           _hasGameBegun = response.getData()["hasGameBegun"];
         });
-        
-      } else if(response.getCode() == 99) {
+      } else if (response.getCode() == 99) {
         //await _socketService.receiveMessage();
-        if(response.getData()["Error"].toString().contains("Admin closed the Room"))
-        {
+        if (response
+            .getData()["Error"]
+            .toString()
+            .contains("Admin closed the Room")) {
           errorToast(context, response.getData()["Error"], 2);
         }
         Navigator.pushReplacement(
@@ -267,15 +266,11 @@ class _RoomPageState extends State<RoomPage> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => GamePage(
-                                        socketService: widget.socketService,
-                                        admin: _admin,
-                                        roomId: _roomId,
-                                        questionTimeout: _questionTimeout,
-                                        numOfQuestionsInGame:
-                                            _numOfQuestionsInGame,
-                                      ),
-                                    ),
+                                        builder: (_) => QuestionPage(
+                                            socketService: _socketService,
+                                            isAdmin: _admin,
+                                            currenQuestionNumber: 1,
+                                            numberOfQuestion: 1)),
                                   );
                                 }
                               },

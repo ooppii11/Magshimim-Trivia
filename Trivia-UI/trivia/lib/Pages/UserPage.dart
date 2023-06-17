@@ -26,16 +26,16 @@ class _UserPage extends State<UserPage> {
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
 
-  _UserPage(this._socketService)
-  {
+  _UserPage(this._socketService) {
     getInfo();
   }
 
-  void getInfo() async{
+  void getInfo() async {
     _socketService.sendMessage(Message(9, {}));
     Message receivedMessage = await _socketService.receiveMessage();
     if (receivedMessage.getCode() == 8) {
-      Map<String, dynamic> statisticsMap = receivedMessage.getData()["statistics"];
+      Map<String, dynamic> statisticsMap =
+          receivedMessage.getData()["statistics"];
       statisticsMap.forEach((key, value) {
         _statistics.add(Statistic(key, value));
       });
@@ -134,7 +134,8 @@ class _UserPage extends State<UserPage> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
-                                  horizontalMargin: MediaQuery.of(context).size.width * 0.125,
+                                  horizontalMargin:
+                                      MediaQuery.of(context).size.width * 0.125,
                                   dataTextStyle:
                                       const TextStyle(color: Colors.black),
                                   columns: const [
@@ -152,9 +153,8 @@ class _UserPage extends State<UserPage> {
                                     return DataRow(
                                       selected: true,
                                       cells: [
-                                        DataCell(Text(statistics.getStatisticsName())
-                                        
-                                            ),
+                                        DataCell(Text(
+                                            statistics.getStatisticsName())),
                                         DataCell(Text(
                                             statistics.getScore().toString()))
                                       ],
@@ -329,7 +329,7 @@ class _UserPage extends State<UserPage> {
     });
   }
 
-   Widget _buildFloatingScreen() {
+  Widget _buildFloatingScreen() {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -407,7 +407,8 @@ class _UserPage extends State<UserPage> {
   }
 
   void joinRoom() async {
-    _socketService.sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
+    _socketService
+        .sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
       Navigator.pushReplacement(

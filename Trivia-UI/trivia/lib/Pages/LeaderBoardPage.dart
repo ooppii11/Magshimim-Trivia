@@ -217,7 +217,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     });
   }
 
-   Widget _buildFloatingScreen() {
+  Widget _buildFloatingScreen() {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -295,7 +295,8 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
   }
 
   void joinRoom() async {
-    _socketService.sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
+    _socketService
+        .sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
       Navigator.pushReplacement(

@@ -21,7 +21,7 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 
 std::shared_ptr<RoomAdminRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, Room& room)
 {	
-	return std::shared_ptr<RoomAdminRequestHandler>(new RoomAdminRequestHandler(room, user, this->_roomManager, this->_loginManager, *this));
+	return std::shared_ptr<RoomAdminRequestHandler>(new RoomAdminRequestHandler(room, user, this->_roomManager, this->_gameManager, this->_loginManager, *this));
 }
 
 std::shared_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room& room)
@@ -30,9 +30,9 @@ std::shared_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMembe
 }
 
 
-std::shared_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, Game game)
+std::shared_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, unsigned int gameId)
 {
-	return std::shared_ptr<GameRequestHandler>(new GameRequestHandler(user, game, this->_gameManager, *this));
+	return std::shared_ptr<GameRequestHandler>(new GameRequestHandler(user, gameId, this->_gameManager, *this));
 }
 
 GameManager& RequestHandlerFactory::getGameManager()

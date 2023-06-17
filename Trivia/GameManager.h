@@ -11,6 +11,7 @@ public:
 	GameManager(std::shared_ptr<IDatabase> database);
 
 	Game createGame(Room room, LoggedUser admin);
+	Game& getGameById(unsigned int id);
 	void deleteGame(int gameId);
 
 private:

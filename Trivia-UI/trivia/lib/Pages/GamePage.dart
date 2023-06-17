@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trivia/SocketService.dart';
 
-
 class GamePage extends StatefulWidget {
   final SocketService socketService;
   final bool admin;
@@ -9,14 +8,20 @@ class GamePage extends StatefulWidget {
   final int questionTimeout;
   final int numOfQuestionsInGame;
 
-  const GamePage({Key? key, required this.socketService, required this.admin, required this.roomId, required this.numOfQuestionsInGame, required this.questionTimeout}) : super(key: key);
+  const GamePage(
+      {Key? key,
+      required this.socketService,
+      required this.admin,
+      required this.roomId,
+      required this.numOfQuestionsInGame,
+      required this.questionTimeout})
+      : super(key: key);
 
   @override
   _GamePageState createState() => _GamePageState(socketService, admin, roomId);
 }
 
 class _GamePageState extends State<GamePage> {
-
   final SocketService _socketService;
   final bool _admin;
   final int roomId;
@@ -25,8 +30,6 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-    );
+    return Scaffold();
   }
 }

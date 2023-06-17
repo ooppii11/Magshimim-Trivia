@@ -215,7 +215,7 @@ std::vector<Question> SqliteDatabase::getCategoryQuestions(int categoryId, const
 	creatorId = this->getCategoryCreatorId(categoryId);
 	uesrId = this->getUserId(username);
 
-	if (uesrId != creatorId && this->getCategoryPermssion(categoryId) == PUBLIC)
+	if (uesrId != creatorId && this->getCategoryPermssion(categoryId) != PUBLIC)
 	{
 		throw std::exception("Not your category");
 	}

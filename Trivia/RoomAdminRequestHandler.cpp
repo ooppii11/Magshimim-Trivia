@@ -6,8 +6,8 @@
 #include "messageException.h"
 
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
-	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _loginManager(loginManager)
+RoomAdminRequestHandler::RoomAdminRequestHandler(Room& room, LoggedUser user, RoomManager& roomManager, GameManager& gameManager, LoginManager& loginManager, RequestHandlerFactory& handlerFactory) :
+	_room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory), _gameManager(gameManager), _loginManager(loginManager)
 {
 	this->_handleRequestFunctions[LOGOUT_REQUEST_CODE] = &RoomAdminRequestHandler::logout;
 	this->_handleRequestFunctions[CLOSE_ROOM_REQUEST_CODE] = &RoomAdminRequestHandler::closeRoom;
@@ -69,13 +69,14 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo requestInfo)
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo requestInfo)
 {
 	RequestResult result;
-	CloseRoomResponse response;
+	StartGameResponse response;
 	RoomData roomData = this->_room.getRoomData();
 
+	Game game = this->_gameManager.createGame(this->_room, this->_user);
 	roomData.isActive = true;
 	this->_room.setRoomData(roomData);
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(nullptr);
+	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, game.getGameId()));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;

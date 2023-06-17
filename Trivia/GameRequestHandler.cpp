@@ -7,21 +7,23 @@
 #include "Response.h"
 
 
-GameRequestHandler::GameRequestHandler(LoggedUser user, Game& game, GameManager& gameManager, RequestHandlerFactory& handlerFacroty) :
-	_user(user), _game(game), _gameManager(gameManager), _handlerFactory(handlerFacroty) {
+GameRequestHandler::GameRequestHandler(LoggedUser user, unsigned int gameId, GameManager& gameManager, RequestHandlerFactory& handlerFacroty) :
+	_user(user), _gameManager(gameManager), _handlerFactory(handlerFacroty), _game(gameManager.getGameById(gameId)) {
 
-	this->_handleRequestFunctions[LEAVE_GAME_RESPONSE_CODE] = &GameRequestHandler::leaveGame;
-	this->_handleRequestFunctions[GET_QUESTION_RESPONSE_CODE] = &GameRequestHandler::getQuestion;
-	this->_handleRequestFunctions[SUBMIT_ANSWER_RESPONSE_CODE] = &GameRequestHandler::submitAnswer;
-	this->_handleRequestFunctions[GET_GAME_RESULTS_RESPONSE_CODE] = &GameRequestHandler::getGameResults;
+	
+
+	this->_handleRequestFunctions[LEAVE_GAME_REQUEST_CODE] = &GameRequestHandler::leaveGame;
+	this->_handleRequestFunctions[GET_QUESTION_REQUEST_CODE] = &GameRequestHandler::getQuestion;
+	this->_handleRequestFunctions[SUBMIT_ANSWER_REQUEST_CODE] = &GameRequestHandler::submitAnswer;
+	this->_handleRequestFunctions[GET_GAME_RESULTS_REQUEST_CODE] = &GameRequestHandler::getGameResults;
 }
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo requestInfo)
 {
-	return  LEAVE_GAME_RESPONSE_CODE == requestInfo.id ||
-		GET_QUESTION_RESPONSE_CODE == requestInfo.id ||
-		SUBMIT_ANSWER_RESPONSE_CODE == requestInfo.id ||
-		GET_GAME_RESULTS_RESPONSE_CODE == requestInfo.id;
+	return  LEAVE_GAME_REQUEST_CODE == requestInfo.id ||
+		GET_QUESTION_REQUEST_CODE == requestInfo.id ||
+		SUBMIT_ANSWER_REQUEST_CODE == requestInfo.id ||
+		GET_GAME_RESULTS_REQUEST_CODE == requestInfo.id;
 }
 
 RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
@@ -67,7 +69,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 	response.question = question.getQuestion();
 	response.answers = question.getPossibleAnswers();
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game));
+	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game.getGameId()));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;
@@ -84,7 +86,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 	this->_game.submitAnswer(this->_user, request.answerIndex);
 	response.correctAnswerIndex = this->_game.getQuestionForUser(this->_user).getCorrectAnswerId();
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game));
+	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game.getGameId()));
 	result.response = Serializer::serializeResponse(response);
 
 	return result;

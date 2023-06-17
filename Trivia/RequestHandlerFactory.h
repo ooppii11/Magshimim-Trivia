@@ -33,7 +33,7 @@ public:
 	RoomManager&  getRoomManager();
 	std::shared_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(LoggedUser, Room&);
 	std::shared_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(LoggedUser, Room&);
-	std::shared_ptr<GameRequestHandler> createGameRequestHandler(LoggedUser user, Game game);
+	std::shared_ptr<GameRequestHandler> createGameRequestHandler(LoggedUser user, unsigned int gameId);
 	GameManager& getGameManager();
 
 private:

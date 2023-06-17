@@ -5,19 +5,24 @@
 #include "LoggedUser.h"
 
 
-typedef struct GameData
+struct GameData
 {
+    GameData(const Question& question, unsigned int correctCount, unsigned int wrongCount, float avgTime)
+        : currentQuestion(question), correctAnswerCount(correctCount),
+        wrongAnswerCount(wrongCount), averageAnswerTime(avgTime)
+    {}
 
-	Question* currentQuestion;
-	unsigned int correctAnswerCount;
-	unsigned int wrongAnswerCount;
-	float averangeAnswerTime;
-} GameData;
+    Question currentQuestion;
+    unsigned int correctAnswerCount;
+    unsigned int wrongAnswerCount;
+    float averageAnswerTime;
+};
+
 
 class Game
 {
 public:
-	Game(int gameId, std::vector<std::string> players, std::vector<Question> questions);
+	Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions);
 
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, int answerId);
@@ -27,6 +32,6 @@ public:
 
 private:
 	std::vector<Question> _questions;
-	std::map<LoggedUser, GameData>  _players;
-	int _gameId;
+	std::map<std::string, GameData>  _players;
+	unsigned int _gameId;
 };

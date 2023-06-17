@@ -13,7 +13,7 @@ class RequestHandlerFactory;
 class GameRequestHandler : public IRequestHandler
 {
 public:
-	GameRequestHandler(LoggedUser user, Game& game, GameManager& _gameManager, RequestHandlerFactory& handlerFacroty);
+	GameRequestHandler(LoggedUser user, unsigned int gameId, GameManager& _gameManager, RequestHandlerFactory& handlerFacroty);
 	bool isRequestRelevant(RequestInfo requestInfo);
 	RequestResult handleRequest(RequestInfo requestInfo);
 

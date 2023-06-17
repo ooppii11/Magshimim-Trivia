@@ -6,8 +6,7 @@ public:
 	LoggedUser(std::string username);
 	std::string getUsername();
 	bool operator==(const LoggedUser& user);
-	//bool operator<(const LoggedUser& user);
-//	bool operator()(const LoggedUser& user1, const LoggedUser& user2) const;
+	bool operator<(const LoggedUser& user);
 private:
 	std::string _username;
 	friend struct std::less<LoggedUser>;

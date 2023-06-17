@@ -1,5 +1,4 @@
 #include "GameManager.h"
-
 GameManager::GameManager(std::shared_ptr<IDatabase> db) :
 	_database(db) {}
 
@@ -12,7 +11,20 @@ Game GameManager::createGame(Room room, LoggedUser admin)
 	{
 		questions.push_back(Question(it));
 	}
-	return Game(roomData.id, room.getAllUsers(), questions);
+	Game game(roomData.id, room.getAllUsers(), questions);
+	this->_games.push_back(game);
+	return game;
+}
+
+Game& GameManager::getGameById(unsigned int id)
+{
+	for (auto it = this->_games.begin(); it != this->_games.end(); it++)
+	{
+		if (it->getGameId() == id)
+		{
+			return *it;
+		}
+	}
 }
 
 void GameManager::deleteGame(int gameId)

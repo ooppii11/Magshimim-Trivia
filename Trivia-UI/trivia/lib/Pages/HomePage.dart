@@ -313,7 +313,8 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   }
 
   void joinRoom() async {
-    _socketService.sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
+    _socketService
+        .sendMessage(Message(11, {"roomId": int.parse(_enteredValue)}));
     final Message response = await _socketService.receiveMessage();
     if (response.getCode() == 10) {
       Navigator.pushReplacement(
