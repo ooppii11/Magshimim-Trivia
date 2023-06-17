@@ -18,7 +18,7 @@ class _WaitingPageState extends State<WaitingPage> {
   late Timer _apiTimer;
   final int _time;
   final SocketService _socketService;
-  
+
   _WaitingPageState(this._socketService, this._time);
 
   Future<void> getFunFacts() async {
@@ -75,6 +75,25 @@ class _WaitingPageState extends State<WaitingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.black,
+                size: 26.0,
+              ),
+              onPressed: () async {
+                //send exit game message to server
+              },
+            ),
+          ),
+        ],
+      ),
       body: Container(
         color: Colors.lightBlue,
         child: Column(
