@@ -117,7 +117,7 @@ class _WaitingPageState extends State<WaitingPage> {
                   ),
                   child: TextButton(
                     child: Text(
-                      "Leave game",
+                      "Leave Game",
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                     onPressed: () async {

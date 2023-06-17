@@ -97,6 +97,34 @@ class _RoomPageState extends State<RoomPage> {
     });
   }
 
+  Future<void> leaveRoom() async {
+    bool error = false;
+    if (_admin) {
+      _socketService.sendMessage(Message(17, {}));
+      final response = await _socketService.receiveMessage();
+      if (response.getCode() != 16) {
+        error = true;
+      }
+    } else {
+      _socketService.sendMessage(Message(20, {}));
+      final Message response =
+          await _socketService.receiveMessage();
+      if (response.getCode() != 19) {
+        error = true;
+      }
+    }
+    if (!error) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HomePage(
+            socketService: widget.socketService,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -109,6 +137,7 @@ class _RoomPageState extends State<RoomPage> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,44 +146,25 @@ class _RoomPageState extends State<RoomPage> {
         elevation: 0,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.black,
-                size: 26.0,
-              ),
-              onPressed: () async {
-                bool error = false;
-                if (_admin) {
-                  _socketService.sendMessage(Message(17, {}));
-                  final response = await _socketService.receiveMessage();
-                  if (response.getCode() != 16) {
-                    error = true;
-                  }
-                } else {
-                  _socketService.sendMessage(Message(20, {}));
-                  final Message response =
-                      await _socketService.receiveMessage();
-                  if (response.getCode() != 19) {
-                    error = true;
-                  }
-                }
-                if (!error) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => HomePage(
-                        socketService: widget.socketService,
-                      ),
+              padding: const EdgeInsets.only(top: 15),
+              child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(
+                      12.5,
                     ),
-                  );
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      "Leave Room",
+                      style: TextStyle(fontSize: 25, color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      await leaveRoom();
+                    },
+                  )))
+            ]),
       body: Container(
         color: Colors.lightBlue,
         child: Column(
