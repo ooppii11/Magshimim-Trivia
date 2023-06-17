@@ -11,7 +11,7 @@ Game GameManager::createGame(Room room, LoggedUser admin)
 	{
 		questions.push_back(Question(it));
 	}
-	Game game(roomData.id, room.getAllUsers(), questions);
+	Game game(roomData.id, room.getAllUsers(), questions, 3.5);
 	this->_games.push_back(game);
 	return game;
 }

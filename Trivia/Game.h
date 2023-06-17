@@ -4,7 +4,9 @@
 #include <vector>
 #include "LoggedUser.h"
 #include "Response.h"
+#include <chrono>
 
+#define TIME_OF_RECEIVING_AN_ANSWER 3
 
 struct GameData
 {
@@ -35,7 +37,7 @@ struct PlayerResultsComparator
 class Game
 {
 public:
-	Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions);
+	Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions, float maxTimePerQuestion);
 
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, int answerId);
@@ -47,9 +49,10 @@ public:
 	std::vector <PlayerResults> getPalyersResults();
 
 private:
+	std::chrono::system_clock::time_point startTime;
 	std::vector<Question> _questions;
 	std::map<std::string, GameData>  _players;
 	unsigned int _gameId;
 	int _numOfPlayers;
-
+	float _maxTimePerQuestion;
 };

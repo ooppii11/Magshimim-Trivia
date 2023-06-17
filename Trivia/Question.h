@@ -24,6 +24,7 @@ public:
 	std::string getQuestion();
 	std::map<unsigned int, std::string> getPossibleAnswers();
 	int getCorrectAnswerId();
+	bool operator==(const Question& question);
 
 private:
 	int _correcteAnswerIndex;

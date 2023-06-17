@@ -1,9 +1,10 @@
 #include "Game.h"
 #include "LoggedUser.h"
 
-Game::Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions) :
-	_gameId(gameId), _questions(questions), _numOfPlayers(players.size())
+Game::Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions, float maxTimePerQuestion) :
+	_gameId(gameId), _questions(questions), _numOfPlayers(players.size()), _maxTimePerQuestion(maxTimePerQuestion)
 {
+	this->startTime = std::chrono::system_clock::now();
 	for (int i = 0; i < players.size(); i++)
 	{
 		GameData userData = { questions[0], 0, 0, 0.0};
@@ -28,7 +29,15 @@ Question Game::getQuestionForUser(LoggedUser user)
 void Game::submitAnswer(LoggedUser user, int answerId)
 {
 	GameData& userData = this->_players.at(user.getUsername());
-	
+	auto it = find(this->_questions.begin(), this->_questions.end(), userData.currentQuestion);
+	int numOfQuestion = it - this->_questions.begin();
+
+	auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - this->startTime).count();
+	if (duration > this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
+	{
+		throw std::exception("Time pass");
+	}
+
 	if (userData.currentQuestion.getCorrectAnswerId() == answerId) { userData.correctAnswerCount++; }
 	else { userData.wrongAnswerCount++; }
 
@@ -38,7 +47,7 @@ void Game::submitAnswer(LoggedUser user, int answerId)
 	}
 	else
 	{
-		//throw (std::exception("Game end"));
+		throw (std::exception("Game end"));
 	}
 }
 

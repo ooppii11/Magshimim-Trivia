@@ -205,85 +205,87 @@ class _RoomPageState extends State<RoomPage> {
                 color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Wrap(
-                          spacing: 16.0,
-                          runSpacing: 16.0,
-                          //alignment: WrapAlignment.start,
-                          children: _users
-                              .map(
-                                (user) => Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 4.0, horizontal: 8.0),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 88, 128, 185),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Text(
-                                    user.getUsername(),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Wrap(
+                            spacing: 16.0,
+                            runSpacing: 16.0,
+                            //alignment: WrapAlignment.start,
+                            children: _users
+                                .map(
+                                  (user) => Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 8.0),
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 88, 128, 185),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Text(
+                                      user.getUsername(),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
-                    if (_admin)
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            //color: Color.fromARGB(255, 43, 68, 103),
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 43, 68, 103),
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                //foregroundColor:Color(0xFF000000),
-                                minimumSize: Size(90, 64.0),
-                                backgroundColor:
-                                    Color.fromARGB(255, 196, 255, 249), //
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32.0),
-                                ),
-                              ),
-                              child: Text(
-                                "Start Game",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                              ),
-                              onPressed: () async {
-                                _socketService.sendMessage(Message(18, {}));
-                                final Message response =
-                                    await _socketService.receiveMessage();
-                                if (response.getCode() == 17) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => QuestionPage(
-                                              socketService: _socketService,
-                                              maxTimePerQuestion: _questionTimeout,
-                                              currentQuestionNumber: 1,
-                                              numberOfQuestion: _numOfQuestionsInGame)));
-                                }
-                              },
-                            ),
+                                )
+                                .toList(),
                           ),
                         ),
                       ),
-                  ],
+                      if (_admin)
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              //color: Color.fromARGB(255, 43, 68, 103),
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 43, 68, 103),
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  //foregroundColor:Color(0xFF000000),
+                                  minimumSize: Size(90, 64.0),
+                                  backgroundColor:
+                                      Color.fromARGB(255, 196, 255, 249), //
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Start Game",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                ),
+                                onPressed: () async {
+                                  _socketService.sendMessage(Message(18, {}));
+                                  final Message response =
+                                      await _socketService.receiveMessage();
+                                  if (response.getCode() == 17) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => QuestionPage(
+                                                socketService: _socketService,
+                                                maxTimePerQuestion:
+                                                    _questionTimeout,
+                                                currentQuestionNumber: 1,
+                                                numberOfQuestion:
+                                                    _numOfQuestionsInGame)));
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
               ),
             ),
           ],

@@ -31,3 +31,8 @@ int Question::getCorrectAnswerId()
 	return this->_correcteAnswerIndex;
 }
 
+bool Question::operator==(const Question& question)
+{
+	return this->_question == question._question;
+}
+
