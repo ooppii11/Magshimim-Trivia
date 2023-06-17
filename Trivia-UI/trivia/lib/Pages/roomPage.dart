@@ -32,7 +32,7 @@ class _RoomPageState extends State<RoomPage> {
   final bool _admin;
   final int _roomId;
   bool _hasGameBegun = false;
-  late int _questionTimeout;
+  late double _questionTimeout;
   late int _numOfQuestionsInGame;
 
   _RoomPageState(this._socketService, this._admin, this._roomId) {
@@ -204,6 +204,7 @@ class _RoomPageState extends State<RoomPage> {
                 width: MediaQuery.of(context).size.width,
                 color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SingleChildScrollView(
@@ -271,9 +272,9 @@ class _RoomPageState extends State<RoomPage> {
                                       MaterialPageRoute(
                                           builder: (_) => QuestionPage(
                                               socketService: _socketService,
-                                              maxTimePerQuestion: 3,
+                                              maxTimePerQuestion: _questionTimeout,
                                               currentQuestionNumber: 1,
-                                              numberOfQuestion: 1)));
+                                              numberOfQuestion: _numOfQuestionsInGame)));
                                 }
                               },
                             ),
@@ -282,6 +283,7 @@ class _RoomPageState extends State<RoomPage> {
                       ),
                   ],
                 ),
+              ),
               ),
             ),
           ],
