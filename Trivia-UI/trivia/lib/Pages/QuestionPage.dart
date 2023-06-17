@@ -82,14 +82,18 @@ class _QuestionPage extends State<QuestionPage> {
   Future<void> getQuetion() async {
     _socketService.sendMessage(Message(GET_QUESTION_REQUEST_CODE, {}));
     Message response = await _socketService.receiveMessage();
-    Question question = new Question(
-        response.getData()["Question"],
-        Map.fromIterable(response.getData()["Answers"],
-            key: (item) => item[0], value: (item) => item[1]));
+    if (response.getCode() != ERROR_CODE) {
+      Question question = new Question(
+          response.getData()["Question"],
+          Map.fromIterable(response.getData()["Answers"],
+              key: (item) => item[0], value: (item) => item[1]));
 
-    setState(() {
-      _question = question;
-    });
+      setState(() {
+        _question = question;
+      });
+    } else {
+      print("");
+    }
   }
 
   Future<void> leaveGame() async {

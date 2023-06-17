@@ -17,10 +17,13 @@ class Message {
     _code = byteData.getUint8(0);
     messageLength = byteData.getInt16(1, Endian.little);
     if (messageLength > 0) {
-      String jsonString = "";
-
-      for (int i = 4; i < messageLength + 4; i++) {
-        jsonString += String.fromCharCode(byteData.buffer.asInt8List()[i]);
+      String jsonString;
+      try {
+        jsonString = utf8.decode(byteData.buffer.asUint8List(4, messageLength),
+            allowMalformed: true);
+      } catch (e) {
+        jsonString = utf8.decode(byteData.buffer.asUint8List(4, messageLength),
+            allowMalformed: true);
       }
       _data = jsonDecode(jsonString);
     }
@@ -29,11 +32,11 @@ class Message {
   int getCode() {
     return _code;
   }
-  
+
   Map<String, dynamic> getData() {
     return _data;
   }
-  
+
   /*
   dynamic getData() {
     return _data;

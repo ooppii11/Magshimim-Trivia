@@ -40,7 +40,7 @@ public:
 	Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions, float maxTimePerQuestion);
 
 	Question getQuestionForUser(LoggedUser user);
-	void submitAnswer(LoggedUser user, int answerId);
+	int submitAnswer(LoggedUser user, int answerId);
 	void removePlayer(LoggedUser user);
 
 	int getNumberOfPslyers() const;

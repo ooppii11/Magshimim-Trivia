@@ -51,9 +51,9 @@ RequestResult GameRequestHandler::wrapperHandleRequest(function function, Reques
 		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
 		result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
-	catch (...)
+	catch (std::exception& e)
 	{
-		result.response = Serializer::serializeResponse(ErrorResponse());
+		result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
 		result.newHandler = std::shared_ptr<MenuRequestHandler>(this->_handlerFactory.createMenuRequestHandler(this->_user));
 	}
 	return result;
@@ -82,8 +82,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
 	request = Deserializer::deserializeSubminAnswerRequest(requestInfo.buffer);
 	
-	this->_game.submitAnswer(this->_user, request.answerIndex);
-	response.correctAnswerIndex = this->_game.getQuestionForUser(this->_user).getCorrectAnswerId();
+	response.correctAnswerIndex = this->_game.submitAnswer(this->_user, request.answerIndex);
 
 	result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, this->_game.getGameId()));
 	result.response = Serializer::serializeResponse(response);

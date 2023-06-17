@@ -35,6 +35,12 @@ class _RightWorngPage extends State<RightWorngPage> {
   _RightWorngPage(this._socketService, this._isRight,
       this._currenQuestionNumber, this._numberOfQuestion, this._timeOut);
 
+  @override
+  void initState() {
+    delay();
+    super.initState();
+  }
+
   Future delay() async {
     await new Future.delayed(new Duration(seconds: 3), () {
       if (_currenQuestionNumber != _numberOfQuestion) {

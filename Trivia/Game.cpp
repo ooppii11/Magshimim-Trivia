@@ -15,9 +15,22 @@ Game::Game(unsigned int gameId, std::vector<std::string> players, std::vector<Qu
 
 Question Game::getQuestionForUser(LoggedUser user)
 {	
+
+	auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - this->startTime).count();
+
 	auto it = this->_players.find(user.getUsername());
 	if (it != this->_players.end())
 	{
+	
+		if (it->second.correctAnswerCount + it->second.wrongAnswerCount < this->_questions.size())
+		{
+			it->second.currentQuestion = this->_questions[it->second.correctAnswerCount + it->second.wrongAnswerCount];
+			it->second.wrongAnswerCount++;
+		}
+		else
+		{
+			throw (std::exception("Game end"));
+		}
 		return it->second.currentQuestion;
 	}
 	else
@@ -26,11 +39,11 @@ Question Game::getQuestionForUser(LoggedUser user)
 	}
 }
 
-void Game::submitAnswer(LoggedUser user, int answerId)
+int Game::submitAnswer(LoggedUser user, int answerId)
 {
 	GameData& userData = this->_players.at(user.getUsername());
 	auto it = find(this->_questions.begin(), this->_questions.end(), userData.currentQuestion);
-	int numOfQuestion = it - this->_questions.begin();
+	int numOfQuestion = it - this->_questions.begin() + 1;
 
 	auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - this->startTime).count();
 	if (duration > this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
@@ -38,17 +51,11 @@ void Game::submitAnswer(LoggedUser user, int answerId)
 		throw std::exception("Time pass");
 	}
 
-	if (userData.currentQuestion.getCorrectAnswerId() == answerId) { userData.correctAnswerCount++; }
-	else { userData.wrongAnswerCount++; }
-
-	if (userData.correctAnswerCount + userData.wrongAnswerCount < this->_questions.size())
-	{
-		userData.currentQuestion = this->_questions[userData.correctAnswerCount + userData.wrongAnswerCount];
+	if (userData.currentQuestion.getCorrectAnswerId() == answerId) { 
+		userData.correctAnswerCount++;
+		userData.wrongAnswerCount--;
 	}
-	else
-	{
-		throw (std::exception("Game end"));
-	}
+	return userData.currentQuestion.getCorrectAnswerId();
 }
 
 void Game::removePlayer(LoggedUser user)
