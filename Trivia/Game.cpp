@@ -38,7 +38,7 @@ void Game::submitAnswer(LoggedUser user, int answerId)
 	}
 	else
 	{
-		throw (std::exception("Game end"));
+		//throw (std::exception("Game end"));
 	}
 }
 
