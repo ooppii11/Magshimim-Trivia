@@ -1,9 +1,12 @@
 #include "SqliteDatabase.h"
 #include "SqliteUtilities.h"
 #include <map>
+#include "FileUtilities.h"
+
 
 SqliteDatabase::SqliteDatabase()
 {
+	bool dbExsist = FileUtilities::fileExsists(DB_FILE_PATH);
 	int response = sqlite3_open(DB_FILE_PATH, &this->_db);
 	if (response != SQLITE_OK)
 	{
@@ -11,6 +14,9 @@ SqliteDatabase::SqliteDatabase()
 		throw std::exception("Error while oprn 'Trivia.sqlite' db");
 	}
 	SqliteUtilities::executeFile(SqliteFileCommands{ TABLES_PATH, {this->_db, nullptr, nullptr} });
+	if (!dbExsist) {
+		SqliteUtilities::executeFile(SqliteFileCommands{ INIT_DATA_PATH, {this->_db, nullptr, nullptr} });
+	}
 }
 
 SqliteDatabase::~SqliteDatabase()
