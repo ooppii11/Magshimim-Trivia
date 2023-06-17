@@ -30,7 +30,10 @@ class _WaitingPageState extends State<WaitingPage> {
   final int _currenQuestionNumber;
   final double _timeOut;
 
-  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber, this._timeOut);
+  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber, this._timeOut)
+  {
+    getFunFacts();
+  }
 
   Future<void> getFunFacts() async {
     _funFacts.clear();
