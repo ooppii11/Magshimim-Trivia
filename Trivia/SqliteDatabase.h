@@ -6,6 +6,7 @@
 
 #define DB_FILE_PATH "Trivia.sqlite"
 #define TABLES_PATH "tables.sql"
+#define INIT_DATA_PATH "initDB.sql"
 #define QUESTION "QUESTION"
 #define FIRST_ANSWER "FIRST_ANSWER"
 #define SECOND_ANSWER "SECOND_ANSWER"
