@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:trivia/message.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/User.dart';
+import 'package:trivia/room.dart';
 import 'package:trivia/components/erroToast.dart';
 import 'package:trivia/Pages/QuestionPage.dart';
 //import 'dart:convert';
@@ -150,7 +151,7 @@ class _RoomPageState extends State<RoomPage> {
                 borderRadius: BorderRadius.circular(12.5),
               ),
               child: TextButton(
-                child: const Text(
+                child: Text(
                   "Leave Room",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
@@ -169,22 +170,22 @@ class _RoomPageState extends State<RoomPage> {
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
               width: MediaQuery.of(context).size.width,
-              color: const Color.fromARGB(255, 111, 156, 235),
+              color: Color.fromARGB(255, 111, 156, 235),
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "Room Name",
                       style: TextStyle(fontSize: 24, color: Colors.black),
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
-                    child: SizedBox(height: 8.0),
+                    child: const SizedBox(height: 8.0),
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -205,7 +206,7 @@ class _RoomPageState extends State<RoomPage> {
               child: Container(
                 //height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width,
-                color: const Color.fromARGB(255, 29, 45, 68),
+                color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                   child: Align(
@@ -216,17 +217,17 @@ class _RoomPageState extends State<RoomPage> {
                       children: _users
                           .map(
                             (user) => Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 4.0,
                                 horizontal: 8.0,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 88, 128, 185),
+                                color: Color.fromARGB(255, 88, 128, 185),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Text(
                                 user.getUsername(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
                                 ),
@@ -245,25 +246,25 @@ class _RoomPageState extends State<RoomPage> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
                 width: MediaQuery.of(context).size.width,
-                color: const Color.fromARGB(255, 29, 45, 68),
+                color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 50, 101, 172),
+                      color: Color.fromARGB(255, 50, 101, 172),
                       borderRadius: BorderRadius.circular(32.0),
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(90, 64.0),
-                        backgroundColor: const Color.fromARGB(255, 196, 255, 249),
+                        minimumSize: Size(90, 64.0),
+                        backgroundColor: Color.fromARGB(255, 196, 255, 249),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Start Game",
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
