@@ -43,8 +43,6 @@ class _QuestionPage extends State<QuestionPage> {
   Future<void> getQuetion() async {
     _socketService.sendMessage(Message(GET_QUESTION_REQUEST_CODE, {}));
     Message response = await _socketService.receiveMessage();
-    print(response.getCode());
-    print(response.getData());
     Question question = new Question(
         response.getData()["Question"],
         Map.fromIterable(response.getData()["Answers"],
@@ -58,10 +56,10 @@ class _QuestionPage extends State<QuestionPage> {
   Future<void> submitAnswer(int answerId) async {
     //stopTimer();
     _socketService.sendMessage(
-        Message(SUBMIT_ANSWER_REQUEST_CODE, {"answerId": answerId}));
+        Message(SUBMIT_ANSWER_REQUEST_CODE, {"answerIndex": answerId}));
     Message response = await _socketService.receiveMessage();
-    // navigate to wait page
-    //(response.getData()[0] == answerId)
+    //navigate to wait page
+    //response.getData()["correctAnswerIndex"] == answerId
   }
 
   @override
