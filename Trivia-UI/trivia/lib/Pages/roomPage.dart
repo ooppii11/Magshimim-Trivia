@@ -48,7 +48,6 @@ class _RoomPageState extends State<RoomPage> {
           MaterialPageRoute(
               builder: (_) => QuestionPage(
                   socketService: _socketService,
-                  isAdmin: _admin,
                   currenQuestionNumber: 1,
                   numberOfQuestion: _numOfQuestionsInGame)),
         );
@@ -265,7 +264,8 @@ class _RoomPageState extends State<RoomPage> {
                                         builder: (_) => QuestionPage(
                                             socketService: _socketService,
                                             currenQuestionNumber: 1,
-                                            numberOfQuestion: _numOfQuestionsInGame)),
+                                            numberOfQuestion:
+                                                _numOfQuestionsInGame)),
                                   );
                                 }
                               },

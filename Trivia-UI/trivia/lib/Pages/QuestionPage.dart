@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:trivia/Pages/HomePage.dart';
+import 'package:trivia/Pages/categoriesPageLayout.dart';
 import 'package:trivia/Question.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
 
 int SUBMIT_ANSWER_REQUEST_CODE = 21;
 int GET_QUESTION_REQUEST_CODE = 23;
+int LEAVE_GAME_REQUEST_CODE = 22;
 
 class QuestionPage extends StatefulWidget {
   final SocketService socketService;
   final int numberOfQuestion;
   final int currenQuestionNumber;
-  final bool isAdmin;
 
   const QuestionPage(
       {super.key,
       required this.socketService,
-      required this.isAdmin,
       required this.currenQuestionNumber,
       required this.numberOfQuestion});
 
   @override
-  _QuestionPage createState() => _QuestionPage(
-      socketService, isAdmin, numberOfQuestion, currenQuestionNumber);
+  _QuestionPage createState() =>
+      _QuestionPage(socketService, numberOfQuestion, currenQuestionNumber);
 }
 
 class _QuestionPage extends State<QuestionPage> {
-  final bool _isAdmin;
   final SocketService _socketService;
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
   late Question _question = Question("error", {});
 
-  _QuestionPage(this._socketService, this._isAdmin, this._numberOfQuestion,
-      this._currenQuestionNumber);
+  _QuestionPage(
+      this._socketService, this._numberOfQuestion, this._currenQuestionNumber);
 
   @override
   void initState() {
@@ -51,6 +51,17 @@ class _QuestionPage extends State<QuestionPage> {
     setState(() {
       _question = question;
     });
+  }
+
+  Future<void> leaveGame() async {
+    _socketService.sendMessage(Message(LEAVE_GAME_REQUEST_CODE, {}));
+    Message response = await _socketService.receiveMessage();
+    if (response != ERROR_CODE) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(socketService: _socketService)));
+    }
   }
 
   Future<void> submitAnswer(int answerId) async {
