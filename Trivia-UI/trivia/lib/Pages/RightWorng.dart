@@ -7,6 +7,7 @@ class RightWorngPage extends StatefulWidget {
   final bool isRight;
   final int numberOfQuestion;
   final int currenQuestionNumber;
+  final double timeOut;
 
   const RightWorngPage({
     super.key,
@@ -14,6 +15,7 @@ class RightWorngPage extends StatefulWidget {
     required this.isRight,
     required this.numberOfQuestion,
     required this.currenQuestionNumber,
+    required this.timeOut,
   });
 
   @override
@@ -26,9 +28,10 @@ class _RightWorngPage extends State<RightWorngPage> {
   final bool _isRight;
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
+  final double _timeOut;
 
   _RightWorngPage(this.socketService, this._isRight,
-      this._currenQuestionNumber, this._numberOfQuestion);
+      this._currenQuestionNumber, this._numberOfQuestion, this._timeOut);
 
   Future delay() async {
     await new Future.delayed(new Duration(seconds: 3), () {
@@ -39,7 +42,8 @@ class _RightWorngPage extends State<RightWorngPage> {
               builder: (_) => QuestionPage(
                   socketService: socketService,
                   currenQuestionNumber: _currenQuestionNumber,
-                  numberOfQuestion: _numberOfQuestion)),
+                  numberOfQuestion: _numberOfQuestion,
+                  timeOut: _timeOut)),
         );
       } else {
         /*Navigator.pushReplacement(

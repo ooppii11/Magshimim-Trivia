@@ -95,7 +95,9 @@ class _QuestionPage extends State<QuestionPage> {
                           "Leave game",
                           style: TextStyle(fontSize: 25, color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await leaveGame();
+                        },
                       )))
             ]),
         body: Stack(children: [

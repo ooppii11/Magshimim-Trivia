@@ -4,29 +4,33 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/RightWorng.dart';
+import 'package:trivia/message.dart';
+import 'package:trivia/Pages/HomePage.dart';
 
 class WaitingPage extends StatefulWidget {
   final SocketService socketService;
-  final int time;
+  final double time;
   final bool isRight;
   final int numberOfQuestion;
   final int currenQuestionNumber;
-  const WaitingPage({super.key, required this.socketService, required this.time, required this.isRight, required this.numberOfQuestion, required this.currenQuestionNumber});
+  final double timeOut;
+  const WaitingPage({super.key, required this.socketService, required this.time, required this.isRight, required this.numberOfQuestion, required this.currenQuestionNumber, required this.timeOut});
   @override
-  _WaitingPageState createState() => _WaitingPageState(socketService, time, isRight, numberOfQuestion, currenQuestionNumber);
+  _WaitingPageState createState() => _WaitingPageState(socketService, time, isRight, numberOfQuestion, currenQuestionNumber, timeOut);
 }
 
 class _WaitingPageState extends State<WaitingPage> {
   late List<String> _funFacts = [];
   late bool _moveToNextPage = false;
   late Timer _apiTimer;
-  final int _time;
+  final double _time;
   final SocketService _socketService;
   final bool _isRight;
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
+  final double _timeOut;
 
-  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber);
+  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber, this._timeOut);
 
   Future<void> getFunFacts() async {
     _funFacts.clear();
@@ -52,7 +56,7 @@ class _WaitingPageState extends State<WaitingPage> {
     _apiTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
       getFunFacts();
     });
-    Future.delayed(Duration(seconds: _time), () {
+    Future.delayed(Duration(milliseconds: (_time * 1000).toInt()), () {
       _moveToNextPage = true;
       Navigator.pushReplacement(
         context,
@@ -62,11 +66,24 @@ class _WaitingPageState extends State<WaitingPage> {
             isRight: _isRight,
             numberOfQuestion: _numberOfQuestion,
             currenQuestionNumber: _currenQuestionNumber,
+            timeOut: _timeOut,
           ),
         ),
       );
     });
   }
+
+  Future<void> leaveGame() async {
+    _socketService.sendMessage(Message(22, {}));
+    Message response = await _socketService.receiveMessage();
+    if (response != 99) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(socketService: _socketService)));
+    }
+  }
+
 
   @override
   void initState() {
@@ -79,6 +96,8 @@ class _WaitingPageState extends State<WaitingPage> {
     _apiTimer?.cancel();
     super.dispose();
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
