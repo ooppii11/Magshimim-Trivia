@@ -138,7 +138,7 @@ class _QuestionPage extends State<QuestionPage> {
                       ),
                       child: TextButton(
                         child: Text(
-                          "Leave game",
+                          "Leave Game",
                           style: TextStyle(fontSize: 25, color: Colors.white),
                         ),
                         onPressed: () async {
