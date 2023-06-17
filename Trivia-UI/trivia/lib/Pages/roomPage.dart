@@ -44,13 +44,13 @@ class _RoomPageState extends State<RoomPage> {
     if (_hasGameBegun) {
       Future.delayed(Duration.zero, () {
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => QuestionPage(
-                  socketService: _socketService,
-                  currenQuestionNumber: 1,
-                  numberOfQuestion: _numOfQuestionsInGame)),
-        );
+            context,
+            MaterialPageRoute(
+                builder: (_) => QuestionPage(
+                    socketService: _socketService,
+                    maxTimePerQuestion: 3,
+                    currentQuestionNumber: 1,
+                    numberOfQuestion: 1)));
       });
     } else {
       _socketService.sendMessage(Message(19, {}));
@@ -107,8 +107,7 @@ class _RoomPageState extends State<RoomPage> {
       }
     } else {
       _socketService.sendMessage(Message(20, {}));
-      final Message response =
-          await _socketService.receiveMessage();
+      final Message response = await _socketService.receiveMessage();
       if (response.getCode() != 19) {
         error = true;
       }
@@ -137,34 +136,33 @@ class _RoomPageState extends State<RoomPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(
-                      12.5,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(
+                        12.5,
+                      ),
                     ),
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      "Leave Room",
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      await leaveRoom();
-                    },
-                  )))
-            ]),
+                    child: TextButton(
+                      child: Text(
+                        "Leave Room",
+                        style: TextStyle(fontSize: 25, color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        await leaveRoom();
+                      },
+                    )))
+          ]),
       body: Container(
         color: Colors.lightBlue,
         child: Column(
@@ -269,14 +267,13 @@ class _RoomPageState extends State<RoomPage> {
                                     await _socketService.receiveMessage();
                                 if (response.getCode() == 17) {
                                   Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => QuestionPage(
-                                            socketService: _socketService,
-                                            currenQuestionNumber: 1,
-                                            numberOfQuestion:
-                                                _numOfQuestionsInGame)),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => QuestionPage(
+                                              socketService: _socketService,
+                                              maxTimePerQuestion: 3,
+                                              currentQuestionNumber: 1,
+                                              numberOfQuestion: 1)));
                                 }
                               },
                             ),

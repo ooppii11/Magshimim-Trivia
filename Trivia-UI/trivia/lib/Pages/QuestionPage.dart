@@ -1,9 +1,12 @@
+import 'package:trivia/Pages/RightWorng.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/Pages/categoriesPageLayout.dart';
 import 'package:trivia/Question.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/message.dart';
+import 'package:trivia/Pages/WaitingPage.dart';
 
 int SUBMIT_ANSWER_REQUEST_CODE = 21;
 int GET_QUESTION_REQUEST_CODE = 23;
@@ -12,32 +15,68 @@ int LEAVE_GAME_REQUEST_CODE = 22;
 class QuestionPage extends StatefulWidget {
   final SocketService socketService;
   final int numberOfQuestion;
-  final int currenQuestionNumber;
+  final int currentQuestionNumber;
+  final double maxTimePerQuestion;
 
   const QuestionPage(
       {super.key,
       required this.socketService,
-      required this.currenQuestionNumber,
+      required this.maxTimePerQuestion,
+      required this.currentQuestionNumber,
       required this.numberOfQuestion});
 
   @override
-  _QuestionPage createState() =>
-      _QuestionPage(socketService, numberOfQuestion, currenQuestionNumber);
+  _QuestionPage createState() => _QuestionPage(socketService,
+      maxTimePerQuestion, numberOfQuestion, currentQuestionNumber);
 }
 
 class _QuestionPage extends State<QuestionPage> {
   final SocketService _socketService;
   final int _numberOfQuestion;
-  final int _currenQuestionNumber;
+  final int _currentQuestionNumber;
+  final double _maxTimePerQuestion;
+  late Timer _timer;
+  late double _countdownDuration;
+
   late Question _question = Question("error", {});
 
-  _QuestionPage(
-      this._socketService, this._numberOfQuestion, this._currenQuestionNumber);
+  _QuestionPage(this._socketService, this._maxTimePerQuestion,
+      this._numberOfQuestion, this._currentQuestionNumber) {
+    this._countdownDuration = _maxTimePerQuestion;
+  }
 
   @override
   void initState() {
+    startTimer();
     getQuetion();
     super.initState();
+  }
+
+  void startTimer() {
+    const double interval = 0.1;
+    _timer = Timer.periodic(Duration(milliseconds: (interval * 1000).toInt()),
+        (Timer timer) {
+      _countdownDuration -= interval;
+
+      if (_countdownDuration <= 0) {
+        timer.cancel();
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (_) => RightWorngPage(
+                    socketService: _socketService,
+                    isRight: false,
+                    numberOfQuestion: _numberOfQuestion,
+                    currenQuestionNumber: _currentQuestionNumber + 1,
+                    timeOut: _maxTimePerQuestion)));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> getQuetion() async {
@@ -65,12 +104,19 @@ class _QuestionPage extends State<QuestionPage> {
   }
 
   Future<void> submitAnswer(int answerId) async {
-    //stopTimer();
     _socketService.sendMessage(
         Message(SUBMIT_ANSWER_REQUEST_CODE, {"answerIndex": answerId}));
     Message response = await _socketService.receiveMessage();
-    //navigate to wait page
-    //response.getData()["correctAnswerIndex"] == answerId
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => WaitingPage(
+                socketService: _socketService,
+                time: _maxTimePerQuestion - _countdownDuration,
+                isRight: response.getData()["correctAnswerIndex"] == answerId,
+                numberOfQuestion: _numberOfQuestion,
+                currenQuestionNumber: _currentQuestionNumber + 1,
+                timeOut: _maxTimePerQuestion)));
   }
 
   @override

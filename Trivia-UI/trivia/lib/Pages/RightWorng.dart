@@ -22,7 +22,7 @@ class RightWorngPage extends StatefulWidget {
 
   @override
   _RightWorngPage createState() => _RightWorngPage(
-      socketService, isRight, currenQuestionNumber, numberOfQuestion);
+      socketService, isRight, currenQuestionNumber, numberOfQuestion, timeOut);
 }
 
 class _RightWorngPage extends State<RightWorngPage> {
@@ -43,9 +43,9 @@ class _RightWorngPage extends State<RightWorngPage> {
           MaterialPageRoute(
               builder: (_) => QuestionPage(
                   socketService: _socketService,
-                  currenQuestionNumber: _currenQuestionNumber,
+                  currentQuestionNumber: _currenQuestionNumber,
                   numberOfQuestion: _numberOfQuestion,
-                  timeOut: _timeOut)),
+                  maxTimePerQuestion: _timeOut)),
         );
       } else {
         /*Navigator.pushReplacement(
@@ -70,34 +70,34 @@ class _RightWorngPage extends State<RightWorngPage> {
               builder: (_) => HomePage(socketService: _socketService)));
     }
   }
-  
+
   Widget correct() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(
-                      12.5,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(
+                        12.5,
+                      ),
                     ),
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      "Leave Game",
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      await leaveGame();
-                    },
-                  )))
-            ]),
-        body: SingleChildScrollView(
+                    child: TextButton(
+                      child: Text(
+                        "Leave Game",
+                        style: TextStyle(fontSize: 25, color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        await leaveGame();
+                      },
+                    )))
+          ]),
+      body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
               child: Column(children: [
