@@ -70,9 +70,9 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
     Message response = await _socketService.receiveMessage();
     List<Category> categories = [];
     if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
-      Map<String, dynamic> catgoris_data = response.getData();
+      Map<String, dynamic> catgorisData = response.getData();
       if (response.getCode() == GET_CATEGORIES_RESPONSE_CODE) {
-        for (var categoryString in catgoris_data["publicCategories"]) {
+        for (var categoryString in catgorisData["publicCategories"]) {
           categories.add(Category(categoryString[1], categoryString[0], true));
         }
       }
@@ -83,9 +83,9 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
     response = await _socketService.receiveMessage();
     if (response.getCode() == GET_ROOMS_RESPONSE_CODE) {
       List<dynamic> dynamicList = jsonDecode(response.getData()["Rooms"]);
-      List<Map<String, dynamic>> rooms_data =
+      List<Map<String, dynamic>> roomsData =
           dynamicList.cast<Map<String, dynamic>>().toList();
-      for (var roomData in rooms_data) {
+      for (var roomData in roomsData) {
         rooms.add(Room(
             roomData["Id"],
             roomData["Name"],

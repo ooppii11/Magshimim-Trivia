@@ -21,8 +21,8 @@ class UserPage extends StatefulWidget {
 
 class _UserPage extends State<UserPage> {
   final SocketService _socketService;
-  late List<History> _history = [];
-  late List<Statistic> _statistics = [];
+  late final List<History> _history = [];
+  late final List<Statistic> _statistics = [];
   bool _isFloatingScreenOpen = false;
   String _enteredValue = '';
 
@@ -357,7 +357,7 @@ class _UserPage extends State<UserPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join'),
+                          title: const Text('Join'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -366,13 +366,13 @@ class _UserPage extends State<UserPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter Room ID',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Join'),
+                                child: const Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   joinRoom();
@@ -387,7 +387,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.people),
+                  child: const Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -396,7 +396,7 @@ class _UserPage extends State<UserPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.create),
+                  child: const Icon(Icons.create),
                 )
               ],
             ),

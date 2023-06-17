@@ -5,10 +5,10 @@ class Question {
   Question(this.question, this.answers);
 
   String getQuestion() {
-    return this.question;
+    return question;
   }
 
   Map<int, String> getAnswers() {
-    return this.answers;
+    return answers;
   }
 }

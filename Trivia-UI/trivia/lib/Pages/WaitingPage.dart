@@ -20,7 +20,7 @@ class WaitingPage extends StatefulWidget {
 }
 
 class _WaitingPageState extends State<WaitingPage> {
-  late List<String> _funFacts = [];
+  late final List<String> _funFacts = [];
   late bool _moveToNextPage = false;
   late Timer _apiTimer;
   final double _time;
@@ -96,7 +96,7 @@ class _WaitingPageState extends State<WaitingPage> {
 
   @override
   void dispose() {
-    _apiTimer?.cancel();
+    _apiTimer.cancel();
     super.dispose();
   }
 
@@ -119,7 +119,7 @@ class _WaitingPageState extends State<WaitingPage> {
                     ),
                   ),
                   child: TextButton(
-                    child: Text(
+                    child: const Text(
                       "Leave Game",
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
@@ -135,27 +135,27 @@ class _WaitingPageState extends State<WaitingPage> {
             Container(
               height: MediaQuery.of(context).size.height * 0.25,
               width: MediaQuery.of(context).size.width,
-              color: Color.fromARGB(255, 111, 156, 235),
+              color: const Color.fromARGB(255, 111, 156, 235),
               padding: const EdgeInsets.all(16.0),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: const Text(
+                    child: Text(
                       "Waiting for other players to finish the game...",
                       style: TextStyle(fontSize: 24, color: Colors.black),
                     ),
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: const SizedBox(height: 8.0),
+                    child: SizedBox(height: 8.0),
                   ),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
                       "in the meantime, here are some fun facts:",
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
@@ -167,7 +167,7 @@ class _WaitingPageState extends State<WaitingPage> {
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 29, 45, 68),
+                color: const Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -182,17 +182,17 @@ class _WaitingPageState extends State<WaitingPage> {
                               children: [
                                 for (var i = 0; i < _funFacts.length; i++)
                                   Padding(
-                                    padding: EdgeInsets.only(bottom: 16.0),
+                                    padding: const EdgeInsets.only(bottom: 16.0),
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                         vertical: 4.0, horizontal: 8.0),
                                       decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 88, 128, 185),
+                                      color: const Color.fromARGB(255, 88, 128, 185),
                                       borderRadius: BorderRadius.circular(8.0),
                                       ),
                                       child: Text(
-                                        (i+1).toString() + ". " + _funFacts[i],
-                                        style: TextStyle(
+                                        "${i+1}. ${_funFacts[i]}",
+                                        style: const TextStyle(
                                           fontSize: 24,
                                           color: Colors.black,
                                         ),

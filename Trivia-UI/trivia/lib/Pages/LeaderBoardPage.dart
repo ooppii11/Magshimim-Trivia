@@ -245,7 +245,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join'),
+                          title: const Text('Join'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -254,13 +254,13 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                                   _enteredValue = value;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter Room ID',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
-                                child: Text('Join'),
+                                child: const Text('Join'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   joinRoom();
@@ -275,7 +275,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.people),
+                  child: const Icon(Icons.people),
                 ),
                 InkWell(
                   onTap: () {
@@ -284,7 +284,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                       _isFloatingScreenOpen = false;
                     });
                   },
-                  child: Icon(Icons.create),
+                  child: const Icon(Icons.create),
                 )
               ],
             ),

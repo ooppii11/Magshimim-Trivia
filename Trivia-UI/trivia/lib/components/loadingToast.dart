@@ -10,7 +10,7 @@ void loadingToast(BuildContext context, int sconds) {
       borderRadius: BorderRadius.circular(25.0),
       color: Colors.blueAccent,
     ),
-    child: Row(
+    child: const Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(

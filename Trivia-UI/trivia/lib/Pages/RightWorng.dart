@@ -42,7 +42,7 @@ class _RightWorngPage extends State<RightWorngPage> {
   }
 
   Future delay() async {
-    await new Future.delayed(new Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 3), () {
       if (_currenQuestionNumber != _numberOfQuestion) {
         Navigator.pushReplacement(
           context,
@@ -94,7 +94,7 @@ class _RightWorngPage extends State<RightWorngPage> {
                       ),
                     ),
                     child: TextButton(
-                      child: Text(
+                      child: const Text(
                         "Leave Game",
                         style: TextStyle(fontSize: 25, color: Colors.white),
                       ),
@@ -103,7 +103,7 @@ class _RightWorngPage extends State<RightWorngPage> {
                       },
                     )))
           ]),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
               child: Column(children: [
@@ -121,7 +121,7 @@ class _RightWorngPage extends State<RightWorngPage> {
   }
 
   Widget worng() {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(

@@ -42,7 +42,7 @@ class _QuestionPage extends State<QuestionPage> {
 
   _QuestionPage(this._socketService, this._maxTimePerQuestion,
       this._numberOfQuestion, this._currentQuestionNumber) {
-    this._countdownDuration = _maxTimePerQuestion;
+    _countdownDuration = _maxTimePerQuestion;
   }
 
   @override
@@ -83,10 +83,9 @@ class _QuestionPage extends State<QuestionPage> {
     _socketService.sendMessage(Message(GET_QUESTION_REQUEST_CODE, {}));
     Message response = await _socketService.receiveMessage();
     if (response.getCode() != ERROR_CODE) {
-      Question question = new Question(
+      Question question = Question(
           response.getData()["Question"],
-          Map.fromIterable(response.getData()["Answers"],
-              key: (item) => item[0], value: (item) => item[1]));
+          { for (var item in response.getData()["Answers"]) item[0] : item[1] });
 
       setState(() {
         _question = question;
@@ -139,7 +138,7 @@ class _QuestionPage extends State<QuestionPage> {
                         ),
                       ),
                       child: TextButton(
-                        child: Text(
+                        child: const Text(
                           "Leave Game",
                           style: TextStyle(fontSize: 25, color: Colors.white),
                         ),
@@ -154,9 +153,9 @@ class _QuestionPage extends State<QuestionPage> {
               child: Center(
                   child: Column(children: [
                 Container(
-                  margin: EdgeInsets.all(100.0),
+                  margin: const EdgeInsets.all(100.0),
                   decoration:
-                      BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                      const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
                 ),
                 Text(_question.getQuestion()),
                 Column(children: [
@@ -187,7 +186,7 @@ class _QuestionPage extends State<QuestionPage> {
                                     padding: const EdgeInsets.all(0.0),
                                     child: Text(
                                       answer.value,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.white, fontSize: 25),
                                     ),
                                   ),

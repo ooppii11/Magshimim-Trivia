@@ -13,8 +13,8 @@ void errorToast(BuildContext context, String content, int sconds) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.error),
-        SizedBox(
+        const Icon(Icons.error),
+        const SizedBox(
           width: 12.0,
         ),
         Text(content),
