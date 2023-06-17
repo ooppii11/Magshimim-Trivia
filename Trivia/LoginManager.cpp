@@ -31,7 +31,14 @@ void LoginManager::login(std::string username, std::string password)
 	{
 		this->_loggedUsers.push_back(LoggedUser(username));
 	}
-	else { throw messageException("Password not match"); }
+	else if(!this->_database->doesUserExist(username))
+	{
+		throw messageException("User doesn't exist");
+	}
+	else
+	{
+		throw messageException("Password doesn't match");
+	}
 }
 
 void LoginManager::logout(std::string username)

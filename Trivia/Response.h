@@ -196,7 +196,7 @@ typedef struct PlayerResults
 	std::string username;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
-	unsigned int averageAnswerTime;
+	double averageAnswerTime;
 	friend std::ostream& operator<<(std::ostream& os, const PlayerResults& data);
 }PlayerResults;
 

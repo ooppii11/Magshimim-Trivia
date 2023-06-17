@@ -172,6 +172,7 @@ class _RoomPageState extends State<RoomPage> {
               width: MediaQuery.of(context).size.width,
               color: Color.fromARGB(255, 111, 156, 235),
               padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -198,6 +199,7 @@ class _RoomPageState extends State<RoomPage> {
                     ),
                   ),
                 ],
+              ),
               ),
             ),
             Expanded(
