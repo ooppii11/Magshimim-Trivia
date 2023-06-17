@@ -116,7 +116,7 @@ class _QuestionPage extends State<QuestionPage> {
         MaterialPageRoute(
             builder: (_) => WaitingPage(
                 socketService: _socketService,
-                time: _maxTimePerQuestion - _countdownDuration,
+                time: _countdownDuration,
                 isRight: response.getData()["correctAnswerIndex"] == answerId,
                 numberOfQuestion: _numberOfQuestion,
                 currenQuestionNumber: _currentQuestionNumber + 1,
