@@ -55,7 +55,7 @@ class _CategoriesPage extends State<CategoriesPage> {
                 Text("Number of Questions: "),
                 IncrementDecrementButton(
                     controller: numberOfQuestions, minValue: 1),
-                Text("Max timr per Questions: "),
+                Text("Max Time per Questions: "),
                 IncrementDecrementButton(controller: maxTime, minValue: 1),
               ]),
               actions: [

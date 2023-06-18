@@ -116,11 +116,11 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       );
                     } else {
-                      errorToast(context, "Sigunp error", 2);
+                      errorToast(context, "Signup error", 2);
                     }
                   },
                   child: const Text(
-                    'SginUp',
+                    'Signup',
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                 ),

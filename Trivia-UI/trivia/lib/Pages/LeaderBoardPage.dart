@@ -154,7 +154,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-              const Text("Leadrboard"),
+              const Text("Leaderboard"),
               const SizedBox(height: 20),
               Container(
                   decoration: BoxDecoration(
