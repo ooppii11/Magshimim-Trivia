@@ -51,9 +51,7 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.lightBlue,
-        child: Column(
+      body: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
@@ -269,7 +267,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ],
         ),
-      ),
+      //),
     );
   }
 }

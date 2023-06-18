@@ -38,7 +38,7 @@ class _QuestionPage extends State<QuestionPage> {
   late Timer _timer;
   late double _countdownDuration;
 
-  late Question _question = Question("error", {});
+  late Question _question = Question("Error", {});
 
   _QuestionPage(this._socketService, this._maxTimePerQuestion,
       this._numberOfQuestion, this._currentQuestionNumber) {
@@ -123,14 +123,14 @@ class _QuestionPage extends State<QuestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             actions: <Widget>[
               Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
                   child: Container(
-                      height: 40,
+                      height: 20,
                       decoration: BoxDecoration(
                         color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(
@@ -140,59 +140,90 @@ class _QuestionPage extends State<QuestionPage> {
                       child: TextButton(
                         child: const Text(
                           "Leave Game",
-                          style: TextStyle(fontSize: 25, color: Colors.white),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         onPressed: () async {
                           await leaveGame();
                         },
                       )))
             ]),
-        body: Stack(children: [
-          SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Center(
-                  child: Column(children: [
-                Container(
-                  margin: const EdgeInsets.all(100.0),
-                  decoration: const BoxDecoration(
-                      color: Colors.blue, shape: BoxShape.circle),
-                ),
-                Text(_question.getQuestion()),
-                Column(children: [
-                  for (MapEntry<int, String> answer
-                      in _question.getAnswers().entries)
+      body: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: MediaQuery.of(context).size.width,
+              color: const Color.fromARGB(255, 111, 156, 235),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(height: 8.0),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                    _question.getQuestion(),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                color: const Color.fromARGB(255, 29, 45, 68),
+                padding: const EdgeInsets.all(16.0),
+                child:
+                    Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  for (MapEntry<int, String> answer in _question.getAnswers().entries)
                     Padding(
-                        padding: const EdgeInsets.only(
-                          left: 15.0,
-                          right: 15.0,
-                          top: 15,
-                          bottom: 0,
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        right: 15.0,
+                        top: 15,
+                        bottom: 0,
+                      ),
+                      child: Container(
+                        height: 50,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(
+                            25.0,
+                          ),
                         ),
-                        child: Container(
-                            height: 50,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(
-                                25.0,
+                        child: TextButton(
+                          onPressed: () {
+                            submitAnswer(answer.key);
+                          },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Text(
+                                  answer.value,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 25),
+                                ),
                               ),
-                            ),
-                            child: TextButton(
-                                onPressed: () {
-                                  submitAnswer(answer.key);
-                                },
-                                child: Column(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(0.0),
-                                    child: Text(
-                                      answer.value,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 25),
-                                    ),
-                                  ),
-                                ]))))
-                ])
-              ])))
-        ]));
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ]),
+              ),
+            )
+          ],
+        ),
+     // ),
+    );
   }
 }

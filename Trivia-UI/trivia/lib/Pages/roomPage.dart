@@ -79,6 +79,7 @@ class _RoomPageState extends State<RoomPage> {
             .contains("Admin closed the Room")) {
           errorToast(context, response.getData()["Error"], 2);
         }
+        _timer.cancel();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -98,6 +99,7 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   Future<void> leaveRoom() async {
+    _timer.cancel();
     bool error = false;
     if (_admin) {
       _socketService.sendMessage(Message(17, {}));
@@ -113,6 +115,7 @@ class _RoomPageState extends State<RoomPage> {
       }
     }
     if (!error) {
+      
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -164,9 +167,7 @@ class _RoomPageState extends State<RoomPage> {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.lightBlue,
-        child: Column(
+      body: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
@@ -273,6 +274,7 @@ class _RoomPageState extends State<RoomPage> {
                         final Message response =
                             await _socketService.receiveMessage();
                         if (response.getCode() == 17) {
+
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -292,7 +294,7 @@ class _RoomPageState extends State<RoomPage> {
               ),
           ],
         ),
-      ),
+      //),
     );
   }
 }

@@ -86,33 +86,40 @@ class _RightWorngPage extends State<RightWorngPage> {
   Widget correct() {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(
-                        12.5,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: Container(
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(
+                          12.5,
+                        ),
                       ),
-                    ),
-                    child: TextButton(
-                      child: const Text(
-                        "Leave Game",
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        await leaveGame();
-                      },
-                    )))
-          ]),
-      body: const SingleChildScrollView(
+                      child: TextButton(
+                        child: const Text(
+                          "Leave Game",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          await leaveGame();
+                        },
+                      )))
+            ]),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: const Color.fromARGB(255, 29, 45, 68),
+        child: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Center(
-              child: Column(children: [
+          child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
             Icon(
               Icons.check_circle_outline_outlined,
               size: 100,
@@ -123,39 +130,47 @@ class _RightWorngPage extends State<RightWorngPage> {
               style: TextStyle(color: Colors.green, fontSize: 30),
             ),
           ]))),
+      ),
     );
   }
 
   Widget worng() {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(
-                        12.5,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: Container(
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(
+                          12.5,
+                        ),
                       ),
-                    ),
-                    child: TextButton(
-                      child: const Text(
-                        "Leave Game",
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        await leaveGame();
-                      },
-                    )))
-          ]),
-      body: SingleChildScrollView(
+                      child: TextButton(
+                        child: const Text(
+                          "Leave Game",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          await leaveGame();
+                        },
+                      )))
+            ]),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: const Color.fromARGB(255, 29, 45, 68),
+        child: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Center(
-              child: Column(children: [
+          child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
             Icon(
               Icons.error_outline,
               size: 150,
@@ -166,6 +181,7 @@ class _RightWorngPage extends State<RightWorngPage> {
               style: TextStyle(color: Colors.red, fontSize: 30),
             ),
           ]))),
+      ),
     );
   }
 
