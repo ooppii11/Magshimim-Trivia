@@ -198,7 +198,15 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                       }),
                 ),
               ]),
-          body: Stack(
+          body: Container(
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+            //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+            colors: [Color.fromARGB(255, 194, 199, 204), Color.fromARGB(255, 62, 69, 78)],
+            begin: FractionalOffset(0.5, 1)
+            ) // LinearGradient
+            ), // BoxDecoration
+          child: Stack(
             children: [
               TabBarView(
                 children: [
@@ -225,6 +233,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
+      ),
       ),
     );
   }

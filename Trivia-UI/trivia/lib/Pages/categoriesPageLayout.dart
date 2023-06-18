@@ -131,8 +131,8 @@ class _CategoriesPage extends State<CategoriesPage> {
               bottom: 0,
             ),
             child: Container(
-                height: 50,
-                width: 300,
+                height: 60,
+                width: 480,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(

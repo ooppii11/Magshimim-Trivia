@@ -110,9 +110,16 @@ class _RightWorngPage extends State<RightWorngPage> {
                       )))
             ]),
       body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+        colors: [Color.fromARGB(255, 29, 45, 68), Color.fromARGB(255, 111, 156, 235)],
+        begin: FractionalOffset(0.5, 1)
+        ) // LinearGradient
+        ), // BoxDecoration
         width: double.infinity,
         height: double.infinity,
-        color: const Color.fromARGB(255, 29, 45, 68),
+        //color: const Color.fromARGB(255, 29, 45, 68),
         child: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: const Center(
@@ -130,7 +137,8 @@ class _RightWorngPage extends State<RightWorngPage> {
               style: TextStyle(color: Colors.green, fontSize: 30),
             ),
           ]))),
-      ),
+        ),
+      //),
     );
   }
 
@@ -161,12 +169,19 @@ class _RightWorngPage extends State<RightWorngPage> {
                       )))
             ]),
       body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+        colors: [Color.fromARGB(255, 29, 45, 68),Color.fromARGB(255, 81, 168, 255)],
+        begin: FractionalOffset(0.5, 1)
+        ) // LinearGradient
+        ), // BoxDecoration
         width: double.infinity,
         height: double.infinity,
-        color: const Color.fromARGB(255, 29, 45, 68),
+        //color: const Color.fromARGB(255, 29, 45, 68),
         child: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: const Center(
+          child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,7 +196,7 @@ class _RightWorngPage extends State<RightWorngPage> {
               style: TextStyle(color: Colors.red, fontSize: 30),
             ),
           ]))),
-      ),
+        ),
     );
   }
 

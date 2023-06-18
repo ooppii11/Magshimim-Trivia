@@ -147,7 +147,15 @@ class _QuestionPage extends State<QuestionPage> {
                         },
                       )))
             ]),
-      body: Column(
+      body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color.fromARGB(255, 21, 66, 191), Color.fromARGB(255, 81, 168, 255)],
+        colors: [Color.fromARGB(255, 29, 45, 68), Color.fromARGB(255, 81, 168, 255)],
+        begin: FractionalOffset(0.5, 1)
+        ) // LinearGradient
+        ), // BoxDecoration
+      child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.25,
@@ -178,7 +186,7 @@ class _QuestionPage extends State<QuestionPage> {
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                color: const Color.fromARGB(255, 29, 45, 68),
+                //color: const Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -223,7 +231,7 @@ class _QuestionPage extends State<QuestionPage> {
             )
           ],
         ),
-     // ),
+     ),
     );
   }
 }

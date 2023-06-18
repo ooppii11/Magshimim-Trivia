@@ -93,7 +93,15 @@ class _UserPage extends State<UserPage> {
                     }),
               ),
             ]),
-        body: Stack(children: [
+        body: Container(
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+            //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+            colors: [Color.fromARGB(255, 194, 199, 204), Color.fromARGB(255, 62, 69, 78)],
+            begin: FractionalOffset(0.5, 1)
+            ) // LinearGradient
+            ), // BoxDecoration
+          child: Stack(children: [
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Center(
@@ -278,6 +286,7 @@ class _UserPage extends State<UserPage> {
           ),
           if (_isFloatingScreenOpen) _buildFloatingScreen(),
         ]),
+        ),
         backgroundColor: Colors.white,
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,

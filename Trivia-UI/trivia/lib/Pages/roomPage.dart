@@ -167,7 +167,15 @@ class _RoomPageState extends State<RoomPage> {
           ),
         ],
       ),
-      body: Column(
+      body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+        colors: [Color.fromARGB(255, 29, 45, 68), Color.fromARGB(255, 81, 168, 255)],
+        begin: FractionalOffset(0.5, 1)
+        ) // LinearGradient
+        ), // BoxDecoration
+      child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
@@ -208,7 +216,7 @@ class _RoomPageState extends State<RoomPage> {
               child: Container(
                 //height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 29, 45, 68),
+                //color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                   child: Align(
@@ -246,7 +254,7 @@ class _RoomPageState extends State<RoomPage> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 29, 45, 68),
+                //color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -294,7 +302,7 @@ class _RoomPageState extends State<RoomPage> {
               ),
           ],
         ),
-      //),
+      ),
     );
   }
 }

@@ -102,7 +102,15 @@ class _WaitingPageState extends State<WaitingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+        colors: [Color.fromARGB(255, 29, 45, 68), Color.fromARGB(255, 81, 168, 255)],
+        begin: FractionalOffset(0.5, 1)
+        ) // LinearGradient
+        ), // BoxDecoration
+      child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.25,
@@ -115,7 +123,7 @@ class _WaitingPageState extends State<WaitingPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Waiting for other players to finish the game...",
+                      "Waiting for other players to finish the question...",
                       style: TextStyle(fontSize: 24, color: Colors.black),
                     ),
                   ),
@@ -139,7 +147,7 @@ class _WaitingPageState extends State<WaitingPage> {
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                color: const Color.fromARGB(255, 29, 45, 68),
+                //color: const Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -185,7 +193,7 @@ class _WaitingPageState extends State<WaitingPage> {
             )
           ],
         ),
-      //),
+      ),
     );
   }
 }

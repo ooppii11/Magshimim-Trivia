@@ -26,9 +26,7 @@ class _ResultPageState extends State<ResultPage> {
   getGameResults() async{
     _socketService.sendMessage(Message(24, {}));
     Message resivedMessage = await _socketService.receiveMessage();
-    print("code: ${resivedMessage.getCode()}");
     if(resivedMessage.getCode() == 23) {
-      print("data: ${resivedMessage.getData()}");
       List<dynamic> dynamicList = jsonDecode(resivedMessage.getData()["Results"]);
       List<Map<String, dynamic>> historyList = dynamicList.cast<Map<String, dynamic>>().toList();
       for (var element in historyList) {
@@ -51,7 +49,15 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        //colors: [Color(0xff1542bf), Color(0xff51a8ff)],
+        colors: [Color.fromARGB(255, 29, 45, 68), Color.fromARGB(255, 81, 168, 255)],
+        begin: FractionalOffset(0.5, 1)
+        ),
+        ),
+      child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
@@ -82,7 +88,7 @@ class _ResultPageState extends State<ResultPage> {
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 29, 45, 68),
+                //color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Container(
@@ -232,7 +238,7 @@ class _ResultPageState extends State<ResultPage> {
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
               width: MediaQuery.of(context).size.width,
-              color: Color.fromARGB(255, 29, 45, 68),
+              //color: Color.fromARGB(255, 29, 45, 68),
               padding: const EdgeInsets.all(16.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -267,7 +273,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ],
         ),
-      //),
+      ),
     );
   }
 }
