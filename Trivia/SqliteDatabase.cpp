@@ -319,7 +319,7 @@ void SqliteDatabase::updatUserStatistics(const std::string& username, int rank, 
 	SqliteCommand command;
 	std::string query = "";
 	int userId = 0;
-	int score = this->getUsercore(username);
+	int score = this->getPlayerScore(username);
 	if (rank <= TOP_THREE)
 	{
 		score += RANK_ONE_SCORE - (rank - 1) * (ADD_SCORE);
@@ -635,6 +635,12 @@ std::map<std::string, int> SqliteDatabase::getHighScores(int numberOfUsers) cons
 	command = createDbCommand(query, SqliteDatabase::scoreCollback, &scores);
 	SqliteUtilities::executeCommand(command);
 	return scores;
+}
+
+int SqliteDatabase::getUsercore(std::string username) const
+{
+	int score
+	return 0;
 }
 
 void SqliteDatabase::createStatistics(int userId)

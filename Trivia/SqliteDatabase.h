@@ -68,7 +68,6 @@ public:
 	int getNumOfPlayerGames(std::string username) const;
 	int getPlayerScore(std::string username) const;
 	std::map<std::string, int> getHighScores(int numberOfUsers) const;
-	int getUsercore(std::string username) const;
 	void createStatistics(int userId);
 
 private:
