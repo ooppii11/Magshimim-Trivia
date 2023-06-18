@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trivia/Pages/ResultPage.dart';
 import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/QuestionPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
@@ -54,14 +55,11 @@ class _RightWorngPage extends State<RightWorngPage> {
                   maxTimePerQuestion: _timeOut)),
         );
       } else {
-        /*Navigator.pushReplacement(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => ResultPage(
-              socketService: widget.socketService,
-            ),
-          ),
-        );*/
+              builder: (_) => ResultPage(socketService: _socketService)),
+        );
       }
     });
   }
