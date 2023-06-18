@@ -6,7 +6,7 @@ std::ostream& operator<<(std::ostream& os, const PlayerResults& data)
 		<< "{"
 		<< "\"AverageAnswerTime\": " << std::fixed << data.averageAnswerTime << ", "
 		<< "\"CorrectAnswerCount\": " << data.correctAnswerCount << ", "
-		<< "\"Username\": " << data.username << ", "
+		<< "\"Username\": " << "\"" + data.username + "\"" << ", "
 		<< "\"WrongAnswerCount\": " << data.wrongAnswerCount
 		<< "}";;
 }

@@ -26,7 +26,9 @@ class _ResultPageState extends State<ResultPage> {
   getGameResults() async{
     _socketService.sendMessage(Message(24, {}));
     Message resivedMessage = await _socketService.receiveMessage();
+    print("code: ${resivedMessage.getCode()}");
     if(resivedMessage.getCode() == 23) {
+      print("data: ${resivedMessage.getData()}");
       List<dynamic> dynamicList = jsonDecode(resivedMessage.getData()["Results"]);
       List<Map<String, dynamic>> historyList = dynamicList.cast<Map<String, dynamic>>().toList();
       for (var element in historyList) {

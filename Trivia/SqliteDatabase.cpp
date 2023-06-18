@@ -272,7 +272,7 @@ void SqliteDatabase::addNewHistory(const std::string& username, History history)
 				+ std::to_string(history.rank) + ", "
 				+ std::to_string(history.avergeTime) + ", "
 				+ std::to_string(history.answers) + ", "
-				+ std::to_string(history.correctAnswers) + ", ";
+				+ std::to_string(history.correctAnswers) + ");";
 
 
 	command = createDbCommand(query);
