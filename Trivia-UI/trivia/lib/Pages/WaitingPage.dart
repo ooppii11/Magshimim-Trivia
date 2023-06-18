@@ -14,9 +14,17 @@ class WaitingPage extends StatefulWidget {
   final int numberOfQuestion;
   final int currenQuestionNumber;
   final double timeOut;
-  const WaitingPage({super.key, required this.socketService, required this.time, required this.isRight, required this.numberOfQuestion, required this.currenQuestionNumber, required this.timeOut});
+  const WaitingPage(
+      {super.key,
+      required this.socketService,
+      required this.time,
+      required this.isRight,
+      required this.numberOfQuestion,
+      required this.currenQuestionNumber,
+      required this.timeOut});
   @override
-  _WaitingPageState createState() => _WaitingPageState(socketService, time, isRight, numberOfQuestion, currenQuestionNumber, timeOut);
+  _WaitingPageState createState() => _WaitingPageState(socketService, time,
+      isRight, numberOfQuestion, currenQuestionNumber, timeOut);
 }
 
 class _WaitingPageState extends State<WaitingPage> {
@@ -30,28 +38,28 @@ class _WaitingPageState extends State<WaitingPage> {
   final int _currenQuestionNumber;
   final double _timeOut;
 
-  _WaitingPageState(this._socketService, this._time, this._isRight, this._numberOfQuestion, this._currenQuestionNumber, this._timeOut)
-  {
+  _WaitingPageState(this._socketService, this._time, this._isRight,
+      this._numberOfQuestion, this._currenQuestionNumber, this._timeOut) {
     getFunFacts();
   }
 
   Future<void> getFunFacts() async {
     _funFacts.clear();
-    if(!_moveToNextPage)
-    {
+    if (!_moveToNextPage) {
       String url = "https://api.api-ninjas.com/v1/facts?limit=5";
-      HttpClient client =  HttpClient()
-      ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+      HttpClient client = HttpClient()
+        ..badCertificateCallback =
+            ((X509Certificate cert, String host, int port) => true);
       HttpClientRequest request = await client.getUrl(Uri.parse(url));
-      request.headers.set('X-Api-Key', 'FhmWPU3gkVYjlnr9/tab9w==A2gqA9dgzXHcSU6I');
+      request.headers
+          .set('X-Api-Key', 'FhmWPU3gkVYjlnr9/tab9w==A2gqA9dgzXHcSU6I');
       HttpClientResponse response = await request.close();
       final data = await response.transform(utf8.decoder).join();
       jsonDecode(data).forEach((element) {
         _funFacts.add(element["fact"]);
       });
       client.close();
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -76,18 +84,6 @@ class _WaitingPageState extends State<WaitingPage> {
     });
   }
 
-  Future<void> leaveGame() async {
-    _socketService.sendMessage(Message(22, {}));
-    Message response = await _socketService.receiveMessage();
-    if (response != 99) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => HomePage(socketService: _socketService)));
-    }
-  }
-
-
   @override
   void initState() {
     super.initState();
@@ -100,34 +96,9 @@ class _WaitingPageState extends State<WaitingPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(
-                      12.5,
-                    ),
-                  ),
-                  child: TextButton(
-                    child: const Text(
-                      "Leave Game",
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      await leaveGame();
-                    },
-                  )))
-            ]),
       body: Container(
         color: Colors.lightBlue,
         child: Column(
@@ -176,22 +147,25 @@ class _WaitingPageState extends State<WaitingPage> {
                       Align(
                         alignment: Alignment.topLeft,
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
+                            scrollDirection: Axis.vertical,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 for (var i = 0; i < _funFacts.length; i++)
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 16.0),
+                                    padding:
+                                        const EdgeInsets.only(bottom: 16.0),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 8.0),
+                                          vertical: 4.0, horizontal: 8.0),
                                       decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 88, 128, 185),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                        color: const Color.fromARGB(
+                                            255, 88, 128, 185),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
                                       child: Text(
-                                        "${i+1}. ${_funFacts[i]}",
+                                        "${i + 1}. ${_funFacts[i]}",
                                         style: const TextStyle(
                                           fontSize: 24,
                                           color: Colors.black,
@@ -200,16 +174,15 @@ class _WaitingPageState extends State<WaitingPage> {
                                     ),
                                   ),
                               ],
-                            )
+                            )),
                       ),
-                    ),
-                    const SizedBox(height: 16.0),
-                  ],
+                      const SizedBox(height: 16.0),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
         ),
       ),
     );

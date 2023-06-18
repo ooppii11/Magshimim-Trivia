@@ -241,8 +241,6 @@ class _RoomPageState extends State<RoomPage> {
               ),
             ),
             if (_admin)
-              //Expanded(
-              //child: Container(
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
                 width: MediaQuery.of(context).size.width,

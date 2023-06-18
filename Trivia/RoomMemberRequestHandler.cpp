@@ -78,8 +78,15 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo requestInfo)
 		response.answerTimeout = roomData.timePerQuestion;
 		response.questionCount = roomData.numOfQuestionsInGame;
 
-		result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
 		result.response = Serializer::serializeResponse(response);
+		if (roomData.isActive)
+		{
+			result.newHandler = std::shared_ptr<IRequestHandler>(this->_handlerFactory.createGameRequestHandler(this->_user, roomData.id));
+		}
+		else
+		{
+			result.newHandler = std::shared_ptr<RoomMemberRequestHandler>(this->_handlerFactory.createRoomMemberRequestHandler(this->_user, this->_room));
+		}
 	}
 	catch (...) 
 	{
