@@ -21,7 +21,6 @@ Question Game::getQuestionForUser(LoggedUser user)
 	auto it = this->_players.find(user.getUsername());
 	if (it != this->_players.end())
 	{
-	
 		if (it->second.correctAnswerCount + it->second.wrongAnswerCount < this->_questions.size())
 		{
 			it->second.currentQuestion = this->_questions[it->second.correctAnswerCount + it->second.wrongAnswerCount];
@@ -46,15 +45,21 @@ int Game::submitAnswer(LoggedUser user, int answerId)
 	int numOfQuestion = it - this->_questions.begin() + 1;
 
 	auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - this->startTime).count();
-	if (duration > this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
+	
+	if (answerId != UNSUBMIT || duration > this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
 	{
-		throw std::exception("Time pass");
+		userData.averageAnswerTime = ((duration - this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1)) + userData.averageAnswerTime) / 2;
+
+		if (userData.currentQuestion.getCorrectAnswerId() == answerId) {
+			userData.correctAnswerCount++;
+			userData.wrongAnswerCount--;
+		}
+	}
+	else
+	{
+		userData.averageAnswerTime = (userData.averageAnswerTime + this->_maxTimePerQuestion) / 2;
 	}
 
-	if (userData.currentQuestion.getCorrectAnswerId() == answerId) { 
-		userData.correctAnswerCount++;
-		userData.wrongAnswerCount--;
-	}
 	return userData.currentQuestion.getCorrectAnswerId();
 }
 

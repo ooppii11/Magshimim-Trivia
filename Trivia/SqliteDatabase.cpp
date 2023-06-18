@@ -314,11 +314,20 @@ std::vector<History> SqliteDatabase::getCategoryHistory(int categoryId) const
 
 
 
-void SqliteDatabase::updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime)
+void SqliteDatabase::updatUserStatistics(const std::string& username, int rank,  int correctAnswers, int totalAnswers, double averageTime)
 {
 	SqliteCommand command;
 	std::string query = "";
 	int userId = 0;
+	int score = this->getUsercore(username);
+	if (rank <= TOP_THREE)
+	{
+		score += RANK_ONE_SCORE - (rank - 1) * (ADD_SCORE);
+	}
+	else
+	{
+		score += ADD_SCORE;
+	}
 
 	userId = this->getUserId(username);
 	float time = (this->getPlayerAverageAnswerTime(username) + averageTime) / 2;
@@ -327,7 +336,8 @@ void SqliteDatabase::updatUserStatistics(const std::string& username, int correc
 
 	query = "UPDATE STATISTICS "
 			"SET "
-				"AVERAGE_TIME = " + std::to_string(time) +
+				"SCORE = " + std::to_string(score) +
+				", AVERAGE_TIME = " + std::to_string(time) +
 				", NUMBER_OF_ANSWERS = " + std::to_string(totalAnswers) +
 				", NUMBER_OF_CORRECT_ANSWERS = " + std::to_string(correctAnswers) +
 				", NUMBER_OF_GAMES = " + std::to_string(this->getNumOfPlayerGames(username) + 1) +
