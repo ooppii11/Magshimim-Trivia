@@ -42,6 +42,7 @@ class _RoomPageState extends State<RoomPage> {
   getUsersInRoom() async {
     _users.clear();
     if (_hasGameBegun) {
+      _timer.cancel();
       Future.delayed(Duration.zero, () {
         Navigator.pushReplacement(
             context,
@@ -91,7 +92,7 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       getUsersInRoom();
     });
   }

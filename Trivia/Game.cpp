@@ -46,15 +46,15 @@ int Game::submitAnswer(LoggedUser user, int answerId)
 
 	auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - this->startTime).count();
 	
-	if (answerId != UNSUBMIT || duration > this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
+	if (answerId != UNSUBMIT || duration < this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))
 	{
 		if (numOfQuestion == 1)
 		{
-			userData.averageAnswerTime = ((duration - this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1)) + userData.averageAnswerTime);
+			userData.averageAnswerTime = ((duration - (this->_maxTimePerQuestion * (numOfQuestion - 1) + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))) + userData.averageAnswerTime);
 		}
 		else
 		{
-			userData.averageAnswerTime = ((duration - this->_maxTimePerQuestion * numOfQuestion + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1)) + userData.averageAnswerTime) / 2;
+			userData.averageAnswerTime = ((duration - (this->_maxTimePerQuestion * (numOfQuestion - 1) + TIME_OF_RECEIVING_AN_ANSWER * (numOfQuestion - 1))) + userData.averageAnswerTime) / 2;
 		}
 
 		if (userData.currentQuestion.getCorrectAnswerId() == answerId) {

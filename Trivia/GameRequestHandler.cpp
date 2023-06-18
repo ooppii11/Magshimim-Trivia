@@ -122,6 +122,11 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::logout(RequestInfo requestInfo)
 {
+	if (this->_game.getNumberOfPslyers() == 0)
+	{
+		this->_gameManager.deleteGame(this->_game.getGameId());
+		this->_roomManager.deleteRoom(this->_game.getGameId());
+	}
 	this->_loginManager.logout(this->_user.getUsername());
 	return RequestResult();
 }
