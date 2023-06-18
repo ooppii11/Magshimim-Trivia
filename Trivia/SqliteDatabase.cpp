@@ -277,7 +277,7 @@ void SqliteDatabase::addNewHistory(const std::string& username, History history)
 
 	command = createDbCommand(query);
 	SqliteUtilities::executeCommand(command);
-	this->updatUserStatistics(username, history.correctAnswers, history.answers, history.avergeTime);
+	this->updatUserStatistics(username, history.rank, history.correctAnswers, history.answers, history.avergeTime);
 }
 
 std::vector<History> SqliteDatabase::getUserLastFiveHistory(const std::string& username) const
@@ -314,24 +314,42 @@ std::vector<History> SqliteDatabase::getCategoryHistory(int categoryId) const
 
 
 
-void SqliteDatabase::updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime)
+void SqliteDatabase::updatUserStatistics(const std::string& username, int rank,  int correctAnswers, int totalAnswers, double averageTime)
 {
 	SqliteCommand command;
 	std::string query = "";
 	int userId = 0;
+	int score = this->getPlayerScore(username);
+	if (rank <= TOP_THREE)
+	{
+		score += RANK_ONE_SCORE - (rank - 1) * (ADD_SCORE);
+	}
+	else
+	{
+		score += ADD_SCORE;
+	}
 
 	userId = this->getUserId(username);
-	float time = (this->getPlayerAverageAnswerTime(username) + averageTime) / 2;
+	float time = (this->getPlayerAverageAnswerTime(username));
+	if (time == 0)
+	{
+		time += averageTime;
+	}
+	else
+	{
+		time += averageTime / 2;
+	}
 	correctAnswers += this->getNumOfCorrectAnswers(username);
 	totalAnswers += this->getNumOfTotalAnswers(username);
 
 	query = "UPDATE STATISTICS "
 			"SET "
-				"AVERAGE_TIME = " + std::to_string(time) +
+				"SCORE = " + std::to_string(score) +
+				", AVERAGE_TIME = " + std::to_string(time) +
 				", NUMBER_OF_ANSWERS = " + std::to_string(totalAnswers) +
 				", NUMBER_OF_CORRECT_ANSWERS = " + std::to_string(correctAnswers) +
 				", NUMBER_OF_GAMES = " + std::to_string(this->getNumOfPlayerGames(username) + 1) +
-			"WHERE USER_ID = " + std::to_string(userId) + "; ";
+			" WHERE USER_ID = " + std::to_string(userId) + "; ";
 		command = createDbCommand(query);
 	SqliteUtilities::executeCommand(command);
 }

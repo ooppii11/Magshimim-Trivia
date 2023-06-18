@@ -7,6 +7,7 @@
 #include <chrono>
 
 #define TIME_OF_RECEIVING_AN_ANSWER 3
+#define UNSUBMIT 5
 
 struct GameData
 {

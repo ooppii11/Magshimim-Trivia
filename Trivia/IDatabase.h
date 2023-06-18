@@ -59,5 +59,5 @@ public:
 	virtual int getPlayerScore(std::string username) const = 0;
 	virtual std::map<std::string, int> getHighScores(int numberOfUsers) const = 0;
 private:
-	virtual void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime) = 0;
+	virtual void updatUserStatistics(const std::string& username, int rank, int correctAnswers, int totalAnswers, double averageTime) = 0;
 };

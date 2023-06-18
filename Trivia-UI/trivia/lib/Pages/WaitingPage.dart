@@ -59,7 +59,9 @@ class _WaitingPageState extends State<WaitingPage> {
         _funFacts.add(element["fact"]);
       });
       client.close();
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -68,6 +70,7 @@ class _WaitingPageState extends State<WaitingPage> {
       getFunFacts();
     });
     Future.delayed(Duration(milliseconds: (_time * 1000).toInt()), () {
+      _apiTimer.cancel();
       _moveToNextPage = true;
       Navigator.pushReplacement(
         context,

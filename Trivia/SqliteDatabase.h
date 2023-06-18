@@ -26,6 +26,9 @@
 #define USERNAME "USERNAME"
 #define PERMISSION "PERMISSION"
 #define USERNAME "USERNAME"
+#define TOP_THREE 3
+#define RANK_ONE_SCORE 200 
+#define ADD_SCORE 50 
 #define CORRECT_ANSWER_INDEX "CORRECT_ANSWER_INDEX"
 
 
@@ -71,7 +74,7 @@ private:
 	sqlite3* _db;
 
 	// Statistics:
-	 void updatUserStatistics(const std::string& username, int correctAnswers, int totalAnswers, double averageTime);
+	 void updatUserStatistics(const std::string& username, int rank, int correctAnswers, int totalAnswers, double averageTime);
 
 
 	SqliteCommand createDbCommand(std::string query, int(*collback)(void*, int, char**, char**) = nullptr, void* data = nullptr) const;

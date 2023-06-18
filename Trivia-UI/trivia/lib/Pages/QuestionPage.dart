@@ -60,6 +60,7 @@ class _QuestionPage extends State<QuestionPage> {
 
       if (_countdownDuration <= 0) {
         timer.cancel();
+        submitAnswer(5);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -83,9 +84,8 @@ class _QuestionPage extends State<QuestionPage> {
     _socketService.sendMessage(Message(GET_QUESTION_REQUEST_CODE, {}));
     Message response = await _socketService.receiveMessage();
     if (response.getCode() != ERROR_CODE) {
-      Question question = Question(
-          response.getData()["Question"],
-          { for (var item in response.getData()["Answers"]) item[0] : item[1] });
+      Question question = Question(response.getData()["Question"],
+          {for (var item in response.getData()["Answers"]) item[0]: item[1]});
 
       setState(() {
         _question = question;
@@ -154,8 +154,8 @@ class _QuestionPage extends State<QuestionPage> {
                   child: Column(children: [
                 Container(
                   margin: const EdgeInsets.all(100.0),
-                  decoration:
-                      const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(
+                      color: Colors.blue, shape: BoxShape.circle),
                 ),
                 Text(_question.getQuestion()),
                 Column(children: [
