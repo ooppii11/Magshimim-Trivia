@@ -197,7 +197,7 @@ class _ResultPageState extends State<ResultPage> {
                                     ),
                                   )),
                                   DataCell(Text(
-                                    0.toString(),
+                                    (index == 0) ? 200.toString() : (index == 1) ? 150.toString() : (index == 2) ? 100.toString() : 50.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.black,
