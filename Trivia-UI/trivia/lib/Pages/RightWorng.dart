@@ -4,6 +4,7 @@ import 'package:trivia/SocketService.dart';
 import 'package:trivia/Pages/QuestionPage.dart';
 import 'package:trivia/Pages/HomePage.dart';
 import 'package:trivia/message.dart';
+import 'dart:async';
 
 class RightWorngPage extends StatefulWidget {
   final SocketService socketService;
@@ -32,6 +33,7 @@ class _RightWorngPage extends State<RightWorngPage> {
   final int _numberOfQuestion;
   final int _currenQuestionNumber;
   final double _timeOut;
+  late Timer _timer;
 
   _RightWorngPage(this._socketService, this._isRight,
       this._currenQuestionNumber, this._numberOfQuestion, this._timeOut);
@@ -42,8 +44,14 @@ class _RightWorngPage extends State<RightWorngPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   Future delay() async {
-    await Future.delayed(const Duration(seconds: 3), () {
+    _timer = Timer(const Duration(seconds: 3), () {
       if (_currenQuestionNumber != _numberOfQuestion) {
         Navigator.pushReplacement(
           context,
@@ -119,7 +127,31 @@ class _RightWorngPage extends State<RightWorngPage> {
   }
 
   Widget worng() {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(
+                        12.5,
+                      ),
+                    ),
+                    child: TextButton(
+                      child: const Text(
+                        "Leave Game",
+                        style: TextStyle(fontSize: 25, color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        await leaveGame();
+                      },
+                    )))
+          ]),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(

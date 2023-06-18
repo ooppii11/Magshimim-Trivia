@@ -6,24 +6,23 @@ import 'package:trivia/message.dart';
 
 class ResultPage extends StatefulWidget {
   final SocketService socketService;
-  const ResultPage(
-      {super.key,
-      required this.socketService,
-      });
+  const ResultPage({
+    super.key,
+    required this.socketService,
+  });
   @override
-  _ResultPageState createState() => _ResultPageState(
-      socketService);
+  _ResultPageState createState() => _ResultPageState(socketService);
 }
 
 class _ResultPageState extends State<ResultPage> {
   final SocketService _socketService;
-   List<UserResult> _results = [];
+  List<UserResult> _results = [];
 
-  _ResultPageState(this._socketService)
-  {
+  _ResultPageState(this._socketService) {
     //get results from server
     _results.sort((a, b) {
-      int compareField1 = b.getCorrectAnswersCount().compareTo(a.getCorrectAnswersCount());
+      int compareField1 =
+          b.getCorrectAnswersCount().compareTo(a.getCorrectAnswersCount());
       if (compareField1 != 0) {
         return compareField1;
       }
@@ -70,145 +69,149 @@ class _ResultPageState extends State<ResultPage> {
                 color: Color.fromARGB(255, 29, 45, 68),
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  //constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7, maxHeight: MediaQuery.of(context).size.height * 0.7, minWidth: MediaQuery.of(context).size.width * 0.7, minHeight: MediaQuery.of(context).size.height * 0.7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 5,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    //constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7, maxHeight: MediaQuery.of(context).size.height * 0.7, minWidth: MediaQuery.of(context).size.width * 0.7, minHeight: MediaQuery.of(context).size.height * 0.7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 5,
+                      ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue.shade200,
+                          Colors.green.shade50,
+                          Colors.cyan.shade300
+                        ],
+                      ),
                     ),
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.shade200,
-                        Colors.green.shade50,
-                        Colors.cyan.shade300
-                      ],
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Center(
-                        child: DataTable(
-
-                          //horizontalMargin: MediaQuery.of(context).size.width * 0.175,
-                          dataTextStyle:
-                              const TextStyle(color: Colors.black),
-                          columns: const [
-                            DataColumn(
-                              label: Text('Place', 
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
+                          child: DataTable(
+                            //horizontalMargin: MediaQuery.of(context).size.width * 0.175,
+                            dataTextStyle: const TextStyle(color: Colors.black),
+                            columns: const [
+                              DataColumn(
+                                label: Text(
+                                  'Place',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                numeric: true,
                               ),
+                              DataColumn(
+                                label: Text(
+                                  'Player username',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
-                              numeric: true,
-                            ),
-                            DataColumn(
-                              label: Text('Player username',
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
+                              DataColumn(
+                                label: Text(
+                                  'Score',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                numeric: true,
                               ),
+                              DataColumn(
+                                label: Text(
+                                  'Correct answers',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                numeric: true,
                               ),
-                            ),
-                            DataColumn(
-                              label: Text('Score',
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
+                              DataColumn(
+                                label: Text(
+                                  'Worng answers',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                numeric: true,
                               ),
-                              ),
-                              numeric: true,
-                            ),
-                            DataColumn(
-                              label: Text('Correct answers',
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              ),
-                              ),
-                              numeric: true,
-                            ),
-                            DataColumn(
-                              label: Text('Worng answers',
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              ),
-                              ),
-                              numeric: true,
-                            ),
-                            DataColumn(
-                              label: Text('Average answer time', 
-                              style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              ),
-                              ),
-                              numeric: true,
-                            )
-                          ],
-                          rows: List.generate(_results.length,
-                              (index) {
-                            final results = _results[index];
-                            return DataRow(
-                              selected: true,
-                              cells: [
-                                DataCell(Text(
+                              DataColumn(
+                                label: Text(
+                                  'Average answer time',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                numeric: true,
+                              )
+                            ],
+                            rows: List.generate(_results.length, (index) {
+                              final results = _results[index];
+                              return DataRow(
+                                selected: true,
+                                cells: [
+                                  DataCell(Text(
                                     (index + 1).toString(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
-                                    )),
-                                DataCell(Text(
+                                  )),
+                                  DataCell(Text(
                                     results.getUsername(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
-                                    )),
-                                DataCell(Text(
+                                  )),
+                                  DataCell(Text(
                                     0.toString(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    ),)),
-                                DataCell(Text(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                                  DataCell(Text(
                                     results.getCorrectAnswersCount().toString(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
-                                    )),
-                                DataCell(Text(
+                                  )),
+                                  DataCell(Text(
                                     results.getWorngAnswersCount().toString(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
-                                    )),
-                                DataCell(Text(
+                                  )),
+                                  DataCell(Text(
                                     results.getAverageAnswerTime().toString(),
                                     style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
-                                    )),
-                              ],
-                            );
-                          }),
+                                  )),
+                                ],
+                              );
+                            }),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
@@ -223,22 +226,26 @@ class _ResultPageState extends State<ResultPage> {
                     color: Color.fromARGB(255, 50, 101, 172),
                     borderRadius: BorderRadius.circular(32.0),
                   ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(90, 64.0),
-                    backgroundColor: Color.fromARGB(255, 196, 255, 249),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(90, 64.0),
+                      backgroundColor: Color.fromARGB(255, 196, 255, 249),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
                     ),
+                    child: Text(
+                      "Return to main menu",
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  HomePage(socketService: _socketService)));
+                    },
                   ),
-                  child: Text(
-                    "Return to main menu",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                  onPressed: () async {
-                    //navigate to home page
-                  },  
-                ),
                 ),
               ),
             ),
