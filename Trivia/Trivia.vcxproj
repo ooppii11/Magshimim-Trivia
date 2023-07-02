@@ -52,12 +52,15 @@
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AESCryptoAlgorithm.h" />
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="HistoryManager.h" />
+    <ClInclude Include="ICryptoAlgorithm.h" />
+    <ClInclude Include="OTPCrypoAlgorithm.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="QuizManager.h" />
     <ClInclude Include="Communicator.h" />
@@ -78,6 +81,7 @@
     <ClInclude Include="RoomAdminRequestHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="RSACryptoAlgorithm.h" />
     <ClInclude Include="SqliteUtilities.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="Server.h" />
@@ -173,10 +177,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(CRYPTPP_PATH)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CRYPTPP_PATH)\x64\Output\Debug\cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

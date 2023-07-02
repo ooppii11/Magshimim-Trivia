@@ -64,6 +64,12 @@
     <Filter Include="Resource Files\Messages">
       <UniqueIdentifier>{f8b344ab-1743-4993-8d8b-e34969c2fdf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Crypto">
+      <UniqueIdentifier>{07ca24fa-223a-4e61-b47f-b84f97f100df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Crypto">
+      <UniqueIdentifier>{a9bfd053-a04c-4efc-9090-ce77d2f0c09c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -271,6 +277,18 @@
     </ClInclude>
     <ClInclude Include="Question.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ICryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="OTPCrypoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="RSACryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="AESCryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
