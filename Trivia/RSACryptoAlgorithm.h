@@ -17,7 +17,7 @@ class RSACryptoAlgorithm : public ICryptoAlgorithm
 public:
 	RSACryptoAlgorithm();
 	virtual std::string encrypt(std::string message) override; 
-	virtual std::string decrypt(std::string message) override;
+	virtual std::string decrypt(std::string cipher) override;
 
 private:
 	CryptoPP::AutoSeededRandomPool _rng;

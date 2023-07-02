@@ -14,10 +14,10 @@ class AESCryptoAlgorithm : public ICryptoAlgorithm
 public:
 	AESCryptoAlgorithm();
 	virtual std::string encrypt(std::string message) override;
-	virtual std::string decrypt(std::string message) override;
+	virtual std::string decrypt(std::string cipher) override;
 
 private:
-	CryptoPP::HexEncoder encoder;//new CryptoPP::FileSink(std::cout)
-	CryptoPP::SecByteBlock key; //CryptoPP::AES::DEFAULT_KEYLENGTH
-	CryptoPP::SecByteBlock iv; //CryptoPP::AES::BLOCKSIZE
+	CryptoPP::HexEncoder _encoder;
+	CryptoPP::SecByteBlock _key;
+	CryptoPP::SecByteBlock _iv;
 };

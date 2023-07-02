@@ -168,6 +168,9 @@
     <ClCompile Include="Question.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="AESCryptoAlgorithm.cpp">
+      <Filter>Resource Files\Crypto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDatabase.h">
