@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AESCryptoAlgorithm.cpp" />
+    <ClCompile Include="Base64.cpp" />
     <ClCompile Include="BufferDeserializer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="HistoryManager.cpp" />
+    <ClCompile Include="OTPCrypoAlgorithm.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="QuizManager.cpp" />
     <ClCompile Include="Communicator.cpp" />
@@ -43,6 +45,7 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RSACryptoAlgorithm.cpp" />
     <ClCompile Include="SqliteUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -54,6 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AESCryptoAlgorithm.h" />
+    <ClInclude Include="AsymmetriCrypto.h" />
+    <ClInclude Include="MyBase64.h" />
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
@@ -90,6 +95,7 @@
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="StringUtilities.h" />
+    <ClInclude Include="SymmetriCrypto.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

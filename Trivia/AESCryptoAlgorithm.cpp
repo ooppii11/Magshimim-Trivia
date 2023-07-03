@@ -1,14 +1,20 @@
 #include "AESCryptoAlgorithm.h"
 
-AESCryptoAlgorithm::AESCryptoAlgorithm() : _encoder(new CryptoPP::FileSink(std::cout)), _key(CryptoPP::AES::DEFAULT_KEYLENGTH), _iv(CryptoPP::AES::BLOCKSIZE)
+AESCryptoAlgorithm::AESCryptoAlgorithm() : _key(CryptoPP::AES::DEFAULT_KEYLENGTH), _iv(CryptoPP::AES::BLOCKSIZE)
 {
-	CryptoPP::AutoSeededRandomPool prng;
-	prng.GenerateBlock(this->_key, this->_key.size());
-	prng.GenerateBlock(this->_iv, this->_iv.size());
+    CryptoPP::AutoSeededRandomPool prng;
+    prng.GenerateBlock(this->_key, this->_key.size());
+    prng.GenerateBlock(this->_iv, this->_iv.size());
 
 }
+AESCryptoAlgorithm::AESCryptoAlgorithm(std::string keyString, std::string ivString)
+{
+    CryptoPP::AutoSeededRandomPool prng;
+    this->_key.Assign((const CryptoPP::byte*)keyString.data(), keyString.size());
+    this->_iv.Assign((const CryptoPP::byte*)ivString.data(), ivString.size());
+}
 
-std::string AESCryptoAlgorithm::encrypt(std::string message)
+std::string AESCryptoAlgorithm::encrypt(const std::string& message) const
 {
     try
     {
@@ -19,18 +25,18 @@ std::string AESCryptoAlgorithm::encrypt(std::string message)
         CryptoPP::StringSource s(message, true,
             new CryptoPP::StreamTransformationFilter(e,
                 new CryptoPP::StringSink(cipher)
-            ) // StreamTransformationFilter
-        ); // StringSource
+            )
+        );
         return cipher;
     }
     catch (const CryptoPP::Exception& e)
     {
         std::cerr << e.what() << std::endl;
-        exit(1);
+        //throw std::exception
     }
 }
 
-std::string AESCryptoAlgorithm::decrypt(std::string cipher)
+std::string AESCryptoAlgorithm::decrypt(const std::string& cipher) const
 {
     try
     {
@@ -41,14 +47,33 @@ std::string AESCryptoAlgorithm::decrypt(std::string cipher)
         CryptoPP::StringSource s(cipher, true,
             new CryptoPP::StreamTransformationFilter(d,
                 new CryptoPP::StringSink(recovered)
-            ) // StreamTransformationFilter
-        ); // StringSource
-
+            )
+        );
         return recovered;
     }
     catch (const CryptoPP::Exception& e)
     {
         std::cerr << e.what() << std::endl;
-        exit(1);
+        //throw std::exception
     }
+}
+
+std::string AESCryptoAlgorithm::base64Encode(const std::string& cipher) const
+{
+    return Base64::base64Encode(cipher);
+}
+
+std::string AESCryptoAlgorithm::base64Decode(const std::string& cipher) const
+{
+    return Base64::base64Decode(cipher);
+}
+
+std::string AESCryptoAlgorithm::getKey() const
+{
+    return std::string(reinterpret_cast<const char*>(this->_key.data()), this->_key.size());
+}
+
+std::string AESCryptoAlgorithm::getIv() const
+{
+    return std::string(reinterpret_cast<const char*>(this->_iv.data()), this->_iv.size());
 }

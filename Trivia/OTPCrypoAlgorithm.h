@@ -1,17 +1,25 @@
 #pragma once
-#include "ICryptoAlgorithm.h"
+#include "SymmetriCrypto.h"
 
 
-class OTPCrypoAlgorithm : public ICryptoAlgorithm
+class OTPCrypoAlgorithm : public SymmetriCrypto
 {
 public:
-	virtual std::string encrypt(std::string message) override;
-	virtual std::string decrypt(std::string cipher) override;
+	OTPCrypoAlgorithm();
+	OTPCrypoAlgorithm(std::string key);
+	virtual std::string encrypt(const std::string& message) const override;
+	virtual std::string decrypt(const std::string& cipher) const override;
+
+	virtual std::string base64Encode(const std::string& cipher) const override;
+	virtual std::string base64Decode(const std::string& cipher) const override;
+
+	//virtual void setKey(std::string& key) override;
+	virtual std::string getKey() const override;
 	
 private:
 	unsigned char _key;
 
-	unsigned char generateKey();
+	void generateKey();
 
 
 

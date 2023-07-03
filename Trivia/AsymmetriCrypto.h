@@ -1,10 +1,8 @@
 #pragma once
-#include <string>
-#include "MyBase64.h"
+#include "ICryptoAlgorithm.h"
 
-class ICryptoAlgorithm 
+class AsymmetriCrypto : public ICryptoAlgorithm
 {
-public:
 	virtual std::string encrypt(const std::string& message) const = 0;
 	virtual std::string decrypt(const std::string& cipher) const = 0;
 	//virtual void setKey(std::string key) = 0;

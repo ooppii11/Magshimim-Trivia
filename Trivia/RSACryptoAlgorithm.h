@@ -1,23 +1,29 @@
 #pragma once
 #include "cryptlib.h"
-//#include "rijndael.h"
 #include "modes.h"
 #include "rsa.h"
 #include "sha.h"
-//#include "files.h"
 #include "osrng.h"
 #include "hex.h"
+#include "base64.h"
 
-#include "ICryptoAlgorithm.h"
+#include "AsymmetriCrypto.h"
+#include "MyBase64.h"
 
-#define KEYS_SIZE CryptoPP::RSA::DEFAULT_KEYLENGTH
+#define KEYS_SIZE 2048
+//3072
 
-class RSACryptoAlgorithm : public ICryptoAlgorithm
+class RSACryptoAlgorithm : public AsymmetriCrypto
 {
 public:
 	RSACryptoAlgorithm();
-	virtual std::string encrypt(std::string message) override; 
-	virtual std::string decrypt(std::string cipher) override;
+	virtual std::string encrypt(const std::string& message) const override;
+	virtual std::string decrypt(const std::string& cipher) const override;
+
+	virtual std::string base64Encode(const std::string& cipher) const override;
+	virtual std::string base64Decode(const std::string& cipher) const override;
+
+	virtual std::string getKey() const override;
 
 private:
 	CryptoPP::AutoSeededRandomPool _rng;
