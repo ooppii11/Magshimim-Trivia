@@ -9,12 +9,17 @@ AESCryptoAlgorithm::AESCryptoAlgorithm() : _key(CryptoPP::AES::DEFAULT_KEYLENGTH
 }
 AESCryptoAlgorithm::AESCryptoAlgorithm(std::string keyString, std::string ivString)
 {
-    CryptoPP::AutoSeededRandomPool prng;
-    this->_key.Assign((const CryptoPP::byte*)keyString.data(), keyString.size());
-    this->_iv.Assign((const CryptoPP::byte*)ivString.data(), ivString.size());
+    this->_key.Assign(reinterpret_cast<const CryptoPP::byte*>(keyString.data()), keyString.size());
+    this->_iv.Assign(reinterpret_cast<const CryptoPP::byte*>(ivString.data()), ivString.size());
 }
 
-std::string AESCryptoAlgorithm::encrypt(const std::string& message) const
+AESCryptoAlgorithm::AESCryptoAlgorithm(std::map<std::string, std::string>& keyAndIv)
+{
+    this->_key.Assign(reinterpret_cast<const CryptoPP::byte*>(keyAndIv["Key"].data()), keyAndIv["Key"].size());
+    this->_iv.Assign(reinterpret_cast<const CryptoPP::byte*>(keyAndIv["Iv"].data()), keyAndIv["Iv"].size());
+}
+
+std::string AESCryptoAlgorithm::encrypt(const std::string& message)
 {
     try
     {
@@ -36,7 +41,7 @@ std::string AESCryptoAlgorithm::encrypt(const std::string& message) const
     }
 }
 
-std::string AESCryptoAlgorithm::decrypt(const std::string& cipher) const
+std::string AESCryptoAlgorithm::decrypt(const std::string& cipher)
 {
     try
     {
@@ -68,12 +73,16 @@ std::string AESCryptoAlgorithm::base64Decode(const std::string& cipher) const
     return Base64::base64Decode(cipher);
 }
 
-std::string AESCryptoAlgorithm::getKey() const
+void AESCryptoAlgorithm::setKey(std::map<std::string, std::string>& keyAndIv)
 {
-    return std::string(reinterpret_cast<const char*>(this->_key.data()), this->_key.size());
+    this->_key.Assign(reinterpret_cast<const CryptoPP::byte*>(keyAndIv["Key"].data()), keyAndIv["Key"].size());
+    this->_iv.Assign(reinterpret_cast<const CryptoPP::byte*>(keyAndIv["Iv"].data()), keyAndIv["Iv"].size());
 }
 
-std::string AESCryptoAlgorithm::getIv() const
+std::map<std::string, std::string> AESCryptoAlgorithm::getKey() const
 {
-    return std::string(reinterpret_cast<const char*>(this->_iv.data()), this->_iv.size());
+    std::map<std::string, std::string> keyAndIv;
+    keyAndIv["Key"] = std::string(reinterpret_cast<const char*>(this->_key.data()), this->_key.size());
+    keyAndIv["Iv"] = std::string(reinterpret_cast<const char*>(this->_iv.data()), this->_iv.size());
+    return keyAndIv;
 }

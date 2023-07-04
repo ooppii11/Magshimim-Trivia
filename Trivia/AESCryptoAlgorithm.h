@@ -15,15 +15,15 @@ class AESCryptoAlgorithm : public SymmetriCrypto
 public:
 	AESCryptoAlgorithm();
 	AESCryptoAlgorithm(std::string keyString, std::string ivString);
-	virtual std::string encrypt(const std::string& message) const override;
-	virtual std::string decrypt(const std::string& cipher) const override;
+	AESCryptoAlgorithm(std::map<std::string, std::string>& keyAndIv);
+	virtual std::string encrypt(const std::string& message) override;
+	virtual std::string decrypt(const std::string& cipher) override;
 
 	virtual std::string base64Encode(const std::string& cipher) const override;
 	virtual std::string base64Decode(const std::string& cipher) const override;
 
-	//virtual void setKey(std::string& key) override;
-	virtual std::string getKey() const;
-	std::string getIv() const;
+	virtual void setKey(std::map<std::string, std::string>& keyAndIv) override;
+	virtual std::map<std::string, std::string> getKey() const;
 
 private:
 	CryptoPP::SecByteBlock _key;

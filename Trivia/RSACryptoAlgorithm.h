@@ -17,13 +17,13 @@ class RSACryptoAlgorithm : public AsymmetriCrypto
 {
 public:
 	RSACryptoAlgorithm();
-	virtual std::string encrypt(const std::string& message) const override;
-	virtual std::string decrypt(const std::string& cipher) const override;
+	virtual std::string encrypt(const std::string& message) override;
+	virtual std::string decrypt(const std::string& cipher) override;
 
 	virtual std::string base64Encode(const std::string& cipher) const override;
 	virtual std::string base64Decode(const std::string& cipher) const override;
 
-	virtual std::string getKey() const override;
+	virtual std::map<std::string, std::string> getKey() const override;
 
 private:
 	CryptoPP::AutoSeededRandomPool _rng;

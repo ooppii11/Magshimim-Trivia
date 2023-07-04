@@ -5,7 +5,7 @@ RSACryptoAlgorithm::RSACryptoAlgorithm()
 	this->_params.GenerateRandomWithKeySize(this->_rng, KEYS_SIZE);
 }
 
-std::string RSACryptoAlgorithm::encrypt(const std::string& message) const
+std::string RSACryptoAlgorithm::encrypt(const std::string& message)
 {
 	std::string cipher;
 	CryptoPP::RSA::PublicKey publicKey(this->_params);
@@ -14,7 +14,7 @@ std::string RSACryptoAlgorithm::encrypt(const std::string& message) const
 	return cipher;
 }
 
-std::string RSACryptoAlgorithm::decrypt(const std::string& cipher) const
+std::string RSACryptoAlgorithm::decrypt(const std::string& cipher)
 {
 	std::string recovered;
 	CryptoPP::RSA::PrivateKey privateKey(this->_params);
@@ -35,12 +35,13 @@ std::string RSACryptoAlgorithm::base64Decode(const std::string& cipher) const
 }
 
 
-std::string RSACryptoAlgorithm::getKey() const
+std::map<std::string, std::string> RSACryptoAlgorithm::getKey() const
 {
 	CryptoPP::RSA::PublicKey publicKey(this->_params);
 	std::string encodedPublicKey;
 	CryptoPP::StringSink stringSink(encodedPublicKey);
 	publicKey.Save(stringSink);
-
-	return encodedPublicKey;
+	std::map<std::string, std::string> key;
+	key["PublicKey"] = encodedPublicKey;
+	return key;
 }

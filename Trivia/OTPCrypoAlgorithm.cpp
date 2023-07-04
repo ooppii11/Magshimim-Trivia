@@ -2,34 +2,28 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-OTPCrypoAlgorithm::OTPCrypoAlgorithm()
-{
-    this->generateKey();
-}
 
-OTPCrypoAlgorithm::OTPCrypoAlgorithm(std::string key)
-{
-    this->_key = key[0];
-}
-
-std::string OTPCrypoAlgorithm::encrypt(const std::string& message) const
+std::string OTPCrypoAlgorithm::encrypt(const std::string& message)
 {
     std::string cipher;
-    for (auto& ch : message) 
+    this->generateKey(message.size());
+    int i = 0;
+    for (i = 0; i < message.size(); i++) 
     {
-        cipher = ch xor this->_key;
+        cipher += message[i] xor this->_key[i];
     }
     return cipher;
 }
 
-std::string OTPCrypoAlgorithm::decrypt(const std::string& cipher) const
+std::string OTPCrypoAlgorithm::decrypt(const std::string& cipher)
 {
-    std::string massage;
-    for (auto& ch : cipher)
+    std::string message;
+    int i = 0;
+    for (i = 0; i < cipher.size(); i++)
     {
-        massage = ch xor this->_key;
+        message += cipher[i] xor this->_key[i];
     }
-    return massage;
+    return message;
 }
 
 std::string OTPCrypoAlgorithm::base64Encode(const std::string& cipher) const
@@ -42,17 +36,28 @@ std::string OTPCrypoAlgorithm::base64Decode(const std::string& cipher) const
     return Base64::base64Decode(cipher);
 }
 
-std::string OTPCrypoAlgorithm::getKey() const
+void OTPCrypoAlgorithm::setKey(std::map<std::string, std::string>& key)
 {
-    std::string key = "";
-    key += this->_key;
+    this->_key = key["Key"];
+}
+
+std::map<std::string, std::string> OTPCrypoAlgorithm::getKey() const
+{
+    std::map<std::string, std::string> key;
+    key["Key"] = this->_key;
     return key;
 }
 
-void OTPCrypoAlgorithm::generateKey()
+void OTPCrypoAlgorithm::generateKey(int size)
 {
-    std::srand(std::time(nullptr));
-    unsigned int first = std::rand();
-    unsigned int secend = std::rand();
-    this->_key = ((char)std::pow(first, secend) xor std::rand());
+    int i = 0;
+    this->_key = "";
+    for (i = 0; i < size; size++)
+    {
+        std::srand(std::time(nullptr));
+        unsigned int first = std::rand();
+        unsigned int secend = std::rand();
+        this->_key += ((unsigned char)std::pow(first, secend) xor std::rand());
+    }
 }
+    
