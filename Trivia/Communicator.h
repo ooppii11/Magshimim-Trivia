@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include "BufferDeserializer.hpp"
 #include "IRequestHandler.h"
+#include "CryptoManager.h"
 
 
 #define MIN_PORT 1024

@@ -86,6 +86,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 	try
 	{
+		CryptoManager cryptoManager;
+		cryptoManager.exchangeKeys(clientSocket);
 		while (this->_clients[clientSocket].get() != nullptr)
 		{
 			//std::lock_guard<std::mutex> mutex(this->_handlerFactoryMutex);
@@ -93,7 +95,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			if (this->_clients[clientSocket].get()->isRequestRelevant(clientRequest))
 			{
 				std::unique_lock<std::mutex> messagesLock(this->_handlerFactoryMutex);
-
+				clientRequest.buffer.message = cryptoManager.decrypt(clientRequest.buffer.message);
 				response = this->_clients[clientSocket].get()->handleRequest(clientRequest);
 				this->_clients[clientSocket] = response.newHandler;
 				messagesLock.unlock();
@@ -110,6 +112,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			{ 
 				response.response = Serializer::serializeResponse(ErrorResponse("Invalid message code"));;
 			}
+			response.response.message = cryptoManager.encrypt(response.response.message);
 			this->sendMessage(clientSocket, response.response);
 		}
 		this->_clients.erase(clientSocket);
