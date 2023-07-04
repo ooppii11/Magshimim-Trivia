@@ -22,6 +22,7 @@
     <ClCompile Include="AESCryptoAlgorithm.cpp" />
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="BufferDeserializer.cpp" />
+    <ClCompile Include="CryptoManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRequestHandler.cpp" />
@@ -58,6 +59,7 @@
   <ItemGroup>
     <ClInclude Include="AESCryptoAlgorithm.h" />
     <ClInclude Include="AsymmetriCrypto.h" />
+    <ClInclude Include="CryptoManager.h" />
     <ClInclude Include="MyBase64.h" />
     <ClInclude Include="BufferDeserializer.hpp" />
     <ClInclude Include="Game.h" />

@@ -34,6 +34,7 @@ public:
 	static Buffer serializeResponse(const SubmitAnswerResponse& response);
 	static Buffer serializeResponse(const GetQuestionResponse& response);
 	static Buffer serializeResponse(const LeaveGameResponse& response);
+	static Buffer serializeResponse(const PublicKey& response);
 
 private:
 	template <typename T>

@@ -3,6 +3,7 @@
 
 class AsymmetriCrypto : public ICryptoAlgorithm
 {
+public:
 	virtual std::string encrypt(const std::string& message) = 0;
 	virtual std::string decrypt(const std::string& cipher) = 0;
 	//virtual void setKey(std::string key) = 0;

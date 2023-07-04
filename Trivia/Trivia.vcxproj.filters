@@ -171,14 +171,17 @@
     <ClCompile Include="AESCryptoAlgorithm.cpp">
       <Filter>Resource Files\Crypto</Filter>
     </ClCompile>
-    <ClCompile Include="RSACryptoAlgorithm.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Base64.cpp">
+      <Filter>Resource Files\Crypto</Filter>
     </ClCompile>
     <ClCompile Include="OTPCrypoAlgorithm.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files\Crypto</Filter>
     </ClCompile>
-    <ClCompile Include="Base64.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RSACryptoAlgorithm.cpp">
+      <Filter>Resource Files\Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptoManager.cpp">
+      <Filter>Resource Files\Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +312,9 @@
       <Filter>Header Files\Crypto</Filter>
     </ClInclude>
     <ClInclude Include="SymmetriCrypto.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="CryptoManager.h">
       <Filter>Header Files\Crypto</Filter>
     </ClInclude>
   </ItemGroup>

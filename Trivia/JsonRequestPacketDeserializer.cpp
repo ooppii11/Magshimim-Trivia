@@ -178,3 +178,18 @@ SubmitAnswerRequest Deserializer::deserializeSubminAnswerRequest(const Buffer& b
 		throw messageException("Error: Invalid massege");
 	}
 }
+
+UserKey Deserializer::deserializeSubminUserKey(const Buffer& buffer)
+{
+	try
+	{
+		json data = json::parse(buffer.message);
+		UserKey temp;
+		temp.key = data["Key"];
+		return temp;
+	}
+	catch (json::exception& e)
+	{
+		throw messageException("Error: Invalid massege");
+	}
+}

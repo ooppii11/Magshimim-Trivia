@@ -209,6 +209,14 @@ Buffer Serializer::serializeResponse(const LeaveGameResponse& response)
 	return Serializer::setStatus(response);
 }
 
+Buffer Serializer::serializeResponse(const PublicKey& response)
+{
+	Buffer temp;
+	json data(response.key);
+	temp.message = data.dump();
+	return temp;
+}
+
 Buffer Serializer::setStatus(const OnlyStatus& response)
 {
 	Buffer temp;

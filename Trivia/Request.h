@@ -97,3 +97,8 @@ typedef struct SubmitAnswerRequest
 {
 	unsigned int answerIndex;
 }SubmitAnswerRequest;
+
+typedef struct UserKey
+{
+	std::map<std::string, std::string> key;
+}UserKey;

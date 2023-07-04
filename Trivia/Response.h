@@ -207,3 +207,8 @@ typedef struct GetGameResultsResponse
 	GetGameResultsResponse() : status(GET_GAME_RESULTS_RESPONSE_CODE) {}
 }GetGameResultsResponse;
 
+typedef struct PublicKey
+{
+	std::map<std::string, std::string> key;
+}PublicKey;
+

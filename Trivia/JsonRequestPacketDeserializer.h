@@ -18,4 +18,6 @@ public:
 
 	static SubmitAnswerRequest deserializeSubminAnswerRequest(const Buffer& buffer);
 
+	static UserKey deserializeSubminUserKey(const Buffer& buffer);
+
 };

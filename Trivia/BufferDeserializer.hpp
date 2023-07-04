@@ -26,4 +26,13 @@ namespace BufferDeserializer
 		temp.message = getMessageFromRequest(data);
 		return temp;
 	}
+
+	template <class T>
+	static Buffer buildBuffer(int header, T data)
+	{
+		Buffer temp;
+		temp.header = header;
+		temp.message = getMessageFromRequest(data);
+		return temp;
+	}
 }
