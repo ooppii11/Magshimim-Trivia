@@ -82,7 +82,7 @@ void AESCryptoAlgorithm::setKey(std::map<std::string, std::string>& keyAndIv)
 std::map<std::string, std::string> AESCryptoAlgorithm::getKey() const
 {
     std::map<std::string, std::string> keyAndIv;
-    keyAndIv["Key"] = std::string(reinterpret_cast<const char*>(this->_key.data()), this->_key.size());
-    keyAndIv["Iv"] = std::string(reinterpret_cast<const char*>(this->_iv.data()), this->_iv.size());
+    keyAndIv["Key"] = this->base64Encode(std::string(reinterpret_cast<const char*>(this->_key.data()), this->_key.size()));
+    keyAndIv["Iv"] = this->base64Encode(std::string(reinterpret_cast<const char*>(this->_iv.data()), this->_iv.size()));
     return keyAndIv;
 }

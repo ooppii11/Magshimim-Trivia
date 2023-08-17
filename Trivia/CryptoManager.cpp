@@ -17,8 +17,8 @@ void CryptoManager::exchangeKeys(SOCKET clientSocket)
 	data.message = this->recvKey(clientSocket);
 	data.message = this->_transferKeys->base64Decode(data.message);
 	std::map<std::string, std::string> userKey = Deserializer::deserializeSubminUserKey(data).key;
-	userKey["Key"] = this->_transferKeys->decrypt(userKey["Key"]);
-	userKey["Iv"] = this->_transferKeys->decrypt(userKey["Iv"]);
+	userKey["Key"] = this->_transferKeys->decrypt(this->_transferKeys->base64Decode(userKey["Key"]));
+	userKey["Iv"] = this->_transferKeys->decrypt(this->_transferKeys->base64Decode(userKey["Iv"]));
 	this->_encryption_decryptionkey->setKey(userKey);
 }
 
@@ -32,7 +32,7 @@ std::string CryptoManager::decrypt(const std::string& cipher)
     return this->_encryption_decryptionkey->decrypt(this->_encryption_decryptionkey->base64Decode(cipher));
 }
 
-std::string CryptoManager::recvKey(SOCKET clientSocket, const unsigned int bytesNum=16)
+std::string CryptoManager::recvKey(SOCKET clientSocket, const unsigned int bytesNum)
 {
 	std::string buff = "";
 	std::string meg = "";

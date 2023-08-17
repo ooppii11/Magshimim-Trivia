@@ -42,6 +42,6 @@ std::map<std::string, std::string> RSACryptoAlgorithm::getKey() const
 	CryptoPP::StringSink stringSink(encodedPublicKey);
 	publicKey.Save(stringSink);
 	std::map<std::string, std::string> key;
-	key["PublicKey"] = encodedPublicKey;
+	key["PublicKey"] = this->base64Encode(encodedPublicKey);
 	return key;
 }

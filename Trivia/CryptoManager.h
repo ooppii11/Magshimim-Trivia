@@ -18,7 +18,7 @@ private:
 	std::shared_ptr<AsymmetriCrypto> _transferKeys;
 	std::shared_ptr<SymmetriCrypto> _encryption_decryptionkey;
 
-	std::string recvKey(SOCKET clientSocket, const unsigned int bytesNum = 16);
+	std::string recvKey(SOCKET clientSocket, const unsigned int bytesNum=16);
 	std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags);
 	void sendKey(SOCKET clientSocket, std::string key);
 
