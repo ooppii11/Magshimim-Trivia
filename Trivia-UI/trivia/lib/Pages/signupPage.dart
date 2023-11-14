@@ -116,7 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       );
                     } else {
-                      errorToast(context, "Signup error", 2);
+                      errorToast(context, receivedMessage.getData()["Error"], 2);
                     }
                   },
                   child: const Text(

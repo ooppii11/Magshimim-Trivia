@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:trivia/message.dart';
 import 'dart:async';
 
-const String SERVER_ADDRESS = '127.0.0.1';
+//const String SERVER_ADDRESS = 'trivia-example.com';
+//const String SERVER_ADDRESS = '127.0.0.1';
 //const String SERVER_ADDRESS = '10.10.0.13';
-//const String SERVER_ADDRESS = 'localhost';
+const String SERVER_ADDRESS = 'localhost';
 const int SERVER_PORT = 6666;
 
 class SocketService {

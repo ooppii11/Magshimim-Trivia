@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "LoggedUser.h"
+#include "messageException.h"
 
 Game::Game(unsigned int gameId, std::vector<std::string> players, std::vector<Question> questions, float maxTimePerQuestion) :
 	_gameId(gameId), _questions(questions), _numOfPlayers(players.size()), _maxTimePerQuestion(maxTimePerQuestion)
@@ -28,13 +29,13 @@ Question Game::getQuestionForUser(LoggedUser user)
 		}
 		else
 		{
-			throw (std::exception("Game end"));
+			throw (messageException("Game end"));
 		}
 		return it->second.currentQuestion;
 	}
 	else
 	{
-		throw std::exception("User not found.");
+		throw messageException("User not found.");
 	}
 }
 

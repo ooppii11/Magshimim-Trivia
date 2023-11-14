@@ -1,5 +1,6 @@
 #include "SqliteDatabase.h"
 #include "SqliteUtilities.h"
+#include "messageException.h"
 #include <map>
 #include "FileUtilities.h"
 
@@ -11,6 +12,7 @@ SqliteDatabase::SqliteDatabase()
 	if (response != SQLITE_OK)
 	{
 		this->_db = nullptr;
+		std::cerr << "Error while oprn 'Trivia.sqlite' db" << std::endl;
 		throw std::exception("Error while oprn 'Trivia.sqlite' db");
 	}
 	SqliteUtilities::executeFile(SqliteFileCommands{ TABLES_PATH, {this->_db, nullptr, nullptr} });
@@ -49,7 +51,7 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 	if (!this->doesUserExist(username))
 	{
-		throw std::exception("User doesn't exist!");
+		throw messageException("User doesn't exist!");
 	}
 
 	query = "SELECT PASSWORD "
@@ -68,7 +70,8 @@ void SqliteDatabase::addNewUser(std::string username, std::string password, std:
 	
 	if (this->doesUserExist(username))
 	{
-		throw std::exception("User already exist!");
+		std::cout << "User already exist!" << std::endl;
+		throw messageException("User already exist!");
 	}
 
 	query = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL) VALUES(\"" + username + "\", \"" + \
@@ -86,7 +89,7 @@ void SqliteDatabase::addNewCategory(Category category, const std::string& userna
 
 	if (this->doesPublicCategoryExist(category.categoryName) || this->doesPrivateCategoryExist(category.categoryName, username))
 	{
-		throw std::exception("Category already exist!");
+		throw messageException("Category already exist!");
 	}
 
 	query = "INSERT INTO CATEGORIES(NAME, PERMISSION, CREATOR_ID) VALUES(\"" + category.categoryName + "\", " + \
@@ -166,7 +169,7 @@ void SqliteDatabase::deleteCategory(int categoryId, const std::string& username)
 	creatorId = this->getCategoryCreatorId(categoryId);
 	userId = this->getUserId(username);
 
-	if (creatorId != userId) { throw std::exception("Not your category"); }
+	if (creatorId != userId) { throw messageException("Not your category"); }
 
 	query = "DELETE FROM CATEGORIES  WHERE = ID = " + std::to_string(categoryId) + "; ";
 
@@ -186,7 +189,7 @@ void SqliteDatabase::addNewQuestion(int categoryId, std::string username, Questi
 
 	if (uesrId != creatorId)
 	{
-		throw std::exception("Not your category");
+		throw messageException("Not your category");
 	}
 
 	query = "INSERT INTO QUESTIONS("
@@ -223,7 +226,7 @@ std::vector<Question> SqliteDatabase::getCategoryQuestions(int categoryId, const
 
 	if (uesrId != creatorId && this->getCategoryPermssion(categoryId) != PUBLIC)
 	{
-		throw std::exception("Not your category");
+		throw messageException("Not your category");
 	}
 
 	query = "SELECT * "
@@ -245,7 +248,7 @@ void SqliteDatabase::deleteQuestion(int categoryId, const std::string& username,
 	creatorId = this->getCategoryCreatorId(categoryId);
 	userId = this->getUserId(username);
 
-	if (creatorId != userId) { throw std::exception("Not your category"); }
+	if (creatorId != userId) { throw messageException("Not your category"); }
 
 	query = "DELETE FROM QUESTIONS WHERE CATEGORY_ID = " + std::to_string(categoryId) + " AND QUESTION = \"" + question + "\";";
 	command = createDbCommand(query);

@@ -226,8 +226,8 @@ RequestResult MenuRequestHandler::addQuestion(RequestInfo requestInfo)
 	QuestionStruct question;
 
 	request = Deserializer::addQuestionToUserCategorie(requestInfo.buffer);
-	if (request.answers.size() != FOUR) { throw std::exception("Answers are missing"); }
-	if (request.correctAnswerIndex < 0 || request.correctAnswerIndex >= FOUR) { std::exception("Unvalid Index"); }
+	if (request.answers.size() != FOUR) { throw messageException("Answers are missing"); }
+	if (request.correctAnswerIndex < 0 || request.correctAnswerIndex >= FOUR) { messageException("Unvalid Index"); }
 
 	question.question = request.questionName;
 	question.correctAnswerIndex = request.correctAnswerIndex;

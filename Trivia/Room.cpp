@@ -1,6 +1,7 @@
 #include "Room.h"
 #include <algorithm>
 #include <iostream>
+#include "messageException.h"
 
 void Room::addUser(const LoggedUser user)
 {
@@ -12,7 +13,7 @@ void Room::removeUser(const LoggedUser user)
 	auto userIt = std::find(this->_users.begin(), this->_users.end(), user);
 	if (userIt == this->_users.end())
 	{
-		throw std::exception("User isn't in the room");
+		throw messageException("User isn't in the room");
 	}
 	this->_users.erase(userIt);
 }
