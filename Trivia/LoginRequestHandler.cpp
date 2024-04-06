@@ -1,6 +1,6 @@
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonRequestPacketSerializer.hpp"
 #include "messageException.h"
 #include "Request.h"
 #include "Response.h"
@@ -37,12 +37,12 @@ RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
     catch (messageException& e)
     {
         result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-        result.newHandler = std::shared_ptr<LoginRequestHandler>(nullptr);
+        result.newHandler = std::shared_ptr<LoginRequestHandler>(this->_handlerFactory.createLoginRequestHandler());
     }
     catch (...)
     {
         result.response = Serializer::serializeResponse(ErrorResponse());
-        result.newHandler = std::shared_ptr<LoginRequestHandler> (nullptr);
+        result.newHandler = std::shared_ptr<LoginRequestHandler> (this->_handlerFactory.createLoginRequestHandler());
     }
     return result;
 }
@@ -61,12 +61,12 @@ RequestResult LoginRequestHandler::signup(RequestInfo requestInfo)
     catch (messageException& e)
     {
         result.response = Serializer::serializeResponse(ErrorResponse(e.what()));
-        result.newHandler = std::shared_ptr<LoginRequestHandler>(nullptr);
+        result.newHandler = std::shared_ptr<LoginRequestHandler>(this->_handlerFactory.createLoginRequestHandler());
     }
     catch (...)
     {
         result.response = Serializer::serializeResponse(ErrorResponse());
-        result.newHandler = std::shared_ptr<LoginRequestHandler>(nullptr);
+        result.newHandler = std::shared_ptr<LoginRequestHandler>(this->_handlerFactory.createLoginRequestHandler());
     }
     return result;
 }

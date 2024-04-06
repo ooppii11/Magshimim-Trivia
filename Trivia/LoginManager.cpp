@@ -1,4 +1,5 @@
 #include "LoginManager.h"
+#include "messageException.h"
 
 LoginManager::LoginManager(std::shared_ptr<IDatabase> db) : _database(db)
 {
@@ -12,11 +13,26 @@ void LoginManager::signup(std::string username, std::string password, std::strin
 
 void LoginManager::login(std::string username, std::string password)
 {
+
+	for (auto users: this->_loggedUsers)
+	{
+		if (users.getUsername() == username)
+		{
+			throw messageException("The user is already logged in");
+		}
+	}
 	if (this->_database->doesUserExist(username) && this->_database->doesPasswordMatch(username, password))
 	{
 		this->_loggedUsers.push_back(LoggedUser(username));
 	}
-	else { throw std::exception("Passwrord not match"); }
+	else if(!this->_database->doesUserExist(username))
+	{
+		throw messageException("User doesn't exist");
+	}
+	else
+	{
+		throw messageException("Password doesn't match");
+	}
 }
 
 void LoginManager::logout(std::string username)

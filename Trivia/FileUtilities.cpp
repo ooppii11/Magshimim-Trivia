@@ -13,7 +13,19 @@ std::string FileUtilities::readFile(std::string filePath)
         {
             std::getline(file, line);
             fileContent +=  line + '\n';
+            line = "";
         }
     }
     return fileContent;
+}
+
+bool FileUtilities::fileExsists(const std::string& filePath)
+{
+    if (FILE* file = fopen(filePath.c_str(), "r")) {
+        fclose(file);
+        return true;
+    }
+    else {
+        return false;
+    }
 }

@@ -49,11 +49,20 @@
     <Filter Include="Resource Files\Deserialize and serialize">
       <UniqueIdentifier>{2667b389-46b4-4f39-90f0-ec2675c02719}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\messages">
+    <Filter Include="Header Files\Exceptions">
+      <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Messages">
       <UniqueIdentifier>{1e16ace1-4d44-45fc-b389-2ecdfdce43e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\exceptions">
-      <UniqueIdentifier>{5364538d-b801-4e7e-95e8-73d5574fc445}</UniqueIdentifier>
+    <Filter Include="Resource Files\Exceptions">
+      <UniqueIdentifier>{36b36fe3-5a29-4d37-86e2-1fb0cc12fa7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\exceptions">
+      <UniqueIdentifier>{344e9ac0-e191-48b9-9a40-73a5f8915e90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Messages">
+      <UniqueIdentifier>{f8b344ab-1743-4993-8d8b-e34969c2fdf1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,9 +96,6 @@
     <ClCompile Include="LoginRequestHandler.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="MenuRequestHandler.cpp">
-      <Filter>Resource Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Resource Files\Handlers</Filter>
     </ClCompile>
@@ -108,8 +114,53 @@
     <ClCompile Include="JsonRequestPacketSerializer.cpp">
       <Filter>Resource Files\Deserialize and serialize</Filter>
     </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
     <ClCompile Include="messageException.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="QuizManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="History.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomMemberRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAdminRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Response.cpp">
+      <Filter>Resource Files\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRequestHandler.cpp">
+      <Filter>Resource Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Resource Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +194,7 @@
     <ClInclude Include="JsonRequestPacketDeserializer.h">
       <Filter>Header Files\Deserialize and serialize</Filter>
     </ClInclude>
-    <ClInclude Include="JsonRequestPacketSerializer.h">
+    <ClInclude Include="JsonRequestPacketSerializer.hpp">
       <Filter>Header Files\Deserialize and serialize</Filter>
     </ClInclude>
     <ClInclude Include="LoginManager.h">
@@ -171,13 +222,55 @@
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Request.h">
-      <Filter>Header Files\messages</Filter>
-    </ClInclude>
-    <ClInclude Include="Response.h">
-      <Filter>Header Files\messages</Filter>
+      <Filter>Header Files\Messages</Filter>
     </ClInclude>
     <ClInclude Include="messageException.h">
-      <Filter>Header Files\exceptions</Filter>
+      <Filter>Header Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuizManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomMemberRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRequestHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

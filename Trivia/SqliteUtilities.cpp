@@ -1,6 +1,7 @@
 #include "SqliteUtilities.h"
 #include "FileUtilities.h"
 #include "StringUtilities.h"
+#include <iostream>
 
 
 void SqliteUtilities::executeCommand(SqliteCommand command)
@@ -11,6 +12,7 @@ void SqliteUtilities::executeCommand(SqliteCommand command)
 	res = sqlite3_exec(command.settings.db, command.query.c_str(), command.settings.collback, command.settings.data, errMessage);
 	if (res != SQLITE_OK)
 	{
+		std::cerr << "DB ERORR" << std::endl;
 		throw std::exception("DB ERORR");
 	}
 }
@@ -36,7 +38,7 @@ std::vector<SqliteCommand> SqliteUtilities::readFileCommands(SqliteFileCommands 
 	fileContent = FileUtilities::readFile(fileCommands.filePath);
 	queries = StringUtilities::splitStringToVector(fileContent, DELIMITER);
 
-	return 	SqliteUtilities::createCommandsVector(queries, fileCommands.settings);
+	return SqliteUtilities::createCommandsVector(queries, fileCommands.settings);
 }
 
 std::vector<SqliteCommand> SqliteUtilities::createCommandsVector(std::vector<std::string> queries, CommandSettings settings)
