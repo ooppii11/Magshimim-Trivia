@@ -9,16 +9,6 @@
 .history
 .svn/
 migrate_working_dir/
-.dart_tool/
-.flutter-plugins-dependencies
-windows/
-web/
-test/
-macos/
-linux/
-ios/
-android/
-
 
 # IntelliJ related
 *.iml
@@ -41,6 +31,16 @@ android/
 .pub-cache/
 .pub/
 /build/
+.dart_tool/
+.flutter-plugins-dependencies
+windows/
+web/
+test/
+macos/
+linux/
+ios/
+android/
+
 
 # Symbolication related
 app.*.symbols
